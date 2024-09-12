@@ -1,4 +1,4 @@
-export const keywordSearch = [
+export const KEYWORD_SEARCH = [
   {
     name: "t shirt",
   },
@@ -31,14 +31,32 @@ export const keywordSearch = [
   },
 ];
 
-export const linkProduct = [
+export const LINK_PRODUCT = [
   {
     name: "women's",
+    images: ["/women1.avif", "/women2.avif"],
   },
   {
     name: "men's",
+    images: ["/men1.avif", "/men2.avif"],
   },
   {
     name: "accessories",
+    images: ["/accessories.avif"],
   },
+];
+
+export const RECOMMENDATIONS = [
+  { name: "trending" },
+  { name: "products" },
+  { name: "explore" },
+  { name: "accessories" },
+  { name: "sale" },
+];
+
+export const MORE_OPTIONS = [
+  { name: "accessibility statement" },
+  { name: "Help" },
+  { name: "email sign up" },
+  { name: "blog" },
 ];

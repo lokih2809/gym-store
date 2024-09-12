@@ -16,3 +16,12 @@ body,
   width: 100%;
   @apply text-gray-900;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

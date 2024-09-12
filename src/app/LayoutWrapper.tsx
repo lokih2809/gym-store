@@ -1,4 +1,4 @@
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/Navbar";
 import React from "react";
 
 type Props = {
@@ -10,7 +10,7 @@ const LayoutWrapper = ({ children }: Props) => {
     <div className="flex min-h-screen w-full">
       {/* Sidebar */}
       {/* <Sidebar /> */}
-      <div className="w-full">
+      <div className="relative w-full">
         {/* Navbar */}
         <Navbar />
         {children}
