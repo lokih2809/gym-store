@@ -10,7 +10,7 @@ type Props = {
 const SearchBox = ({ disable, className, onClick }: Props) => {
   return (
     <div
-      className={`flex w-full items-center justify-center gap-2 border bg-gray-100 px-4 py-2 lg:w-80 ${className} cursor-pointer hover:bg-gray-200 focus:border`}
+      className={`flex items-center justify-center gap-2 border bg-gray-100 px-4 py-2 ${className} cursor-pointer hover:bg-gray-200 focus:border`}
       onClick={onClick}
     >
       <Search className="size-5" />

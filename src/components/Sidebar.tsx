@@ -23,7 +23,7 @@ const Sidebar = ({ setIsSidebarOpen, setIsDialogOpen }: Props) => {
   };
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex h-auto w-full flex-col gap-4 bg-white">
+    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col gap-4 overflow-hidden bg-white">
       {/* Top */}
       <div className="fixed z-20 flex w-full flex-col gap-4 bg-white p-4 shadow-md">
         <div className="flex items-center justify-between">

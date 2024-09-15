@@ -12,6 +12,15 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      keyframes: {
+        slideIn: {
+          "0%": { transform: "translateY(80%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "100" },
+        },
+      },
+      animation: {
+        "slide-in": "slideIn 0.5s ease-in-out forwards",
+      },
     },
   },
   plugins: [],

@@ -1,3 +1,5 @@
+import Footer from "@/components/Footer";
+import Notification from "@/components/Home/Notification";
 import Navbar from "@/components/Navbar";
 import React from "react";
 
@@ -12,8 +14,10 @@ const LayoutWrapper = ({ children }: Props) => {
       {/* <Sidebar /> */}
       <div className="relative w-full">
         {/* Navbar */}
+        <Notification isMobile />
         <Navbar />
         {children}
+        <Footer />
       </div>
     </div>
   );

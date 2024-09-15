@@ -12,7 +12,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import SearchDialog from "./SearchDialog";
 import Sidebar from "./Sidebar";
-import SearchBox from "./SearchBox";
 import { LINK_PRODUCT } from "@/constants/fakeData";
 
 const Navbar = () => {
@@ -22,7 +21,7 @@ const Navbar = () => {
   return (
     <div className="flex items-center justify-between border-b px-6 py-6">
       {/* Left */}
-      <div className="flex items-center">
+      <div className="flex flex-grow basis-0 items-center">
         {/* Logo */}
         <Link href={"/"}>
           <Image
@@ -46,7 +45,7 @@ const Navbar = () => {
       </div>
 
       {/* Mid */}
-      <div className="flex">
+      <div className="flex flex-grow basis-0 justify-center">
         {/* Logo */}
         <Link href={"/"}>
           <Image
@@ -72,16 +71,12 @@ const Navbar = () => {
       </div>
 
       {/* Right */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-grow basis-0 items-center justify-end gap-4">
         <div className="hidden items-center gap-4 lg:flex">
-          <div>
-            <SearchBox className="hidden xl:flex" disable />
-            <SearchIcon
-              className="hidden cursor-pointer lg:block xl:hidden"
-              onClick={() => setIsDialogOpen(true)}
-            />
-          </div>
-
+          <SearchIcon
+            className="hidden cursor-pointer lg:block"
+            onClick={() => setIsDialogOpen(true)}
+          />
           <Heart />
         </div>
         <User />

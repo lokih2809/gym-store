@@ -3,7 +3,7 @@
 import { KEYWORD_SEARCH } from "@/constants/fakeData";
 import { ChevronLeft, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
-import Search from "./SearchBox";
+import SearchBox from "./SearchBox";
 
 type Props = {
   setIsDialogOpen: (value: boolean) => void;
@@ -21,7 +21,7 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
           />
           {/* SearchBox */}
           <div className="flex flex-1 justify-center">
-            <Search />
+            <SearchBox className="w-full" />
           </div>
           <X
             className="hidden cursor-pointer lg:block"
@@ -40,13 +40,13 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
               <TrendingUp />
               {KEYWORD_SEARCH.map((item) => (
                 <Link
-                  key={item.name}
+                  key={item}
                   href={`/${
                     process.env.NEXT_LINK_PRODUCT
-                  }/${item.name.replace(" ", "-")}`}
+                  }/${item.replace(" ", "-")}`}
                   className="bg-gray-100 px-2 py-1 text-xs font-bold"
                 >
-                  {item.name.toUpperCase()}
+                  {item.toUpperCase()}
                 </Link>
               ))}
             </div>
