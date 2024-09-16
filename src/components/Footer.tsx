@@ -1,9 +1,11 @@
-import { FOOTER_INFORMATION } from "@/constants/fakeData";
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import FooterLink from "./FooterLink";
 import { ChevronUp, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
+import FooterInformation from "./FooterInformation";
 
 const aboutMore = [
   {
@@ -51,17 +53,7 @@ const Footer = () => {
   return (
     <div className="flex flex-col gap-4 border-t px-4 pt-8 lg:px-8 xl:px-12">
       {/* Footer information */}
-      {FOOTER_INFORMATION.map((item) => (
-        <div key={item.title} className="space-y-4">
-          <h1 className={`text-2xl font-bold uppercase`}>{item.title}</h1>
-          {item.content.split("\n").map((line, index) => (
-            <p className="text-sm leading-8 lg:text-base" key={index}>
-              {line}
-              <br />
-            </p>
-          ))}
-        </div>
-      ))}
+      <FooterInformation />
 
       {/* Footer option contact */}
       <div className="mt-10 flex flex-col lg:mt-12 lg:gap-8 lg:border-t">

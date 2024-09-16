@@ -1,6 +1,6 @@
 "use client";
 
-import { NOTIFICATION } from "@/constants/fakeData";
+import { NOTIFICATION_MESSAGES } from "@/constants/fakeData";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -12,7 +12,7 @@ const Notification = ({ isMobile }: Props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % NOTIFICATION.length);
+      setCurrentIndex((prev) => (prev + 1) % NOTIFICATION_MESSAGES.length);
     }, 4000);
 
     return () => clearInterval(interval);
@@ -22,13 +22,13 @@ const Notification = ({ isMobile }: Props) => {
       className={`relative w-full justify-center overflow-hidden bg-slate-100 ${isMobile ? "flex h-10 py-2 lg:hidden" : "hidden h-14 py-4 lg:flex"}`}
     >
       <div
-        key={NOTIFICATION[currentIndex]}
-        className="animate-slide-in absolute transform"
+        key={NOTIFICATION_MESSAGES[currentIndex]}
+        className="absolute transform animate-slide-in"
       >
         <span
           className={`block cursor-pointer font-bold hover:underline ${isMobile && "text-xs"}`}
         >
-          {NOTIFICATION[currentIndex].toUpperCase()}
+          {NOTIFICATION_MESSAGES[currentIndex].toUpperCase()}
         </span>
       </div>
     </div>

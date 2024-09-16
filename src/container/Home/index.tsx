@@ -3,9 +3,9 @@ import Notification from "@/components/Home/Notification";
 import PosterShop from "@/components/Home/PosterShop";
 import TrendingItemsSection from "@/components/Home/TrendingItemsSection";
 import {
-  FUTURE_POSTERS,
-  LINK_PRODUCT,
-  POPULAR_POSTERS,
+  UPCOMING_POSTERS,
+  PRODUCT_CATEGORIES,
+  FEATURED_POSTERS,
 } from "@/constants/fakeData";
 import React from "react";
 
@@ -21,13 +21,13 @@ const Homepage = () => {
       {/* CONTENT */}
       <div className="flex flex-col items-center gap-4 lg:gap-20">
         <TrendingItemsSection
-          data={POPULAR_POSTERS}
+          data={FEATURED_POSTERS}
           categories={["men", "women"]}
           title="ĐANG HOT HIỆN TẠI"
         />
-        <PosterShop data={LINK_PRODUCT} />
+        <PosterShop data={PRODUCT_CATEGORIES} />
         <TrendingItemsSection
-          data={FUTURE_POSTERS}
+          data={UPCOMING_POSTERS}
           categories={["trending", "styling", "training", "apps"]}
           title="WAIT THERE’S MORE…"
         />

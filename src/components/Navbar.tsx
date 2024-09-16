@@ -12,7 +12,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import SearchDialog from "./SearchDialog";
 import Sidebar from "./Sidebar";
-import { LINK_PRODUCT } from "@/constants/fakeData";
+import { PRODUCT_CATEGORIES } from "@/constants/fakeData";
 
 const Navbar = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -57,7 +57,7 @@ const Navbar = () => {
           />
         </Link>
         <div className="text-md hidden items-center gap-6 font-bold lg:flex">
-          {LINK_PRODUCT.map((link) => (
+          {PRODUCT_CATEGORIES.map((link) => (
             <Link
               key={link.name}
               href={`/${

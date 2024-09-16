@@ -2,9 +2,9 @@ import { Heart, Sun, X } from "lucide-react";
 import React, { useState } from "react";
 import SearchBox from "./SearchBox";
 import {
-  LINK_PRODUCT,
-  MORE_OPTIONS,
-  RECOMMENDATIONS,
+  PRODUCT_CATEGORIES,
+  ADDITIONAL_OPTIONS,
+  RECOMMENDED_CATEGORIES,
 } from "@/constants/fakeData";
 import Image from "next/image";
 
@@ -50,7 +50,7 @@ const Sidebar = ({ setIsSidebarOpen, setIsDialogOpen }: Props) => {
       <div className="space-y-4 p-4">
         {/* Category */}
         <div className="mt-36 flex items-center justify-center gap-4">
-          {LINK_PRODUCT.map((item) => (
+          {PRODUCT_CATEGORIES.map((item) => (
             <span
               className={`cursor-pointer py-4 font-bold uppercase ${activeCategory === item.name ? "border-b-2 border-black text-black" : "text-gray-400"}`}
               key={item.name}
@@ -63,36 +63,38 @@ const Sidebar = ({ setIsSidebarOpen, setIsDialogOpen }: Props) => {
 
         {/* Image */}
         <div className="scrollbar-hide flex overflow-x-scroll">
-          {LINK_PRODUCT.filter((item) => item.name === activeCategory).map(
-            (item) => (
-              <div
-                key={item.name}
-                className={`flex gap-2 ${item.images.length <= 1 ? "m-auto" : ""}`}
-              >
-                {item.images.map((image) => (
-                  <div key={image} className={`relative h-56 w-[85vw]`}>
-                    <Image
-                      src={image}
-                      alt=""
-                      fill
-                      className="rounded-lg object-cover"
-                    />
-                    <span className="absolute bottom-2 left-4 text-sm font-bold text-white">
-                      NEW RELEASES
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ),
-          )}
+          {PRODUCT_CATEGORIES.filter(
+            (item) => item.name === activeCategory,
+          ).map((item) => (
+            <div
+              key={item.name}
+              className={`flex gap-2 ${item.images.length <= 1 ? "m-auto" : ""}`}
+            >
+              {item.images.map((image) => (
+                <div key={image} className={`relative h-56 w-[85vw]`}>
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                  <span className="absolute bottom-2 left-4 text-sm font-bold text-white">
+                    NEW RELEASES
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
 
         {/* Recommendations */}
         <div className="flex cursor-pointer flex-col uppercase">
-          {RECOMMENDATIONS.map((item, index) => (
-            <div key={item.name} className="">
-              <span className="cursor-pointer font-bold">{item.name}</span>
-              {RECOMMENDATIONS.length - 1 > index && <hr className="my-6" />}
+          {RECOMMENDED_CATEGORIES.map((item, index) => (
+            <div key={item} className="">
+              <span className="cursor-pointer font-bold">{item}</span>
+              {RECOMMENDED_CATEGORIES.length - 1 > index && (
+                <hr className="my-6" />
+              )}
             </div>
           ))}
         </div>
@@ -101,12 +103,12 @@ const Sidebar = ({ setIsSidebarOpen, setIsDialogOpen }: Props) => {
       {/* Bottom */}
       <div className="flex flex-1 flex-col gap-4 bg-gray-100 p-4">
         <span className="font-bold">MORE</span>
-        {MORE_OPTIONS.map((item) => (
+        {ADDITIONAL_OPTIONS.map((item) => (
           <span
             className="ml-2 cursor-pointer text-sm font-semibold capitalize text-gray-500"
-            key={item.name}
+            key={item}
           >
-            {item.name}
+            {item}
           </span>
         ))}
       </div>
