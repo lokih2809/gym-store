@@ -21,29 +21,33 @@ const FooterLink = ({ isMobile }: Props) => {
   };
 
   return (
-    <div className="flex flex-col gap-0 lg:flex-row lg:gap-8">
-      {FOOTER_LINKS.map((item) => (
-        <div key={item.title} className="border-t py-4 lg:border-none">
-          <div
-            onClick={() => toggleLink(item.title)}
-            className="flex cursor-pointer justify-between"
-          >
-            <span className="font-bold uppercase">{item.title}</span>
-            {isMobile && (showLinks[item.title] ? <Minus /> : <Plus />)}
+    <>
+      <div className="flex flex-col gap-0 lg:flex-row lg:gap-8">
+        {FOOTER_LINKS.map((item) => (
+          <div key={item.title} className="border-t py-4 lg:border-none">
+            <div
+              onClick={() => toggleLink(item.title)}
+              className="flex cursor-pointer justify-between"
+            >
+              <span className="font-bold uppercase">{item.title}</span>
+              {isMobile && (showLinks[item.title] ? <Minus /> : <Plus />)}
+            </div>
+            <div className="flex flex-col gap-2">
+              {item.links.map((link, index) => (
+                <div
+                  key={index}
+                  className={`${showLinks[item.title] ? "block" : "hidden lg:block"} pl-4 text-sm opacity-70 first:mt-2 lg:pl-0`}
+                >
+                  <Link href={link.toLowerCase().replace(" ", "-")}>
+                    {link}
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex flex-col gap-2">
-            {item.links.map((link, index) => (
-              <div
-                key={index}
-                className={`${showLinks[item.title] ? "block" : "hidden lg:block"} pl-4 text-sm opacity-70 first:mt-2 lg:pl-0`}
-              >
-                <Link href={link.toLowerCase().replace(" ", "-")}>{link}</Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 };
 

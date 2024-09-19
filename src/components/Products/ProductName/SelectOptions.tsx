@@ -11,17 +11,13 @@ interface SelectOptionsProps {
   onSizeChange: (size: string | null) => void;
 }
 
-const SelectOptions: React.FC<SelectOptionsProps> = ({
-  onColorChange,
-  onSizeChange,
-}) => {
+const SelectOptions = ({ onColorChange, onSizeChange }: SelectOptionsProps) => {
   const availableSizes = new Set(PRODUCT_DATA.sizes.map((size) => size.size));
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectColor, setSelectColor] = useState<string | null>(
     PRODUCT_DATA.colors[0].colorName || null,
   );
 
-  // Call the provided functions whenever selectColor or selectSize changes
   useEffect(() => {
     onColorChange(selectColor);
   }, [selectColor]);
@@ -57,7 +53,7 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
           {allSizes.map((size) => (
             <span
               key={size}
-              className={`px-4 py-2 font-bold ${availableSizes.has(size) ? (size === selectSize ? "bg-black text-white" : "") : "line-through"}`}
+              className={`px-4 py-2 font-bold ${availableSizes.has(size) ? (size === selectSize ? "bg-black text-white" : "cursor-pointer") : "line-through"}`}
               onClick={() => setSelectSize(size)}
             >
               {size}

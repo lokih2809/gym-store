@@ -14,13 +14,18 @@ const ImagesInfo = ({ selectedColor }: Props) => {
     PRODUCT_DATA.colors[0];
 
   return (
-    <div className="scrollbar-hidden overflow-x-scroll whitespace-nowrap">
-      {color.images.map((image) => (
-        <div key={image} className="relative inline-block h-[60vh] w-[100vw]">
-          <Image src={image} alt="" fill className="object-cover" />
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="xl:scrollbar-hide overflow-x-scroll xl:flex xl:h-[90vh] xl:w-1/2 xl:flex-wrap xl:gap-2 xl:overflow-y-scroll">
+        {color.images.map((image, index) => (
+          <div
+            key={index}
+            className={`relative inline-block h-[60vh] w-[100vw] ${(index + 1) % 3 === 0 ? "xl:h-[100vh] xl:w-[99%]" : "xl:w-[49%]"}`}
+          >
+            <Image src={image} alt="" fill className="object-cover" />
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 

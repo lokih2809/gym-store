@@ -366,3 +366,83 @@ export const PRODUCT_DATA = {
     },
   ],
 };
+
+export const LIST_PRODUCTS = [
+  {
+    id: 1,
+    name: "Sporty T-Shirt",
+    price: 29.99,
+    fit: "Regular",
+    colors: [
+      {
+        colorName: "Red",
+        colorHex: "#FF0000",
+        images: ["/Property Of Stringer/red-1.webp"],
+      },
+      {
+        colorName: "Blue",
+        colorHex: "#0000FF",
+        images: ["/images/sporty-tshirt-blue.jpg"],
+      },
+      {
+        colorName: "Green",
+        colorHex: "#00FF00",
+        images: ["/images/sporty-tshirt-green.jpg"],
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Casual Jeans",
+    price: 59.99,
+    fit: "Slim",
+    colors: [
+      {
+        colorName: "Black",
+        colorHex: "#000000",
+        images: ["/Property Of Stringer/red-2.webp"],
+      },
+      {
+        colorName: "Dark Blue",
+        colorHex: "#00008B",
+        images: ["/images/casual-jeans-darkblue.jpg"],
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Hooded Sweatshirt",
+    price: 49.99,
+    fit: "Loose",
+    colors: [
+      {
+        colorName: "Gray",
+        colorHex: "#808080",
+        images: ["/Property Of Stringer/red-3.webp"],
+      },
+      {
+        colorName: "Navy",
+        colorHex: "#000080",
+        images: ["/images/hooded-sweatshirt-navy.jpg"],
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Hooded Sweatshirt",
+    price: 49.99,
+    fit: "Loose",
+    colors: [
+      {
+        colorName: "Gray",
+        colorHex: "#808080",
+        images: ["/Property Of Stringer/white-1.webp"],
+      },
+      {
+        colorName: "Navy",
+        colorHex: "#000080",
+        images: ["/images/hooded-sweatshirt-navy.jpg"],
+      },
+    ],
+  },
+];
