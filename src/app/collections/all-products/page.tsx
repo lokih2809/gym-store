@@ -1,8 +1,8 @@
-import AllProducts from "@/container/Collections/AllProducts";
+import AllProductsContainer from "@/container/Collections/AllProducts";
 import React from "react";
 
-const page = () => {
-  return <AllProducts />;
+const Page = () => {
+  return <AllProductsContainer />;
 };
 
-export default page;
+export default Page;

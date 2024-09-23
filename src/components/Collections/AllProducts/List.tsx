@@ -1,15 +1,15 @@
 "use client";
 
-import { LIST_PRODUCTS } from "@/constants/fakeData";
 import Item from "./Item";
 import FilterButton from "./FilterButton";
 import FilterSidebar from "./FilterSidebar";
+import { ProductInfo } from "@/interfaces/common";
 
-type Props = {
-  limit?: number;
-};
+interface Props {
+  listProducts: ProductInfo[];
+}
 
-const List = ({ limit }: Props) => {
+const List = ({ listProducts }: Props) => {
   return (
     <>
       <div className="flex flex-col gap-4 lg:flex-row">
@@ -25,9 +25,9 @@ const List = ({ limit }: Props) => {
 
         {/* List product */}
         <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-          {LIST_PRODUCTS.map((item) => (
+          {listProducts.map((item: ProductInfo) => (
             <>
-              <Item key={item.id} itemDetail={item} />
+              <Item key={item.id} productInfo={item} />
             </>
           ))}
         </div>

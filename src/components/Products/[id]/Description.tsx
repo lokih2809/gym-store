@@ -2,9 +2,7 @@ import { PRODUCT_DATA } from "@/constants/fakeData";
 import { ArrowRight, ChevronRight, X } from "lucide-react";
 import React, { useState } from "react";
 
-type Props = {};
-
-const Description = (props: Props) => {
+const Description = ({ productDesc }: { productDesc?: string }) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
 
   return (
@@ -33,7 +31,7 @@ const Description = (props: Props) => {
           {showDesc && (
             <div>
               <div className="fixed bottom-0 left-0 right-0 top-0 z-10 bg-black opacity-40"></div>
-              <div className="lg:animate-slide-in-right fixed bottom-0 left-0 right-0 top-[20%] z-20 transform animate-slide-in rounded-t-lg bg-white lg:left-[60%] lg:top-0">
+              <div className="fixed bottom-0 left-0 right-0 top-[20%] z-20 transform animate-slide-in rounded-t-lg bg-white lg:left-[60%] lg:top-0 lg:animate-slide-in-right">
                 {/* Top */}
                 <div className="flex items-center justify-between p-4 lg:py-10">
                   <span className="mx-auto font-bold uppercase lg:text-xl">
@@ -54,9 +52,9 @@ const Description = (props: Props) => {
                     staples with our graphic styles.
                   </span>
                   <ul className="list-disc px-8">
-                    {PRODUCT_DATA.description.split(".").map((desc) => (
-                      <li key={desc}>{desc}</li>
-                    ))}
+                    {productDesc
+                      ?.split(".")
+                      .map((desc) => <li key={desc}>{desc}</li>)}
                   </ul>
 
                   <b>SIZE & FIT</b>

@@ -1,13 +1,14 @@
 "use client";
 
-import ButtonAdd from "@/components/Products/ProductName/ButtonAdd";
-import Description from "@/components/Products/ProductName/Description";
-import ImagesInfo from "@/components/Products/ProductName/ImagesInfo";
-import ProductInformation from "@/components/Products/ProductName/ProductInformation";
-import SelectOptions from "@/components/Products/ProductName/SelectOptions";
+import { ProductInfo } from "@/interfaces/common";
 import React, { useState } from "react";
+import ImagesInfo from "./ImagesInfo";
+import ProductInformation from "./ProductInformation";
+import SelectOptions from "./SelectOptions";
+import ButtonAdd from "./ButtonAdd";
+import Description from "./Description";
 
-const ProductName = () => {
+const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const handleColorChange = (color: string | null) => {
@@ -21,17 +22,18 @@ const ProductName = () => {
   return (
     <>
       <div className="xl:flex xl:justify-between">
-        <ImagesInfo selectedColor={selectedColor} />
+        <ImagesInfo selectedColor={selectedColor} productInfo={productInfo} />
         <div className="mx-auto">
-          <ProductInformation />
+          <ProductInformation productInfo={productInfo} />
 
           <div className="mt-4 flex flex-col gap-6 px-4">
             <SelectOptions
               onColorChange={handleColorChange}
               onSizeChange={handleSizeChange}
+              productInfo={productInfo}
             />
             <ButtonAdd />
-            <Description />
+            <Description productDesc={productInfo?.description} />
           </div>
         </div>
       </div>
@@ -39,4 +41,4 @@ const ProductName = () => {
   );
 };
 
-export default ProductName;
+export default ProductDetail;

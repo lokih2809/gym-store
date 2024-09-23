@@ -5,11 +5,18 @@ import {
   UPCOMING_POSTERS,
   PRODUCT_CATEGORIES,
   FEATURED_POSTERS,
-  LIST_PRODUCTS,
 } from "@/constants/fakeData";
+import prisma from "@/lib/client";
 import React from "react";
 
-const Homepage = () => {
+const Homepage = async () => {
+  const randomProducts = await prisma.product.findMany({
+    take: 10,
+    include: {
+      colors: true,
+      productSizes: true,
+    },
+  });
   return (
     <>
       {/* TOP */}
@@ -27,7 +34,7 @@ const Homepage = () => {
         />
         <TrendingItemsSection
           type="products"
-          products={LIST_PRODUCTS}
+          listProducts={randomProducts}
           title="NEW SEASON + NEW DROPS = MORE PROGRESS"
         />
 

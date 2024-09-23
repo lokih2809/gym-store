@@ -1,16 +1,16 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 datasource db {
-  provider = "postgresql" // Hoặc mysql, sqlite, sqlserver
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
+}
+
+enum Category {
+  men
+  women
+  accessories
 }
 
 model Product {
@@ -19,12 +19,13 @@ model Product {
   description  String
   price        Float
   sku          String
-  category     String
+  category     Category
   fit          String
   colors       ProductColor[]
   productSizes ProductSize[]
-  cartItems    CartItem[]
-  orderItems   OrderItem[]
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
 }
 
 model ProductColor {
@@ -32,7 +33,7 @@ model ProductColor {
   productId Int
   colorName String
   colorHex  String
-  images    String[] // Mỗi màu sẽ có một mảng hình ảnh riêng
+  images    String[]
   product   Product  @relation(fields: [productId], references: [id])
 }
 

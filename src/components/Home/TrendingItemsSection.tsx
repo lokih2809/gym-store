@@ -5,11 +5,12 @@ import "swiper/css";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductInfo } from "@/interfaces/common";
 
 interface Props {
   type: "posts" | "products";
   posts?: TrendingPost[];
-  products?: Product[];
+  listProducts?: ProductInfo[];
   categories?: string[];
   title: string;
 }
@@ -17,7 +18,7 @@ interface Props {
 const TrendingItemsSection = ({
   type,
   posts,
-  products,
+  listProducts,
   categories = [],
   title,
 }: Props) => {
@@ -113,7 +114,7 @@ const TrendingItemsSection = ({
 
           {/* Product */}
           {type === "products" &&
-            products?.map((product) => (
+            listProducts?.map((product) => (
               <>
                 <div key={product.name} className="">
                   {/* Image product */}

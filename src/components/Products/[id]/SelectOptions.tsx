@@ -1,6 +1,6 @@
 "use client";
 
-import { PRODUCT_DATA } from "@/constants/fakeData";
+import { ProductInfo } from "@/interfaces/common";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
@@ -9,13 +9,20 @@ const allSizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 interface SelectOptionsProps {
   onColorChange: (color: string | null) => void;
   onSizeChange: (size: string | null) => void;
+  productInfo: ProductInfo;
 }
 
-const SelectOptions = ({ onColorChange, onSizeChange }: SelectOptionsProps) => {
-  const availableSizes = new Set(PRODUCT_DATA.sizes.map((size) => size.size));
+const SelectOptions = ({
+  onColorChange,
+  onSizeChange,
+  productInfo,
+}: SelectOptionsProps) => {
+  const availableSizes = new Set(
+    productInfo.productSizes.map((size) => size.size),
+  );
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectColor, setSelectColor] = useState<string | null>(
-    PRODUCT_DATA.colors[0].colorName || null,
+    productInfo.colors[0].colorName || null,
   );
 
   useEffect(() => {
@@ -30,7 +37,7 @@ const SelectOptions = ({ onColorChange, onSizeChange }: SelectOptionsProps) => {
       {/* Color */}
       <div className="flex flex-col items-center gap-2">
         <div className="flex gap-4">
-          {PRODUCT_DATA.colors.map((color) => (
+          {productInfo.colors.map((color) => (
             <div key={color.id}>
               <Image
                 src={color.images[0]}

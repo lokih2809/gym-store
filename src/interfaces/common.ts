@@ -1,22 +1,6 @@
-type TrendingPost = {
-  name: string;
-  desc: string;
-  image: string;
-  tag: string;
-  more?: string;
-};
+import { Product, ProductColor, ProductSize } from "@prisma/client";
 
-// PRODUCT
-interface ProductColor {
-  colorName: string;
-  colorHex: string;
-  images: string[];
-}
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  fit: string;
+export interface ProductInfo extends Product {
   colors: ProductColor[];
+  productSizes: ProductSize[];
 }
