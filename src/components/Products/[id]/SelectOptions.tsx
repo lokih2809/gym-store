@@ -38,7 +38,10 @@ const SelectOptions = ({
       <div className="flex flex-col items-center gap-2">
         <div className="flex gap-4">
           {productInfo.colors.map((color) => (
-            <div key={color.id}>
+            <div
+              key={color.id}
+              className={`border-2 ${selectColor === color.colorName ? "border-black" : "border-white"}`}
+            >
               <Image
                 src={color.images[0]}
                 alt={color.colorName}
@@ -50,7 +53,7 @@ const SelectOptions = ({
             </div>
           ))}
         </div>
-        <span>{selectColor}</span>
+        <span className="font-bold">{selectColor}</span>
       </div>
 
       {/* Size */}

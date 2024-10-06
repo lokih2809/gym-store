@@ -33,7 +33,7 @@ const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
               productInfo={productInfo}
             />
             <ButtonAdd />
-            <Description productDesc={productInfo?.description} />
+            <Description productInfo={productInfo} />
           </div>
         </div>
       </div>

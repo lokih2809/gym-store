@@ -63,8 +63,8 @@ const Navbar = () => {
             {PRODUCT_CATEGORIES.map((link) => (
               <Link
                 key={link.name}
-                href={`/${
-                  process.env.NEXT_PUBLIC_COLLECTIONS
+                href={`${
+                  process.env.NEXT_PUBLIC_COLLECTIONS_LINK
                 }/${link.name.replace("'s", "")}`}
               >
                 {link.name.toUpperCase()}

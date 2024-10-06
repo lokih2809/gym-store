@@ -1,53 +1,16 @@
-import Banner from "@/components/Home/Banner";
-import PosterShop from "@/components/Home/PosterShop";
-import TrendingItemsSection from "@/components/Home/TrendingItemsSection";
-import {
-  UPCOMING_POSTERS,
-  PRODUCT_CATEGORIES,
-  FEATURED_POSTERS,
-} from "@/constants/fakeData";
+import Homepage from "@/components/Home";
 import prisma from "@/lib/client";
-import React from "react";
 
-const Homepage = async () => {
-  const randomProducts = await prisma.product.findMany({
-    take: 10,
+const HomepageContainer = async () => {
+  const listProducts = await prisma.product.findMany({
+    take: 60,
     include: {
       colors: true,
       productSizes: true,
     },
   });
-  return (
-    <>
-      {/* TOP */}
-      <div>
-        <Banner bannerLarge="/bannerLarge.jpg" bannerSmall="/bannerSmall.jpg" />
-      </div>
 
-      {/* CONTENT */}
-      <div className="flex flex-col items-center gap-4 lg:gap-20">
-        <TrendingItemsSection
-          type="posts"
-          posts={FEATURED_POSTERS}
-          categories={["men", "women"]}
-          title="ĐANG HOT HIỆN TẠI"
-        />
-        <TrendingItemsSection
-          type="products"
-          listProducts={randomProducts}
-          title="NEW SEASON + NEW DROPS = MORE PROGRESS"
-        />
-
-        <PosterShop data={PRODUCT_CATEGORIES} />
-        <TrendingItemsSection
-          type="posts"
-          posts={UPCOMING_POSTERS}
-          categories={["trending", "styling", "training", "apps"]}
-          title="WAIT THERE’S MORE…"
-        />
-      </div>
-    </>
-  );
+  return <Homepage listProducts={listProducts} />;
 };
 
-export default Homepage;
+export default HomepageContainer;

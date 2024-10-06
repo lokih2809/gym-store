@@ -1,8 +1,8 @@
-import { PRODUCT_DATA } from "@/constants/fakeData";
-import { ArrowRight, ChevronRight, X } from "lucide-react";
+import { ProductInfo } from "@/interfaces/common";
+import { ChevronRight, X } from "lucide-react";
 import React, { useState } from "react";
 
-const Description = ({ productDesc }: { productDesc?: string }) => {
+const Description = ({ productInfo }: { productInfo: ProductInfo }) => {
   const [showDesc, setShowDesc] = useState<boolean>(false);
 
   return (
@@ -52,15 +52,16 @@ const Description = ({ productDesc }: { productDesc?: string }) => {
                     staples with our graphic styles.
                   </span>
                   <ul className="list-disc px-8">
-                    {productDesc
+                    {productInfo?.description
                       ?.split(".")
+                      .slice(0, -1)
                       .map((desc) => <li key={desc}>{desc}</li>)}
                   </ul>
 
                   <b>SIZE & FIT</b>
-                  <span className="px-4 capitalize">+ {PRODUCT_DATA.fit}</span>
+                  <span className="px-4 capitalize">+ {productInfo.fit}</span>
 
-                  <b>SKU: {PRODUCT_DATA.sku}</b>
+                  <b>SKU: {productInfo.sku}</b>
                 </div>
               </div>
             </div>

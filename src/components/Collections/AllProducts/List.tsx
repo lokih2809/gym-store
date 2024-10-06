@@ -1,9 +1,9 @@
 "use client";
 
-import Item from "./Item";
 import FilterButton from "./FilterButton";
 import FilterSidebar from "./FilterSidebar";
 import { ProductInfo } from "@/interfaces/common";
+import ListProducts from "@/components/common/ListProducts";
 
 interface Props {
   listProducts: ProductInfo[];
@@ -24,12 +24,8 @@ const List = ({ listProducts }: Props) => {
         </div>
 
         {/* List product */}
-        <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-          {listProducts.map((item: ProductInfo) => (
-            <>
-              <Item key={item.id} productInfo={item} />
-            </>
-          ))}
+        <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+          <ListProducts listProducts={listProducts} />
         </div>
       </div>
     </>
