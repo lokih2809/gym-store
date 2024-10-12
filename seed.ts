@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient();
+const db = new PrismaClient();
 
 async function main() {
   const products = [
@@ -9,7 +9,7 @@ async function main() {
       description: "Breathable cotton t-shirt for gym workouts.",
       price: 19.99,
       sku: "GYM-T001",
-      category: "men",
+      category: "MEN",
       fit: "Regular",
       colors: {
         create: [
@@ -37,7 +37,7 @@ async function main() {
       description: "High-performance leggings for women.",
       price: 34.99,
       sku: "GYM-L001",
-      category: "women",
+      category: "WOMEN",
       fit: "Slim",
       colors: {
         create: [
@@ -65,7 +65,7 @@ async function main() {
       description: "Set of resistance bands for strength training.",
       price: 29.99,
       sku: "GYM-RB001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -85,7 +85,7 @@ async function main() {
       description: "Comfortable shorts for gym workouts.",
       price: 24.99,
       sku: "GYM-S002",
-      category: "men",
+      category: "MEN",
       fit: "Regular",
       colors: {
         create: [
@@ -115,7 +115,7 @@ async function main() {
       description: "Supportive sports bra for high-impact workouts.",
       price: 29.99,
       sku: "GYM-B001",
-      category: "women",
+      category: "WOMEN",
       fit: "Fitted",
       colors: {
         create: [
@@ -145,7 +145,7 @@ async function main() {
       description: "Non-slip yoga mat for home workouts.",
       price: 39.99,
       sku: "GYM-YM001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -170,7 +170,7 @@ async function main() {
       description: "Adjustable jump rope for cardio training.",
       price: 14.99,
       sku: "GYM-JR001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -187,7 +187,7 @@ async function main() {
       description: "Durable kettlebell for strength training.",
       price: 49.99,
       sku: "GYM-KB001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -208,7 +208,7 @@ async function main() {
       description: "Reusable water bottle for hydration during workouts.",
       price: 19.99,
       sku: "GYM-WB001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -238,7 +238,7 @@ async function main() {
       description: "Spacious backpack for gym essentials.",
       price: 39.99,
       sku: "GYM-BP001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -268,7 +268,7 @@ async function main() {
       description: "Protective gloves for weight lifting.",
       price: 24.99,
       sku: "GYM-G001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -289,7 +289,7 @@ async function main() {
       description: "Foam roller for muscle recovery.",
       price: 29.99,
       sku: "GYM-FR001",
-      category: "accessories",
+      category: "ACCESSORIES",
       fit: "N/A",
       colors: {
         create: [
@@ -304,7 +304,7 @@ async function main() {
   ];
 
   for (const product of products) {
-    await prisma.product.create({
+    await db.product.create({
       data: {
         name: product.name,
         description: product.description,
@@ -326,5 +326,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await db.$disconnect();
   });

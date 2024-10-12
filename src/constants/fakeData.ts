@@ -26,7 +26,7 @@ export const PRODUCT_CATEGORIES = [
     poster: "/posterMen.avif",
   },
   {
-    name: "accessories",
+    name: "ACCESSORIES",
     images: ["/Product Categories/accessories.avif"],
     poster: "/Featured Posters/popularWomen6.avif",
   },
@@ -36,7 +36,7 @@ export const RECOMMENDED_CATEGORIES = [
   "popular",
   "products",
   "explore",
-  "accessories",
+  "ACCESSORIES",
   "sale",
 ];
 
@@ -110,37 +110,37 @@ export const FEATURED_POSTERS = [
     name: "shorts tập gym cho nam",
     desc: "Ưu điểm: Bộ sưu tập shorts tập gym đa dạng và chất lượng nhất. Nhược điểm: Không còn lý do để bỏ lỡ ngày tập chân.",
     image: "/Featured Posters/popularMen1.avif",
-    tag: "men",
+    tag: "MEN",
   },
   {
     name: "học kỳ mới. phong cách mới hơn.",
     desc: "Môi trường mới, tham vọng lớn, cảm giác lo lắng ngày đầu tiên. Đến mùa tập gym mới rồi.",
     image: "/Featured Posters/popularMen2.avif",
-    tag: "men",
+    tag: "MEN",
   },
   {
     name: "hình ảnh lớn hơn",
     desc: "Áo có thiết kế đồ họa lớn để tạo động lực cho bạn.",
     image: "/Featured Posters/popularMen3.avif",
-    tag: "men",
+    tag: "MEN",
   },
   {
     name: "bộ đồ chạy club",
     desc: "Các câu lạc bộ chạy chú trọng vào kết nối và cộng đồng. Nhưng một bộ đồ đẹp và phù hợp cũng rất quan trọng.",
     image: "/Featured Posters/popularMen4.avif",
-    tag: "men",
+    tag: "MEN",
   },
   {
     name: "phụ kiện",
     desc: "Những món phụ kiện nhỏ nhưng lại rất quan trọng cho việc tập luyện và phong cách của bạn.",
     image: "/Featured Posters/popularMen5.avif",
-    tag: "men",
+    tag: "MEN",
   },
   {
     name: "sức mạnh trong từng cú đẩy",
     desc: "Bộ sưu tập này không chỉ bền bỉ theo thời gian mà còn chịu được sức bền cao. Được thiết kế để chịu đựng cùng bạn cho đến khi bạn thành công.",
     image: "/Featured Posters/popularMen6.avif",
-    tag: "men",
+    tag: "MEN",
   },
 
   // Women
@@ -148,43 +148,43 @@ export const FEATURED_POSTERS = [
     name: "áo ngực thể thao",
     desc: "Tìm ngay chiếc áo ngực thể thao phù hợp với các mức độ hỗ trợ khác nhau, chắc chắn hơn cả người yêu cũ của bạn.",
     image: "/Featured Posters/popularWomen1.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "học kỳ mới. phong cách mới hơn.",
     desc: "Môi trường mới, tham vọng mới, cảm giác lo lắng ngày đầu tiên. Đến mùa tập gym mới rồi.",
     image: "/Featured Posters/popularWomen2.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "legging có vòng eo nhúng màu",
     desc: "Những chiếc legging với vòng eo nhúng màu đang rất hot. Nhanh tay sắm ngay khi còn hàng.",
     image: "/Featured Posters/popularWomen3.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "dành cho các đối thủ cạnh tranh",
     desc: "Chúng tôi có những bộ đồ lý tưởng cho các sự kiện thể dục chức năng. Hãy thử sức với những bộ đồ được thiết kế để giữ bạn luôn mạnh mẽ.",
     image: "/Featured Posters/popularWomen4.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "phong cách boost mới",
     desc: "Những chiếc áo này sẽ làm nổi bật công sức bạn đã bỏ ra với các chi tiết nhăn và xếp lớp.",
     image: "/Featured Posters/popularWomen5.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "phụ kiện",
     desc: "Những món phụ kiện nhỏ nhưng rất quan trọng để nâng cao hiệu quả tập luyện và phong cách của bạn.",
     image: "/Featured Posters/popularWomen6.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
   {
     name: "hình ảnh lớn, tập luyện tốt hơn",
     desc: "Sở hữu ngay một chiếc áo graphic baby tee và tập luyện hết mình.",
     image: "/Featured Posters/popularWomen7.avif",
-    tag: "women",
+    tag: "WOMEN",
   },
 ];
 

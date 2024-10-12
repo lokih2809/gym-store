@@ -14,7 +14,7 @@ const Homepage = ({ listProducts }: { listProducts: ProductInfo[] }) => {
 
   // Men products
   const listProductsMen = listProducts?.filter(
-    (item) => item.category === "men",
+    (item) => item.category === "MEN",
   );
 
   return (
@@ -36,7 +36,7 @@ const Homepage = ({ listProducts }: { listProducts: ProductInfo[] }) => {
         <TrendingItemsSection
           type="posts"
           posts={FEATURED_POSTERS}
-          categories={["men", "women"]}
+          categories={["MEN", "WOMEN"]}
           title="ĐANG HOT HIỆN TẠI"
         />
         {/* poster */}

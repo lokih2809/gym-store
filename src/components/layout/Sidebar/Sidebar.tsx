@@ -1,6 +1,6 @@
 import { Heart, Sun, X } from "lucide-react";
 import React, { useState } from "react";
-import SearchBox from "./SearchBox";
+import SearchBox from "../SearchBox";
 import {
   PRODUCT_CATEGORIES,
   ADDITIONAL_OPTIONS,

@@ -1,8 +1,8 @@
 import Homepage from "@/components/Home";
-import prisma from "@/lib/client";
+import db from "@/lib/client";
 
 const HomepageContainer = async () => {
-  const listProducts = await prisma.product.findMany({
+  const listProducts = await db.product.findMany({
     take: 60,
     include: {
       colors: true,

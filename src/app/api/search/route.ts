@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/client"; // Điều chỉnh đường dẫn theo cấu trúc của bạn
+import db from "@/lib/client"; // Điều chỉnh đường dẫn theo cấu trúc của bạn
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const result = await prisma.product.findMany({
+    const result = await db.product.findMany({
       take: 4,
       where: {
         name: {

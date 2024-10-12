@@ -8,7 +8,7 @@ const Login = () => {
     <>
       <div className="flex h-screen w-screen overflow-hidden">
         {/* Left */}
-        <div className="h-full overflow-hidden">
+        <div className="hidden h-full overflow-hidden lg:block">
           <Image
             src={"/auth-img.jpg"}
             alt=""
@@ -22,7 +22,7 @@ const Login = () => {
         <div className="flex flex-grow flex-col items-center justify-center">
           <Link href={"/"} className="flex flex-col items-center gap-4">
             <Image
-              src={"https://cdn.gymshark.com/images/branding/gs-icon-black.svg"}
+              src={"/logo.png"}
               alt="Logo"
               width={45}
               height={40}

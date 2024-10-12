@@ -1,19 +1,13 @@
 "use client";
-import {
-  Heart,
-  Menu,
-  Search,
-  SearchIcon,
-  ShoppingCart,
-  User,
-} from "lucide-react";
+import { Heart, Menu, Search, SearchIcon, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
-import SearchDialog from "./SearchDialog";
-import Sidebar from "./Sidebar";
+import React, { useEffect, useState } from "react";
+import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/fakeData";
-import Cart from "./Cart";
+import UserOptions from "../UserOptions";
+import SearchDialog from "../SearchDialog";
+import Cart from "../Cart";
 
 const Navbar = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -28,7 +22,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href={"/"}>
             <Image
-              src="https://cdn.gymshark.com/images/branding/gs-icon-black.svg"
+              src="/logo.png"
               alt="logo"
               width={44}
               height={36}
@@ -52,7 +46,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href={"/"}>
             <Image
-              src="https://cdn.gymshark.com/images/branding/gs-icon-black.svg"
+              src="/logo.png"
               alt="logo"
               width={44}
               height={36}
@@ -82,9 +76,7 @@ const Navbar = () => {
             />
             <Heart />
           </div>
-          <Link href={"/login"}>
-            <User />
-          </Link>
+          <UserOptions />
           <ShoppingCart onClick={() => setIsCartOpen(true)} />
         </div>
         {isDialogOpen && <SearchDialog setIsDialogOpen={setIsDialogOpen} />}

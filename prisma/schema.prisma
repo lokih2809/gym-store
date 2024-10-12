@@ -8,9 +8,9 @@ generator client {
 }
 
 enum Category {
-  men
-  women
-  accessories
+  MEN
+  WOMEN
+  ACCESSORIES
 }
 
 model Product {
@@ -47,11 +47,19 @@ model ProductSize {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
+  username  String   @unique
   password  String
   name      String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(CUSTOMER)
   carts     Cart[]
   orders    Order[]
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
 }
 
 model Cart {
