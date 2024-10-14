@@ -1,8 +1,7 @@
-import Account from "@/container/Account";
-import React from "react";
+import AccountContainer from "@/container/Account";
 
 const Page = () => {
-  return <Account />;
+  return <AccountContainer />;
 };
 
 export default Page;

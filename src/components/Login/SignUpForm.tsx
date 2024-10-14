@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "./Input";
+import Input from "../common/Input";
 import Button from "../common/Button";
-import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 const FormSchema = z
@@ -27,7 +26,8 @@ interface Props {
 }
 
 const SignUpForm = ({ setAuthMode }: Props) => {
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -38,6 +38,7 @@ const SignUpForm = ({ setAuthMode }: Props) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    setIsLoading(true);
     const response = await fetch("/api/user", {
       method: "POST",
       headers: {
@@ -47,6 +48,7 @@ const SignUpForm = ({ setAuthMode }: Props) => {
     });
 
     if (response.ok) {
+      setIsLoading(false);
       Swal.fire({
         icon: "success",
         title: "Thành công",
@@ -56,11 +58,12 @@ const SignUpForm = ({ setAuthMode }: Props) => {
         setAuthMode("login");
       });
     } else {
-      const { message } = await response.json(); // Lấy thông điệp từ phản hồi
+      const { message } = await response.json();
+      setIsLoading(false);
       Swal.fire({
         icon: "error",
         title: "Lỗi",
-        text: message, // Hiển thị thông báo lỗi từ server
+        text: message,
         confirmButtonText: "OK",
       });
     }
@@ -106,7 +109,9 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           error={errors.confirmPassword?.message}
           value={watch("password")}
         />
-        <Button type="submit">Create account</Button>
+        <Button type="submit">
+          {isLoading ? "Creating..." : "Create account"}
+        </Button>
       </form>
     </>
   );

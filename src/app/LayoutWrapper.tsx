@@ -4,9 +4,10 @@ import Footer from "@/components/layout/Footer";
 import Notification from "@/components/layout/Notification";
 import Navbar from "@/components/layout/Navbar/Navbar";
 import React from "react";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import DashboardSidebar from "@/components/layout/Sidebar/DashboardSidebar";
 import DashboardNavbar from "@/components/layout/Navbar/DashboardNavbar";
+import { useSession } from "next-auth/react";
 
 type Props = {
   children: React.ReactNode;
@@ -14,15 +15,17 @@ type Props = {
 
 const LayoutWrapper = ({ children }: Props) => {
   const pathName = usePathname();
+  const { data: session } = useSession();
 
   if (pathName.startsWith("/dashboard")) {
+    if (!session || session?.user.role !== "ADMIN") redirect("/");
     return (
       <>
         <div className="flex gap-4 px-4">
           <DashboardSidebar />
-          <div className="flex-1">
+          <div className="flex-1 space-y-4">
             <DashboardNavbar />
-            <span>Dashboard</span>
+            {children}
           </div>
         </div>
       </>

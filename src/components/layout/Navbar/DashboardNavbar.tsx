@@ -8,7 +8,7 @@ const DashboardNavbar = () => {
   const pathname = usePathname();
   return (
     <>
-      <div className="flex items-center justify-between border-b p-8">
+      <div className="flex items-center justify-between border-b p-6">
         <span className="font-bold capitalize">
           {pathname.split("/").pop()}
         </span>

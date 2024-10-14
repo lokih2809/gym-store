@@ -1,33 +1,15 @@
-import OrderHistory from "@/components/Account/OrderHistory";
-import SidebarAccount from "@/components/Account/SidebarAccount";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
+"use client";
+
+import Account from "@/components/Account";
+import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import React from "react";
 
-const Account = async () => {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) {
-    redirect("/login");
-  }
-  return (
-    <>
-      <div className="flex flex-col gap-4 px-8">
-        {/* Top */}
-        <span className="mx-auto py-6 text-3xl font-bold uppercase">
-          Your gym account
-        </span>
+const AccountContainer = () => {
+  const { data: session } = useSession();
+  if (!session) redirect("/login");
 
-        {/* Content */}
-        <div className="flex">
-          {/* Sidebar */}
-          <SidebarAccount user={session?.user} />
-          <OrderHistory />
-          {/* Main */}
-        </div>
-      </div>
-    </>
-  );
+  return <Account user={session.user} />;
 };
 
-export default Account;
+export default AccountContainer;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import Input from "../common/Input";
 import Button from "../common/Button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";

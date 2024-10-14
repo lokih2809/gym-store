@@ -1,7 +1,8 @@
+import ProductsManageContainer from "@/container/Dashboard/Products";
 import React from "react";
 
 const page = () => {
-  return <div>page</div>;
+  return <ProductsManageContainer />;
 };
 
 export default page;

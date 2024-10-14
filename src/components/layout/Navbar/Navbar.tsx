@@ -2,7 +2,7 @@
 import { Heart, Menu, Search, SearchIcon, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/fakeData";
 import UserOptions from "../UserOptions";
@@ -77,7 +77,10 @@ const Navbar = () => {
             <Heart />
           </div>
           <UserOptions />
-          <ShoppingCart onClick={() => setIsCartOpen(true)} />
+          <ShoppingCart
+            onClick={() => setIsCartOpen(true)}
+            className="cursor-pointer"
+          />
         </div>
         {isDialogOpen && <SearchDialog setIsDialogOpen={setIsDialogOpen} />}
         {isSidebarOpen && (

@@ -5,7 +5,10 @@ import React from "react";
 
 const AllProductsContainer = async ({ category }: { category?: string }) => {
   const categoryEnum =
-    category && category !== "all" ? (category as Category) : undefined;
+    category && category !== "all"
+      ? (category.toUpperCase() as Category)
+      : undefined;
+
   const listProducts = await db.product.findMany({
     take: 60,
     where: categoryEnum ? { category: categoryEnum } : undefined,

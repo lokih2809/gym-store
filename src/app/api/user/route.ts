@@ -11,12 +11,15 @@ const userSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must have than 8 characters"),
   name: z.string().min(1, "Name is required"),
+  address: z.string(),
+  role: z.enum(["CUSTOMER", "ADMIN"]),
 });
 
 export const POST = async (req: Request) => {
   try {
     const body = await req.json();
-    const { email, username, password, name } = userSchema.parse(body);
+    const { email, username, password, name, address, role } =
+      userSchema.parse(body);
 
     const existingUserByEmail = await db.user.findUnique({
       where: {
@@ -52,6 +55,8 @@ export const POST = async (req: Request) => {
         email,
         password: hashedPassword,
         name,
+        address: address ? address : "",
+        role: role ? role : "CUSTOMER",
       },
     });
 

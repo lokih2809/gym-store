@@ -26,10 +26,50 @@ export const PRODUCT_CATEGORIES = [
     poster: "/posterMen.avif",
   },
   {
-    name: "ACCESSORIES",
+    name: "accessories",
     images: ["/Product Categories/accessories.avif"],
     poster: "/Featured Posters/popularWomen6.avif",
   },
+];
+
+export const CATEGORIES = ["WOMEN", "MEN", "ACCESSORIES"];
+
+export const PRODUCT_SIZES = [
+  "XS",
+  "S",
+  "M",
+  "L",
+  "XL",
+  "XXL",
+  "XXXL",
+  "4XL",
+  "5XL",
+];
+
+export const PRODUCT_COLORS = [
+  "Black",
+  "White",
+  "Gray",
+  "Navy",
+  "Red",
+  "Green",
+  "Blue",
+  "Yellow",
+  "Brown",
+  "Beige",
+  "Olive",
+  "Orange",
+  "Pink",
+  "Purple",
+];
+
+export const PRODUCT_FITS = [
+  "Slim Fit",
+  "Regular Fit",
+  "Relaxed Fit",
+  "Loose Fit",
+  "Tapered Fit",
+  "Athletic Fit",
 ];
 
 export const RECOMMENDED_CATEGORIES = [

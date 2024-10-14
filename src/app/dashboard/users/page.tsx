@@ -1,7 +1,7 @@
-import React from "react";
+import UsersContainer from "@/container/Dashboard/Users";
 
 const page = () => {
-  return <div>page</div>;
+  return <UsersContainer />;
 };
 
 export default page;

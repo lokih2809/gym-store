@@ -92,11 +92,7 @@ async function main() {
           {
             colorName: "Black",
             colorHex: "#000000",
-            images: [
-              "/Products/image1_fitness1_shorts.webp",
-              "/Products/image1_fitness2_shorts.webp",
-              "/Products/image1_fitness3_shorts.webp",
-            ],
+            images: ["/Products/image1_fitness_shorts.webp"],
           },
           {
             colorName: "Blue",
