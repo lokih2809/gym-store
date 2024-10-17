@@ -4,7 +4,7 @@ import { ChevronLeft, Heart, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useEffect, useRef, useState } from "react";
-import { ProductInfo } from "@/interfaces/common";
+import { ProductInfo } from "@/utils/types/common";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "next/image";
 import { BeatLoader, ClipLoader } from "react-spinners";

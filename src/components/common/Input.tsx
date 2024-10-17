@@ -8,7 +8,6 @@ type Props = {
   error?: string;
   type?: string;
   register?: UseFormRegister<any>;
-  value?: string;
   required?: boolean;
   className?: string;
 };

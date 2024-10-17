@@ -1,14 +1,50 @@
+"use client";
+
 import Button from "@/components/common/Button";
 import SearchBoxDashboard from "../SearchBoxDashboard";
 import Link from "next/link";
+import { User } from "@prisma/client";
+import { useState } from "react";
+import db from "@/lib/client";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { deleteUser } from "@/lib/actions";
+import EditUser from "./EditUser";
+import {
+  formatDate,
+  getFilteredAndPaginatedData,
+  handleDelete,
+} from "@/utils/utils";
 
-const Users = () => {
+interface Props {
+  listUsers: Omit<User, "password">[];
+}
+
+const Users = ({ listUsers }: Props) => {
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const { paginatedData, totalPages, handleNext, handlePrevious } =
+    getFilteredAndPaginatedData(listUsers, searchTerm, currentPage, 10, [
+      "name",
+      "email",
+      "username",
+    ]);
+
+  const nextPage = () => setCurrentPage(handleNext());
+  const previousPage = () => setCurrentPage(handlePrevious());
+
   return (
     <>
-      <div className="space-y-8 rounded-lg bg-dashboard p-8 text-white">
+      <div className="relative space-y-8 rounded-lg bg-dashboard p-8 text-white">
         {/* Top */}
         <div className="flex items-center justify-between">
-          <SearchBoxDashboard placeholder="Search for a user" />
+          <SearchBoxDashboard
+            placeholder="Search for a user"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
           <Button className="bg-purple-600 px-4 py-2 text-white hover:bg-opacity-60">
             <Link href={"/dashboard/users/add"}>Add new</Link>
@@ -42,61 +78,33 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b text-white">
-                  <th
-                    scope="row"
-                    className="whitespace-nowrap px-6 py-4 font-medium"
-                  >
-                    Lok1ondafire@gmail.com
-                  </th>
-                  <td className="px-6 py-4">lok1dev</td>
-                  <td className="px-6 py-4">Minh</td>
-                  <td className="px-6 py-4">13.10.2024</td>
-                  <td className="px-6 py-4">Admin</td>
+                {paginatedData.map((user) => (
+                  <tr className="border-b text-white" key={user.id}>
+                    <th
+                      scope="row"
+                      className={`whitespace-nowrap px-6 py-4 font-medium ${user.email === process.env.NEXT_PUBLIC_MAIL_ADMIN && "text-red-500"}`}
+                    >
+                      {user.email}
+                    </th>
+                    <td className={`$ px-6 py-4`}>{user.username}</td>
+                    <td className="px-6 py-4">{user.name}</td>
+                    <td className="px-6 py-4">{formatDate(user.createdAt)}</td>
+                    <td className="px-6 py-4">{user.role}</td>
 
-                  <td className="space-x-2 px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-500 hover:underline"
+                    <td
+                      className={`flex gap-2 px-6 py-4 ${user.email === process.env.NEXT_PUBLIC_MAIL_ADMIN && "hidden"}`}
                     >
-                      Edit
-                    </a>
-                    <span>|</span>
-                    <a
-                      href="#"
-                      className="font-medium text-red-500 hover:underline"
-                    >
-                      Delete
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b text-white">
-                  <th
-                    scope="row"
-                    className="whitespace-nowrap px-6 py-4 font-medium"
-                  >
-                    Lok1ondafire@gmail.com
-                  </th>
-                  <td className="px-6 py-4">lok1dev</td>
-                  <td className="px-6 py-4">Minh</td>
-                  <td className="px-6 py-4">13.10.2024</td>
-                  <td className="px-6 py-4">Admin</td>
-                  <td className="space-x-2 px-6 py-4">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </a>
-                    <span>|</span>
-                    <a
-                      href="#"
-                      className="font-medium text-red-500 hover:underline"
-                    >
-                      Delete
-                    </a>
-                  </td>
-                </tr>
+                      <EditUser user={user} />
+                      <span>|</span>
+                      <button
+                        className="font-medium text-red-500 hover:underline"
+                        onClick={() => handleDelete(user.id, "user", router)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -104,8 +112,21 @@ const Users = () => {
 
         {/* Bottom */}
         <div className="flex items-center justify-between">
-          <button className="w-20 bg-white p-1 text-black">Previous</button>
-          <button className="w-20 bg-white p-1 text-black">Next</button>
+          <button
+            className="w-20 bg-white p-1 text-black"
+            disabled={currentPage === 1}
+            onClick={previousPage}
+          >
+            Previous
+          </button>
+          <small>{currentPage}</small>
+          <button
+            className="w-20 bg-white p-1 text-black"
+            disabled={currentPage === totalPages}
+            onClick={nextPage}
+          >
+            Next
+          </button>
         </div>
       </div>
     </>

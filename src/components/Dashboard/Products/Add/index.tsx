@@ -3,7 +3,7 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import React from "react";
+import React, { useState } from "react";
 import SizeSelector from "./SelectSize";
 import {
   CATEGORIES,
@@ -11,31 +11,42 @@ import {
   PRODUCT_FITS,
   PRODUCT_SIZES,
 } from "@/constants/fakeData";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+import InputImages from "./InputImages";
+import { Camera } from "lucide-react";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { createProduct } from "@/lib/actions";
+import Swal from "sweetalert2";
 
-interface FormData {
-  name: string;
-  price: string;
-  sku: string;
-  color: string;
-  fit: string;
-  sizes: string[];
-  description: string;
-  category: string;
-}
+const FormSchema = z.object({
+  name: z.string().min(1, "Product name is required"),
+  price: z.string().min(1, "Price is required"),
+  sku: z.string().min(8, "SKU must have at least 8 characters"),
+  category: z.nativeEnum(Category),
+  fit: z.string(),
+  description: z.string().min(1, "Description is required"),
+  color: z.string().min(1, "Color is required"),
+  images: z
+    .array(z.string().url("Invalid image URL"))
+    .min(1, "At least one image is required"),
+  sizes: z.array(z.string()).min(1, "At least one size is required"),
+});
+type FormValues = z.infer<typeof FormSchema>;
 
 const AddProduct = () => {
-  const methods = useForm<FormData>({
-    defaultValues: {
-      name: "",
-      price: "",
-      sku: "",
-      color: "",
-      fit: "",
-      sizes: [],
-      description: "",
-      category: "",
-    },
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const methods = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
   });
 
   const {
@@ -45,8 +56,27 @@ const AddProduct = () => {
     control,
   } = methods;
 
-  const onSubmit = (data: FormData) => {
-    console.log("Form Data:", data);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const transformedData = {
+      ...data,
+      price: parseFloat(data.price),
+    };
+    try {
+      setIsLoading(true);
+      const response = await createProduct(transformedData);
+      if (response.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: response.message,
+          confirmButtonText: "OK",
+        }).then(() => {
+          setIsLoading(true);
+          router.push("/dashboard/products");
+          router.refresh();
+        });
+      }
+    } catch (error) {}
   };
 
   return (
@@ -56,7 +86,7 @@ const AddProduct = () => {
           <Input
             label="Name"
             placeholder="Name"
-            className="w-2/5"
+            className="w-1/2"
             name="name"
             register={register}
             error={errors.name?.message}
@@ -64,7 +94,7 @@ const AddProduct = () => {
           <Input
             label="Price"
             placeholder="Price"
-            className="w-2/5"
+            className="w-1/2"
             name="price"
             register={register}
             error={errors.price?.message}
@@ -74,25 +104,27 @@ const AddProduct = () => {
           <Input
             label="SKU"
             placeholder="SKU"
-            className="w-2/5"
+            className="w-1/2"
             name="sku"
             register={register}
             error={errors.sku?.message}
           />
-          <Select
-            dataArray={PRODUCT_COLORS}
-            name="color"
-            register={register}
-            label="color"
-            className="w-1/6"
-          />
-          <Select
-            dataArray={PRODUCT_FITS}
-            name="fit"
-            register={register}
-            label="fit"
-            className="w-1/6"
-          />
+          <div className="flex w-1/2 gap-4">
+            <Select
+              dataArray={PRODUCT_COLORS}
+              name="color"
+              register={register}
+              label="color"
+              className="w-1/2"
+            />
+            <Select
+              dataArray={PRODUCT_FITS}
+              name="fit"
+              register={register}
+              label="fit"
+              className="w-1/2"
+            />
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <Select
@@ -100,23 +132,41 @@ const AddProduct = () => {
             name="category"
             register={register}
             label="loại sản phẩm"
-            className="w-2/6"
+            className="w-1/2"
           />
           <Controller
             name="sizes"
             control={control}
             render={({ field }) => (
-              <SizeSelector sizes={PRODUCT_SIZES} {...field} />
+              <SizeSelector
+                sizes={PRODUCT_SIZES}
+                {...field}
+                className="w-1/2 px-4"
+              />
             )}
           />
         </div>
         <textarea
           {...register("description")}
           placeholder="Description"
-          className="w-4/5 rounded-lg border border-gray-200 p-4"
+          className="mt-4 w-full rounded-lg border border-gray-300 p-4"
+        />
+        <Controller
+          name="images"
+          control={control}
+          render={({ field }) => (
+            <InputImages
+              icon={<Camera size={100} />}
+              label="Chọn ảnh"
+              name="images"
+              type="file"
+              error={errors.images?.message}
+              onChange={field.onChange}
+            />
+          )}
         />
         <Button className="w-1/3" type="submit">
-          Add
+          {isLoading ? "Adding..." : "Add"}
         </Button>
       </form>
     </FormProvider>

@@ -1,4 +1,4 @@
-import { ProductInfo } from "@/interfaces/common";
+import { ProductInfo } from "@/utils/types/common";
 import { ChevronRight, X } from "lucide-react";
 import React, { useState } from "react";
 

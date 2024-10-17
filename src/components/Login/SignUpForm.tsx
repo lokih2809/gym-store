@@ -77,21 +77,18 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           name="name"
           register={register}
           error={errors.name?.message}
-          value={watch("name")}
         />
         <Input
           label="Username"
           name="username"
           register={register}
           error={errors.username?.message}
-          value={watch("username")}
         />
         <Input
           label="Email address"
           name="email"
           register={register}
           error={errors.email?.message}
-          value={watch("email")}
         />
         <Input
           label="Password"
@@ -99,7 +96,6 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           name="password"
           register={register}
           error={errors.password?.message}
-          value={watch("password")}
         />
         <Input
           label="Confirm Password"
@@ -107,7 +103,6 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           name="confirmPassword"
           register={register}
           error={errors.confirmPassword?.message}
-          value={watch("password")}
         />
         <Button type="submit">
           {isLoading ? "Creating..." : "Create account"}

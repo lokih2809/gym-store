@@ -34,17 +34,7 @@ export const PRODUCT_CATEGORIES = [
 
 export const CATEGORIES = ["WOMEN", "MEN", "ACCESSORIES"];
 
-export const PRODUCT_SIZES = [
-  "XS",
-  "S",
-  "M",
-  "L",
-  "XL",
-  "XXL",
-  "XXXL",
-  "4XL",
-  "5XL",
-];
+export const PRODUCT_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
 export const PRODUCT_COLORS = [
   "Black",

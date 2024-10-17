@@ -1,8 +1,8 @@
 "use client";
 
+import { ProductInfo } from "@/types/common";
 import FilterButton from "./FilterButton";
 import FilterSidebar from "./FilterSidebar";
-import { ProductInfo } from "@/interfaces/common";
 import ListProducts from "@/components/common/ListProducts";
 
 interface Props {

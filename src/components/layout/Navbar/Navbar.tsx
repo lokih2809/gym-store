@@ -1,5 +1,5 @@
 "use client";
-import { Heart, Menu, Search, SearchIcon, ShoppingCart } from "lucide-react";
+import { Heart, Menu, Search, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -12,7 +12,6 @@ import Cart from "../Cart";
 const Navbar = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <>
@@ -77,10 +76,7 @@ const Navbar = () => {
             <Heart />
           </div>
           <UserOptions />
-          <ShoppingCart
-            onClick={() => setIsCartOpen(true)}
-            className="cursor-pointer"
-          />
+          <Cart />
         </div>
         {isDialogOpen && <SearchDialog setIsDialogOpen={setIsDialogOpen} />}
         {isSidebarOpen && (
@@ -89,7 +85,6 @@ const Navbar = () => {
             setIsDialogOpen={setIsDialogOpen}
           />
         )}
-        {isCartOpen && <Cart setIsCartOpen={setIsCartOpen} />}
       </div>
     </>
   );

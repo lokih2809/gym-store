@@ -1,4 +1,4 @@
-import { ProductInfo } from "@/interfaces/common";
+import { ProductInfo } from "@/types/common";
 import List from "./List";
 
 const AllProducts = async ({

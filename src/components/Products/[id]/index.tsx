@@ -1,22 +1,46 @@
 "use client";
 
-import { ProductInfo } from "@/interfaces/common";
 import React, { useState } from "react";
 import ImagesInfo from "./ImagesInfo";
 import ProductInformation from "./ProductInformation";
 import SelectOptions from "./SelectOptions";
 import ButtonAdd from "./ButtonAdd";
 import Description from "./Description";
+import { ProductInfo } from "@/types/common";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/app/redux/slices/cartSlice";
 
 const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
+  const dispatch = useDispatch();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const selectedColorImage =
+    productInfo.colors.find((color) => color.colorName === selectedColor)
+      ?.images[0] ||
+    productInfo.colors[0]?.images[0] ||
+    "/noCart.png";
+
   const handleColorChange = (color: string | null) => {
     setSelectedColor(color);
   };
 
   const handleSizeChange = (size: string | null) => {
     setSelectedSize(size);
+  };
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: productInfo.id,
+        name: productInfo.name,
+        price: productInfo.price,
+        size: selectedSize || "",
+        color: selectedColor || productInfo.colors[0].colorName,
+        fit: productInfo.fit,
+        image: selectedColorImage,
+        quantity: 1,
+      }),
+    );
   };
 
   return (
@@ -32,7 +56,7 @@ const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
               onSizeChange={handleSizeChange}
               productInfo={productInfo}
             />
-            <ButtonAdd />
+            <ButtonAdd onClick={handleAddToCart} />
             <Description productInfo={productInfo} />
           </div>
         </div>

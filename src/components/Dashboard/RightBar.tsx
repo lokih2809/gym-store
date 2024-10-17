@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const RightBar = () => {
   return (
-    <div className="top-1/2 flex-1 space-y-8 text-white">
+    <div className="top-1/2 w-1/5 space-y-8 text-white">
       <div className="relative rounded-lg bg-dashboard p-6">
         <div className="absolute bottom-5 right-5 z-0 h-24 w-24 opacity-50">
           <Image src="/astronaut.png" alt="" fill object-cover />

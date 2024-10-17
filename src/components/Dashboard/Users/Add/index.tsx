@@ -31,7 +31,6 @@ const AddUser = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
@@ -53,6 +52,7 @@ const AddUser = () => {
         confirmButtonText: "OK",
       }).then(() => {
         router.push("/dashboard/users");
+        router.refresh();
       });
     } else {
       const { message } = await response.json();
@@ -73,48 +73,44 @@ const AddUser = () => {
           <Input
             label="Email"
             placeholder="Email"
-            className="w-2/5"
+            className="w-1/2"
             name="email"
             register={register}
             error={errors.email?.message}
-            value={watch("email")}
           />
           <Input
             label="Username"
             placeholder="Username"
-            className="w-2/5"
+            className="w-1/2"
             name="username"
             register={register}
             error={errors.username?.message}
-            value={watch("username")}
           />
         </div>
         <div className="flex gap-8">
           <Input
             label="Password"
             placeholder="Password"
-            className="w-2/5"
+            className="w-1/2"
             name="password"
             register={register}
             error={errors.password?.message}
             type="password"
-            value={watch("password")}
           />
           <Input
             label="Name"
             placeholder="Name"
-            className="w-2/5"
+            className="w-1/2"
             name="name"
             register={register}
             error={errors.name?.message}
-            value={watch("name")}
           />
         </div>
         <div className="flex items-start gap-8">
           <Input
             label="Address"
             placeholder="Address"
-            className="w-2/5"
+            className="w-1/2"
             name="address"
             register={register}
             error={errors.address?.message}
@@ -124,10 +120,10 @@ const AddUser = () => {
             label="Loại tài khoản"
             name="role"
             register={register}
-            className="w-2/5"
+            className="w-1/2"
           />
         </div>
-        <Button className="w-1/3" type="submit">
+        <Button className="w-1/5" type="submit">
           {isLoading ? "Adding..." : "Add"}
         </Button>
       </form>

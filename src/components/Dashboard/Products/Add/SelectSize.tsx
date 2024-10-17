@@ -5,15 +5,16 @@ import { useFormContext, Controller } from "react-hook-form";
 
 type Props = {
   sizes: string[];
+  className?: string;
 };
 
-const SizeSelector = ({ sizes }: Props) => {
+const SizeSelector = ({ sizes, className }: Props) => {
   const { control } = useFormContext();
 
   return (
-    <div className="flex flex-col">
-      <p className="text-lg font-semibold">Select Size:</p>
-      <div className="flex items-center gap-8 space-y-2">
+    <div className={`flex flex-col ${className}`}>
+      <p className="text-sm font-bold">Select Size:</p>
+      <div className="flex items-center gap-8 py-2">
         {sizes.map((size) => (
           <label
             key={size}

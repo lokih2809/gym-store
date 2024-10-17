@@ -11,8 +11,8 @@ const userSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must have than 8 characters"),
   name: z.string().min(1, "Name is required"),
-  address: z.string(),
-  role: z.enum(["CUSTOMER", "ADMIN"]),
+  address: z.string().optional(),
+  role: z.enum(["CUSTOMER", "ADMIN"]).optional(),
 });
 
 export const POST = async (req: Request) => {

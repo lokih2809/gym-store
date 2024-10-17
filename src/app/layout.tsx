@@ -1,22 +1,32 @@
+"use client";
+
 import "./globals.css";
 import LayoutWrapper from "./LayoutWrapper";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { Provider } from "react-redux";
+import { persistor, store } from "./redux/store";
 import SessionProviderWrapper from "./SessionProviderWrapper";
+import { PersistGate } from "redux-persist/integration/react";
+import { useEffect } from "react";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
+  useEffect(() => {
+    console.log("Redux state after rehydration:", store.getState());
+  }, []);
 
   return (
     <html lang="en">
       <body>
-        <SessionProviderWrapper session={session}>
-          <LayoutWrapper>{children}</LayoutWrapper>
-        </SessionProviderWrapper>
+        <Provider store={store}>
+          <PersistGate persistor={persistor} loading={null}>
+            <SessionProviderWrapper>
+              <LayoutWrapper>{children}</LayoutWrapper>
+            </SessionProviderWrapper>
+          </PersistGate>
+        </Provider>
       </body>
     </html>
   );

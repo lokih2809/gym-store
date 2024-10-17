@@ -6,7 +6,7 @@ import {
 import Banner from "./Banner";
 import TrendingItemsSection from "./TrendingItemsSection";
 import PosterShop from "./PosterShop";
-import { ProductInfo } from "@/interfaces/common";
+import { ProductInfo } from "@/utils/types/common";
 
 const Homepage = ({ listProducts }: { listProducts: ProductInfo[] }) => {
   const listProductsLimit = listProducts?.slice(0, 10);

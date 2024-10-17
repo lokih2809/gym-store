@@ -5,6 +5,10 @@ export interface ProductInfo extends Product {
   productSizes: ProductSize[];
 }
 
+export interface ListProducts {
+  listProducts: ProductInfo[];
+}
+
 export interface Post {
   name: string;
   desc: string;

@@ -8,6 +8,7 @@ import { redirect, usePathname } from "next/navigation";
 import DashboardSidebar from "@/components/layout/Sidebar/DashboardSidebar";
 import DashboardNavbar from "@/components/layout/Navbar/DashboardNavbar";
 import { useSession } from "next-auth/react";
+import RightBar from "@/components/Dashboard/RightBar";
 
 type Props = {
   children: React.ReactNode;
@@ -25,7 +26,10 @@ const LayoutWrapper = ({ children }: Props) => {
           <DashboardSidebar />
           <div className="flex-1 space-y-4">
             <DashboardNavbar />
-            {children}
+            <div className="flex gap-4">
+              <div className="flex-1">{children}</div>
+              <RightBar />
+            </div>
           </div>
         </div>
       </>

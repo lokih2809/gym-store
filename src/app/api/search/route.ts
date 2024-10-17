@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/client"; // Điều chỉnh đường dẫn theo cấu trúc của bạn
+import db from "@/lib/client"; 
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

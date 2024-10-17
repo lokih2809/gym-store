@@ -6,6 +6,7 @@ type Props = {
   children?: React.ReactNode;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 const Button = ({
@@ -13,6 +14,7 @@ const Button = ({
   className,
   children,
   type,
+  onClick,
   disabled = false,
 }: Props) => {
   return (

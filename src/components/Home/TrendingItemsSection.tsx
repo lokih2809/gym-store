@@ -5,7 +5,7 @@ import "swiper/css";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Post, ProductInfo } from "@/interfaces/common";
+import { Post, ProductInfo } from "@/utils/types/common";
 import ListProducts from "../common/ListProducts";
 
 interface Props {

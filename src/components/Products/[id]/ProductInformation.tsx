@@ -1,4 +1,4 @@
-import { ProductInfo } from "@/interfaces/common";
+import { ProductInfo } from "@/types/common";
 import React from "react";
 
 const ProductInformation = ({ productInfo }: { productInfo?: ProductInfo }) => {

@@ -1,10 +1,11 @@
 "use client";
 
-import { ProductInfo } from "@/interfaces/common";
+import { PRODUCT_SIZES } from "@/constants/fakeData";
+import { ProductInfo } from "@/types/common";
+import { ProductSize } from "@prisma/client";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import React, { useState, useEffect } from "react";
-
-const allSizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
 interface SelectOptionsProps {
   onColorChange: (color: string | null) => void;
@@ -18,11 +19,11 @@ const SelectOptions = ({
   productInfo,
 }: SelectOptionsProps) => {
   const availableSizes = new Set(
-    productInfo.productSizes.map((size) => size.size),
+    productInfo.productSizes.map((size: ProductSize) => size.size),
   );
   const [selectSize, setSelectSize] = useState<string | null>(null);
   const [selectColor, setSelectColor] = useState<string | null>(
-    productInfo.colors[0].colorName || null,
+    productInfo?.colors[0]?.colorName,
   );
 
   useEffect(() => {
@@ -31,6 +32,13 @@ const SelectOptions = ({
   useEffect(() => {
     onSizeChange(selectSize);
   }, [selectSize]);
+
+  if (
+    !productInfo.colors.length ||
+    !productInfo.colors.some((color) => color.images.length > 0)
+  ) {
+    return notFound();
+  }
 
   return (
     <>
@@ -60,7 +68,7 @@ const SelectOptions = ({
       <div>
         <span className="text-xs">Select a size</span>
         <div className="flex gap-4 overflow-x-scroll border p-4">
-          {allSizes.map((size) => (
+          {PRODUCT_SIZES.map((size) => (
             <span
               key={size}
               className={`px-4 py-2 font-bold ${availableSizes.has(size) ? (size === selectSize ? "bg-black text-white" : "cursor-pointer") : "line-through"}`}
