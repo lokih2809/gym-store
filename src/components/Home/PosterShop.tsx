@@ -1,3 +1,4 @@
+import { COLLECTIONS_LINK } from "@/constants/common";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -25,11 +26,7 @@ const PosterShop = ({ data }: Props) => {
               sizes="1000"
               className="rounded-md object-cover"
             />
-            <Link
-              href={`${
-                process.env.NEXT_PUBLIC_COLLECTIONS_LINK
-              }/${item.name.replace("'s", "")}`}
-            >
+            <Link href={`${COLLECTIONS_LINK}/${item.name.replace("'s", "")}`}>
               <button className="absolute bottom-4 left-2 rounded-full bg-white px-6 py-3 text-sm font-bold uppercase lg:left-4">
                 Shop {item.name}
               </button>

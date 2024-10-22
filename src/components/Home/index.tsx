@@ -2,16 +2,13 @@ import {
   FEATURED_POSTERS,
   PRODUCT_CATEGORIES,
   UPCOMING_POSTERS,
-} from "@/constants/fakeData";
+} from "@/constants/data";
 import Banner from "./Banner";
 import TrendingItemsSection from "./TrendingItemsSection";
 import PosterShop from "./PosterShop";
-import { ProductInfo } from "@/utils/types/common";
+import { ProductInfo } from "@/types/common";
 
 const Homepage = ({ listProducts }: { listProducts: ProductInfo[] }) => {
-  const listProductsLimit = listProducts?.slice(0, 10);
-  const productsRandom = listProductsLimit?.sort(() => Math.random() - 0.5);
-
   // Men products
   const listProductsMen = listProducts?.filter(
     (item) => item.category === "MEN",
@@ -29,7 +26,7 @@ const Homepage = ({ listProducts }: { listProducts: ProductInfo[] }) => {
         {/* Random 10 products */}
         <TrendingItemsSection
           type="products"
-          productsRandom={productsRandom}
+          productsRandom={listProducts}
           title="NEW SEASON + NEW DROPS = MORE PROGRESS"
         />
         {/* Featured post */}

@@ -8,10 +8,10 @@ const UsersContainer = async () => {
       email: true,
       username: true,
       name: true,
-      address: true,
       createdAt: true,
       updatedAt: true,
       role: true,
+      address: true,
     },
   });
   return <Users listUsers={listUsers} />;

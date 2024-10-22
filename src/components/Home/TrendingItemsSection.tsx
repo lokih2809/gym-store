@@ -5,8 +5,8 @@ import "swiper/css";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Post, ProductInfo } from "@/utils/types/common";
 import ListProducts from "../common/ListProducts";
+import { Post, ProductInfo } from "@/types/common";
 
 interface Props {
   type: "posts" | "products";
@@ -35,19 +35,19 @@ const TrendingItemsSection = ({
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -400, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -1000, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 400, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 1000, behavior: "smooth" });
     }
   };
 
   return (
     <>
-      <div className="relative w-screen space-y-4 py-8 pl-4 md:pl-8 lg:pl-12">
+      <div className="relative mr-4 w-screen space-y-4 py-8 pl-4 md:pl-8 lg:px-10">
         {/* Top */}
         <span className="text-2xl font-bold uppercase text-gray-500">
           {listFor}
@@ -59,7 +59,7 @@ const TrendingItemsSection = ({
         )}
 
         {/* Content */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between overflow-hidden">
           {posts ? (
             <div className="scrollbar-hide flex gap-2 overflow-x-scroll">
               {/* Categories filter */}

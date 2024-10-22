@@ -79,7 +79,7 @@ const CartItems = ({ cartItems }: Props) => {
             </div>
           </div>
 
-          <Button className="flex w-full items-center justify-center gap-4">
+          <Button className="mb-4 flex w-full items-center justify-center gap-4">
             <ShoppingBag />
             CHECKOUT SECURELY
           </Button>

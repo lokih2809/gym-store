@@ -1,6 +1,6 @@
 "use client";
 
-import { FOOTER_LINKS } from "@/constants/fakeData";
+import { FOOTER_LINKS } from "@/constants/data";
 import { Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import { PRODUCT_SIZES } from "@/constants/fakeData";
+import { PRODUCT_SIZES } from "@/constants/data";
 import { ProductInfo } from "@/types/common";
 import { ProductSize } from "@prisma/client";
 import Image from "next/image";

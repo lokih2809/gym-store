@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { HashLoader } from "react-spinners";
 import Image from "next/image";
 import { X } from "lucide-react";
-import { apiUpdateImages } from "@/lib/actions";
+import { apiUpdateImages } from "@/lib/actions/productActions";
 
 interface InputImagesProps {
   icon: React.ReactNode;
@@ -13,6 +13,7 @@ interface InputImagesProps {
   type: string;
   error?: string;
   onChange: (images: string[]) => void;
+  defaultImages?: string[];
 }
 
 const InputImages: React.FC<InputImagesProps> = ({
@@ -22,10 +23,10 @@ const InputImages: React.FC<InputImagesProps> = ({
   type,
   error,
   onChange,
+  defaultImages = [],
 }) => {
   const [loading, setLoading] = useState(false);
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-
+  const [imagesPreview, setImagesPreview] = useState<string[]>(defaultImages);
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const files = e.target.files;
@@ -70,7 +71,7 @@ const InputImages: React.FC<InputImagesProps> = ({
 
   return (
     <div>
-      <div className="mt-6 flex h-40 w-full flex-col gap-2 border-2 border-dashed border-blue-400">
+      <div className="mt-6 flex h-28 w-full flex-col gap-2 border-2 border-dashed border-blue-400">
         <label
           htmlFor={name}
           className="mt-4 flex cursor-pointer items-center justify-center text-xl"

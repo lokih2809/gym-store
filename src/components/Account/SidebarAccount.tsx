@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "../common/Button";
 import { User } from "next-auth";
-import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import LogOutButton from "./LogOutButton";
 import { ShieldCheck, User as UserIcon } from "lucide-react";

@@ -4,10 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
-import { PRODUCT_CATEGORIES } from "@/constants/fakeData";
+import { PRODUCT_CATEGORIES } from "@/constants/data";
 import UserOptions from "../UserOptions";
 import SearchDialog from "../SearchDialog";
 import Cart from "../Cart";
+import { COLLECTIONS_LINK } from "@/constants/common";
 
 const Navbar = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -56,9 +57,7 @@ const Navbar = () => {
             {PRODUCT_CATEGORIES.map((link) => (
               <Link
                 key={link.name}
-                href={`${
-                  process.env.NEXT_PUBLIC_COLLECTIONS_LINK
-                }/${link.name.replace("'s", "")}`}
+                href={`${COLLECTIONS_LINK}/${link.name.replace("'s", "")}`}
               >
                 {link.name.toUpperCase()}
               </Link>

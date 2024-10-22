@@ -5,6 +5,9 @@ import Button from "../common/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import CartItems from "./CartItems";
+import { PRODUCT_CATEGORIES } from "@/constants/data";
+import Link from "next/link";
+import { COLLECTIONS_LINK } from "@/constants/common";
 
 const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -58,9 +61,17 @@ const Cart = () => {
                 <span className="text-gray-400">
                   There are no products in your bag
                 </span>
-                <Button text="Shop men's" className="w-[40vw] lg:w-60" />
-                <Button text="Shop women's" className="w-[40vw] lg:w-60" />
-                <Button text="Shop accessories" className="w-[40vw] lg:w-60" />
+                {PRODUCT_CATEGORIES.map((i) => (
+                  <Link
+                    key={i.name}
+                    href={`${COLLECTIONS_LINK}/${i.name.replace("'s", "")}`}
+                  >
+                    <Button
+                      text={`Shop ${i.name}`}
+                      className="w-[40vw] lg:w-60"
+                    />
+                  </Link>
+                ))}
               </div>
             )}
           </div>

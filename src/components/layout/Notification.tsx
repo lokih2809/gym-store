@@ -1,6 +1,6 @@
 "use client";
 
-import { NOTIFICATION_MESSAGES } from "@/constants/fakeData";
+import { NOTIFICATION_MESSAGES } from "@/constants/data";
 import React, { useEffect, useState } from "react";
 
 type Props = {

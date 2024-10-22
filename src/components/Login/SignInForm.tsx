@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
+  identifier: z.string().min(1, "Email or Username is required"),
   password: z
     .string()
     .min(1, "Password is required")
@@ -29,7 +29,7 @@ const SignInForm = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      identifier: "",
       password: "",
     },
   });
@@ -40,15 +40,13 @@ const SignInForm = () => {
 
     const signInData = await signIn("credentials", {
       redirect: false,
-      email: values.email,
+      identifier: values.identifier,
       password: values.password,
     });
 
     if (signInData?.error) {
       console.error("Failed to sign in:", signInData.error);
-      setErrorMessage(
-        "Tài khoản hoặc mật khẩu không hợp lệ vui lòng kiểm tra lại",
-      );
+      setErrorMessage("Invalid account or password. Please check again.");
       setIsLoading(false);
     } else {
       router.refresh();
@@ -60,17 +58,17 @@ const SignInForm = () => {
     <>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="Email address"
-          name="email"
+          label="Email address or Username"
+          name="identifier"
           register={register}
-          error={errors.email?.message}
+          error={errors.identifier?.message}
         />
         <Input
           label="Password"
           name="password"
           type="password"
           register={register}
-          error={errors.password?.message}
+          error={errors.identifier?.message}
         />
 
         {errorMessage && <small className="text-red-500">{errorMessage}</small>}

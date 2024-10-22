@@ -1,8 +1,24 @@
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require("bcrypt"); // For password hashing
 
 const db = new PrismaClient();
 
 async function main() {
+  // Create an admin user
+  const hashedPassword = await bcrypt.hash("@Password123", 10); // Hashing the password
+
+  await db.user.create({
+    data: {
+      email: "admin@gymstore.com",
+      username: "admin",
+      password: hashedPassword,
+      name: "Admin User",
+      role: "ADMIN", // Admin role
+    },
+  });
+
+  console.log("Admin user created.");
+
   const products = [
     {
       name: "Men Gym T-Shirt",
@@ -15,7 +31,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: [
               "/Products/image1_black.webp",
               "/Products/image2_black.webp",
@@ -23,7 +38,6 @@ async function main() {
           },
           {
             colorName: "Gray",
-            colorHex: "#808080",
             images: [
               "/Products/image1_gray.webp",
               "/Products/image2_gray.webp",
@@ -43,7 +57,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: [
               "/Products/image1_black_leggings.webp",
               "/Products/image2_black_leggings.webp",
@@ -51,7 +64,6 @@ async function main() {
           },
           {
             colorName: "Blue",
-            colorHex: "#00F",
             images: [
               "/Products/image1_blue_leggings.webp",
               "/Products/image2_blue_leggings.webp",
@@ -71,7 +83,6 @@ async function main() {
         create: [
           {
             colorName: "Multi-color",
-            colorHex: "#FF0000",
             images: [
               "/Products/image1_resistance.webp",
               "/Products/image2_resistance.webp",
@@ -91,12 +102,10 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: ["/Products/image1_fitness_shorts.webp"],
           },
           {
             colorName: "Blue",
-            colorHex: "#0000FF",
             images: [
               "/Products/image2_fitness1_shorts.webp",
               "/Products/image2_fitness2_shorts.webp",
@@ -117,7 +126,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: [
               "/Products/image1_sports_bra1.webp",
               "/Products/image1_sports_bra2.webp",
@@ -126,7 +134,6 @@ async function main() {
           },
           {
             colorName: "Red",
-            colorHex: "#FF0000",
             images: [
               "/Products/image2_sports_bra1.webp",
               "/Products/image2_sports_bra2.webp",
@@ -147,7 +154,6 @@ async function main() {
         create: [
           {
             colorName: "Green",
-            colorHex: "#008000",
             images: [
               "/Products/image1_yoga1_mat.webp",
               "/Products/image1_yoga2_mat.jpg",
@@ -155,7 +161,6 @@ async function main() {
           },
           {
             colorName: "Blue",
-            colorHex: "#0000FF",
             images: ["/Products/image2_yoga1_mat.webp"],
           },
         ],
@@ -172,7 +177,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: ["/Products/image1_jump_rope.webp"],
           },
         ],
@@ -189,7 +193,6 @@ async function main() {
         create: [
           {
             colorName: "Gray",
-            colorHex: "#808080",
             images: [
               "/Products/image1_kettlebell1.webp",
               "/Products/image1_kettlebell2.webp",
@@ -210,7 +213,6 @@ async function main() {
         create: [
           {
             colorName: "Transparent",
-            colorHex: "#FFFFFF",
             images: [
               "/Products/image1_water1_bottle.webp",
               "/Products/image1_water2_bottle.webp",
@@ -219,7 +221,6 @@ async function main() {
           },
           {
             colorName: "Blue",
-            colorHex: "#0000FF",
             images: [
               "/Products/image2_water1_bottle.webp",
               "/Products/image2_water2_bottle.webp",
@@ -240,7 +241,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: [
               "/Products/image1_gym1_backpack.jpg",
               "/Products/image1_gym2_backpack.jpg",
@@ -250,7 +250,6 @@ async function main() {
           },
           {
             colorName: "White",
-            colorHex: "#FFFFFF",
             images: [
               "/Products/image2_gym1_backpack.jpg",
               "/Products/image2_gym2_backpack.jpg",
@@ -270,7 +269,6 @@ async function main() {
         create: [
           {
             colorName: "Black",
-            colorHex: "#000000",
             images: [
               "/Products/image1_training1_gloves.webp",
               "/Products/image1_training2_gloves.webp",
@@ -291,7 +289,6 @@ async function main() {
         create: [
           {
             colorName: "Blue",
-            colorHex: "#0000FF",
             images: ["/Products/image1_foam_roller.webp"],
           },
         ],

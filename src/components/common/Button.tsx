@@ -22,6 +22,7 @@ const Button = ({
       className={`${className} rounded-full bg-black py-3 text-center text-sm font-bold uppercase text-white ${disabled && "opacity-80"}`}
       type={type}
       disabled={disabled}
+      onClick={onClick}
     >
       {text || children}
     </button>

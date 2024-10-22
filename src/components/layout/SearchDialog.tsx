@@ -4,11 +4,14 @@ import { ChevronLeft, Heart, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
 import SearchBox from "./SearchBox";
 import { useEffect, useRef, useState } from "react";
-import { ProductInfo } from "@/utils/types/common";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "next/image";
 import { BeatLoader, ClipLoader } from "react-spinners";
-import { KEYWORD_SEARCH } from "@/constants/fakeData";
+import { KEYWORD_SEARCH } from "@/constants/data";
+import { searchProducts } from "@/lib/actions/productActions";
+import { ProductColor } from "@prisma/client";
+import { ListProducts, ProductInfo } from "@/types/common";
+import { PRODUCT_LINK } from "@/constants/common";
 
 type Props = {
   setIsDialogOpen: (value: boolean) => void;
@@ -16,7 +19,7 @@ type Props = {
 
 const SearchDialog = ({ setIsDialogOpen }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [searchResult, setSearchResult] = useState<ProductInfo[] | []>([]);
+  const [searchResult, setSearchResult] = useState<ProductInfo[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -64,18 +67,18 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
       return;
     }
 
-    const fetchApi = async () => {
+    const fetchProducts = async () => {
       try {
-        const response = await fetch(`/api/search?query=${debouncedValue}`);
-        const result = await response.json();
-        setSearchResult(result);
+        const products = await searchProducts(debouncedValue);
+        setSearchResult(products);
       } catch (error) {
         console.error(error);
+        setSearchResult([]);
       }
       setLoading(false);
     };
 
-    fetchApi();
+    fetchProducts();
   }, [debouncedValue]);
 
   return (
@@ -188,22 +191,24 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
 
                         {/* Information */}
                         <Link
-                          href={`${process.env.NEXT_PUBLIC_PRODUCT_LINK}/${product.id}`}
+                          href={`${PRODUCT_LINK}/${product.id}`}
                           className="flex flex-col py-2 text-sm"
                           onClick={() => setIsDialogOpen(false)}
                         >
                           <span className="font-bold">{product.name}</span>
                           <span>
                             {searchResult.length > 0 &&
-                              product.colors.map((color, index) => (
-                                <span
-                                  key={color.colorName}
-                                  className="text-gray-500"
-                                >
-                                  {color.colorName}{" "}
-                                  {index < product.colors.length - 1 && "/ "}
-                                </span>
-                              ))}
+                              product.colors.map(
+                                (color: ProductColor, index: number) => (
+                                  <span
+                                    key={color.colorName}
+                                    className="text-gray-500"
+                                  >
+                                    {color.colorName}{" "}
+                                    {index < product.colors.length - 1 && "/ "}
+                                  </span>
+                                ),
+                              )}
                           </span>
                           <b className="text-red-500">US$ {product.price}</b>
                         </Link>

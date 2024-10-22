@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import Swal from "sweetalert2";
+import { createUser } from "@/lib/actions/authActions";
 
 const FormSchema = z
   .object({
@@ -32,38 +33,31 @@ const SignUpForm = ({ setAuthMode }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
   });
 
-  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+  const onSubmit: SubmitHandler<FormValues> = async (values: any) => {
     setIsLoading(true);
-    const response = await fetch("/api/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
 
-    if (response.ok) {
+    const response = await createUser(values);
+
+    if (response.status === "success") {
       setIsLoading(false);
       Swal.fire({
         icon: "success",
         title: "Thành công",
-        text: "Đăng ký tài khoản thành công, vui lòng đăng nhập",
+        text: response.message,
         confirmButtonText: "OK",
       }).then(() => {
         setAuthMode("login");
       });
     } else {
-      const { message } = await response.json();
       setIsLoading(false);
       Swal.fire({
         icon: "error",
         title: "Lỗi",
-        text: message,
+        text: response.message || "Có lỗi xảy ra trong quá trình tạo tài khoản",
         confirmButtonText: "OK",
       });
     }

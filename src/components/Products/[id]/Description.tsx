@@ -1,4 +1,4 @@
-import { ProductInfo } from "@/utils/types/common";
+import { ProductInfo } from "@/types/common";
 import { ChevronRight, X } from "lucide-react";
 import React, { useState } from "react";
 
@@ -53,9 +53,9 @@ const Description = ({ productInfo }: { productInfo: ProductInfo }) => {
                   </span>
                   <ul className="list-disc px-8">
                     {productInfo?.description
-                      ?.split(".")
+                      ?.split("-")
                       .slice(0, -1)
-                      .map((desc) => <li key={desc}>{desc}</li>)}
+                      .map((desc: string) => <li key={desc}>{desc}</li>)}
                   </ul>
 
                   <b>SIZE & FIT</b>

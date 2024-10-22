@@ -20,7 +20,7 @@ const Select = ({
   label,
 }: Props) => {
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-2 ${className}`}>
       <label htmlFor={name} className="text-sm font-semibold capitalize">
         {label}
         {required && <span className="text-red-500"> *</span>}

@@ -14,7 +14,7 @@ const SizeSelector = ({ sizes, className }: Props) => {
   return (
     <div className={`flex flex-col ${className}`}>
       <p className="text-sm font-bold">Select Size:</p>
-      <div className="flex items-center gap-8 py-2">
+      <div className="flex flex-wrap items-center gap-8 py-2">
         {sizes.map((size) => (
           <label
             key={size}

@@ -1,4 +1,4 @@
-import { FOOTER_INFORMATION } from "@/constants/fakeData";
+import { FOOTER_INFORMATION } from "@/constants/data";
 import { usePathname } from "next/navigation";
 import React from "react";
 

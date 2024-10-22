@@ -1,11 +1,14 @@
 "use client";
 
+import { addToCart } from "@/app/redux/slices/cartSlice";
+import { PRODUCT_LINK } from "@/constants/common";
 import { ProductInfo } from "@/types/common";
 import { Heart, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 type Props = {
   forHomepage?: boolean;
@@ -13,7 +16,31 @@ type Props = {
 };
 
 const ListProducts = ({ forHomepage, listProducts }: Props) => {
+  const dispatch = useDispatch();
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+
+  const handleAddToCart = (
+    id: number,
+    name: string,
+    price: number,
+    size: string,
+    color: string,
+    fit: string,
+    image: string,
+  ) => {
+    dispatch(
+      addToCart({
+        id,
+        name,
+        price,
+        size,
+        color,
+        fit,
+        image,
+        quantity: 1,
+      }),
+    );
+  };
 
   if (!listProducts) return notFound();
 
@@ -45,7 +72,23 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
                 />
               )}
               <div className="absolute left-2 top-2 z-10 rounded-full bg-white p-1">
-                <ShoppingBag size={20} />
+                <ShoppingBag
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    handleAddToCart(
+                      product.id,
+                      product.name,
+                      product.price,
+                      product.productSizes.length > 0
+                        ? product.productSizes[0].size
+                        : "",
+                      product.colors[0].colorName,
+                      product.fit,
+                      product.colors[0].images[0],
+                    )
+                  }
+                />
               </div>
               <div className="absolute right-2 top-2 z-10 rounded-full bg-white p-1">
                 <Heart size={20} />
@@ -54,7 +97,7 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
 
             {/* Desc product */}
             <Link
-              href={`${process.env.NEXT_PUBLIC_PRODUCT_LINK}/${product.id}`}
+              href={`${PRODUCT_LINK}/${product.id}`}
               className="flex flex-col py-2 text-sm"
             >
               <span className="font-bold">{product.name}</span>

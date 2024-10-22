@@ -1,23 +1,20 @@
 "use client";
 
-import Button from "@/components/common/Button";
 import SearchBoxDashboard from "../SearchBoxDashboard";
-import Link from "next/link";
-import { User } from "@prisma/client";
 import { useState } from "react";
-import db from "@/lib/client";
-import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import { deleteUser } from "@/lib/actions";
-import EditUser from "./EditUser";
 import {
   formatDate,
   getFilteredAndPaginatedData,
   handleDelete,
 } from "@/utils/utils";
+import { UserWithoutPassword } from "@/types/common";
+import { ADMIN_MAIL } from "@/constants/common";
+import CreateAccountForm from "./CreateAccountForm";
+import EditAccountForm from "./EditAccountForm";
 
 interface Props {
-  listUsers: Omit<User, "password">[];
+  listUsers: UserWithoutPassword[];
 }
 
 const Users = ({ listUsers }: Props) => {
@@ -45,10 +42,7 @@ const Users = ({ listUsers }: Props) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
-          <Button className="bg-purple-600 px-4 py-2 text-white hover:bg-opacity-60">
-            <Link href={"/dashboard/users/add"}>Add new</Link>
-          </Button>
+          <CreateAccountForm />
         </div>
 
         {/* Content */}
@@ -82,7 +76,7 @@ const Users = ({ listUsers }: Props) => {
                   <tr className="border-b text-white" key={user.id}>
                     <th
                       scope="row"
-                      className={`whitespace-nowrap px-6 py-4 font-medium ${user.email === process.env.NEXT_PUBLIC_MAIL_ADMIN && "text-red-500"}`}
+                      className={`whitespace-nowrap px-6 py-4 font-medium ${user.email === ADMIN_MAIL && "text-red-500"}`}
                     >
                       {user.email}
                     </th>
@@ -92,9 +86,9 @@ const Users = ({ listUsers }: Props) => {
                     <td className="px-6 py-4">{user.role}</td>
 
                     <td
-                      className={`flex gap-2 px-6 py-4 ${user.email === process.env.NEXT_PUBLIC_MAIL_ADMIN && "hidden"}`}
+                      className={`flex gap-2 px-6 py-4 ${user.email === ADMIN_MAIL && "hidden"}`}
                     >
-                      <EditUser user={user} />
+                      <EditAccountForm user={user} />
                       <span>|</span>
                       <button
                         className="font-medium text-red-500 hover:underline"

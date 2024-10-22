@@ -3,12 +3,12 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import { updateUser } from "@/lib/actions";
+import { editUser } from "@/lib/actions/authActions";
+import { UserWithoutPassword } from "@/types/common";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "@prisma/client";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { z } from "zod";
@@ -17,73 +17,77 @@ const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
   username: z.string().min(1, "Username is required").max(100),
   name: z.string().min(1, "Name is required"),
-  address: z.string().optional(),
+  address: z.string().optional().nullable(),
   role: z.enum(["CUSTOMER", "ADMIN"]),
 });
 
-type FormValues = z.infer<typeof FormSchema>;
-
 interface Props {
-  user: Omit<User, "password">;
+  user: UserWithoutPassword;
 }
 
-const EditUser = ({ user }: Props) => {
+type FormValues = z.infer<typeof FormSchema>;
+
+const EditAccountForm = ({ user }: Props) => {
   const [show, setShow] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const router = useRouter();
 
-  const methods = useForm<FormValues>({ resolver: zodResolver(FormSchema) });
+  const methods = useForm<FormValues>({
+    defaultValues: {
+      email: user.email || "",
+      username: user.username || "",
+      name: user.name || "",
+      address: user.address || "",
+      role: user.role || "CUSTOMER",
+    },
+    resolver: zodResolver(FormSchema),
+  });
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = methods;
 
-  useEffect(() => {
-    setValue("email", user.email);
-    setValue("username", user.username);
-    setValue("name", user.name);
-    setValue("address", user.address);
-    setValue("role", user.role);
-  }, [user, setValue]);
-
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
-    const formData = new FormData();
+    setIsLoading(true);
 
+    const formData = new FormData();
     for (const [key, value] of Object.entries(values)) {
-      formData.append(key, value);
+      formData.append(key, value || "");
     }
 
-    try {
-      const response = await updateUser(user.id, formData);
+    const response = await editUser(user.id, formData);
+
+    setIsLoading(false);
+    if (response.status === "success") {
       Swal.fire({
         icon: "success",
         title: "Thành công",
-        text: "Cập nhật người dùng thành công !",
+        text: response.message || "Tạo tài khoản người dùng thành công.",
         confirmButtonText: "OK",
       }).then(() => {
         setShow(false);
         router.refresh();
       });
-    } catch (error) {
+    } else {
       Swal.fire({
         icon: "error",
         title: "Lỗi",
-        text: "Cập nhật thất bại.",
+        text: response.message || "Có lỗi xảy ra ! vui lòng thử lại sau",
         confirmButtonText: "OK",
-      }).then(() => {
-        setShow(false);
-        router.refresh();
       });
     }
   };
+
+  const handleClose = () => {};
 
   return (
     <div>
       {/* Button */}
       <button
-        className="font-medium text-blue-500 hover:underline"
+        className="text-blue-500 hover:underline"
         onClick={() => setShow(true)}
       >
         Edit
@@ -92,35 +96,39 @@ const EditUser = ({ user }: Props) => {
       {/* Edit box */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="absolute z-30 flex h-2/3 w-1/2 animate-slide-in flex-col rounded-lg bg-white text-black lg:animate-slide-in-right">
+          <div className="absolute z-30 flex w-1/2 animate-slide-in flex-col rounded-lg bg-white py-8 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
-              <span className="m-auto text-xl font-bold">Edit</span>
+              <span className="m-auto text-xl font-bold">Create</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
             </div>
 
-            <form className="px-8" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-8 px-8" onSubmit={handleSubmit(onSubmit)}>
               <Input
-                label="name"
-                name="name"
-                register={register}
-                error={errors.name?.message}
-              />
-              <Input
-                label="username"
-                name="username"
-                register={register}
-                error={errors.username?.message}
-              />
-              <Input
-                label="email"
+                label="Email"
+                placeholder="Email"
                 name="email"
                 register={register}
                 error={errors.email?.message}
               />
               <Input
-                label="address"
+                label="Username"
+                placeholder="Username"
+                name="username"
+                register={register}
+                error={errors.username?.message}
+              />
+              <Input
+                label="Name"
+                placeholder="Name"
+                name="name"
+                register={register}
+                error={errors.name?.message}
+              />
+              <Input
+                label="Address"
+                placeholder="Address"
                 name="address"
-                placeholder="hãy nhập địa chỉ"
+                register={register}
                 error={errors.address?.message}
               />
               <Select
@@ -128,10 +136,9 @@ const EditUser = ({ user }: Props) => {
                 label="Loại tài khoản"
                 name="role"
                 register={register}
-                className="w-2/5"
               />
-              <Button type="submit" className="mt-8 w-1/2">
-                Edit
+              <Button className="w-full" type="submit">
+                {isLoading ? "Editing..." : "Edit"}
               </Button>
             </form>
           </div>
@@ -141,4 +148,4 @@ const EditUser = ({ user }: Props) => {
   );
 };
 
-export default EditUser;
+export default EditAccountForm;

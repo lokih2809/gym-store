@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductInfo } from "@/utils/types/common";
+import { ProductInfo } from "@/types/common";
 import Image from "next/image";
 import React from "react";
 

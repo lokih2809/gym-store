@@ -3,7 +3,10 @@ import db from "@/lib/client";
 
 const HomepageContainer = async () => {
   const listProducts = await db.product.findMany({
-    take: 60,
+    take: 20,
+    orderBy: {
+      createdAt: "desc",
+    },
     include: {
       colors: true,
       productSizes: true,

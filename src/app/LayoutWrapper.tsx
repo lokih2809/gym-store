@@ -19,7 +19,7 @@ const LayoutWrapper = ({ children }: Props) => {
   const { data: session } = useSession();
 
   if (pathName.startsWith("/dashboard")) {
-    if (!session || session?.user.role !== "ADMIN") redirect("/");
+    if (session?.user.role !== "ADMIN") redirect("/");
     return (
       <>
         <div className="flex gap-4 px-4">

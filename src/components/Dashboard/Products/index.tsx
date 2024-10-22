@@ -11,11 +11,16 @@ import {
 } from "@/utils/utils";
 import { ProductColor } from "@prisma/client";
 import Image from "next/image";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, PlusCircle } from "lucide-react";
 import Swal from "sweetalert2";
-import { deleteColorProduct, deleteProduct } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { ProductInfo } from "@/types/common";
+import {
+  deleteColorProduct,
+  deleteProduct,
+} from "@/lib/actions/productActions";
+import EditProductColor from "./EditColor";
+import AddNewProduct from "./AddProduct";
 
 interface Props {
   listProducts: ProductInfo[];
@@ -108,9 +113,7 @@ const Products = ({ listProducts }: Props) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Button className="bg-purple-600 px-4 py-2 text-white hover:bg-opacity-60">
-            <Link href={"/dashboard/products/add"}>Add new</Link>
-          </Button>
+          <AddNewProduct />
         </div>
 
         {/* Content */}
@@ -182,7 +185,7 @@ const Products = ({ listProducts }: Props) => {
                   {expandedColors[product.id] && (
                     <tr>
                       <td colSpan={10}>
-                        <table className="mb-64 w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
+                        <table className="mb-40 w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
                           <thead className="text-xs uppercase text-white">
                             <tr>
                               <th scope="col" className="px-6 py-3">
@@ -217,10 +220,11 @@ const Products = ({ listProducts }: Props) => {
                                     />
                                   )}
                                 </td>
-                                <td className="space-x-2 px-6 py-4">
-                                  <button className="text-blue-500 hover:underline">
-                                    Edit
-                                  </button>
+                                <td className="flex gap-2 px-6 py-12">
+                                  <EditProductColor
+                                    product={product}
+                                    color={color}
+                                  />
                                   <span>|</span>
                                   <button
                                     className="text-red-500 hover:underline"
@@ -232,6 +236,12 @@ const Products = ({ listProducts }: Props) => {
                               </tr>
                             ))}
                           </tbody>
+                          <div className="flex justify-center py-4">
+                            <span className="flex cursor-pointer items-center gap-4 text-blue-500 hover:underline">
+                              Thêm màu
+                              <PlusCircle />
+                            </span>
+                          </div>
                         </table>
                       </td>
                     </tr>

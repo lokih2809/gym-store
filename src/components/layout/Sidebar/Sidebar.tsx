@@ -5,7 +5,7 @@ import {
   PRODUCT_CATEGORIES,
   ADDITIONAL_OPTIONS,
   RECOMMENDED_CATEGORIES,
-} from "@/constants/fakeData";
+} from "@/constants/data";
 import Image from "next/image";
 
 type Props = {

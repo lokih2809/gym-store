@@ -18,14 +18,13 @@ model Product {
   name         String
   description  String
   price        Float
-  sku          String
+  sku          String         @unique
   category     Category
   fit          String
   createdAt    DateTime       @default(now())
-  colors       ProductColor[]
+  colors       ProductColor[] @relation("ProductColors")
   productSizes ProductSize[]
 
-  cartItems  CartItem[]
   orderItems OrderItem[]
 }
 
@@ -33,9 +32,10 @@ model ProductColor {
   id        Int      @id @default(autoincrement())
   productId Int
   colorName String
-  colorHex  String
   images    String[]
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation("ProductColors", fields: [productId], references: [id])
+
+  @@unique([productId, colorName])
 }
 
 model ProductSize {
@@ -51,11 +51,10 @@ model User {
   username  String   @unique
   password  String
   name      String
-  address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   role      Role     @default(CUSTOMER)
-  carts     Cart[]
+  address   String?
   orders    Order[]
 }
 
@@ -64,31 +63,22 @@ enum Role {
   ADMIN
 }
 
-model Cart {
-  id        Int        @id @default(autoincrement())
-  userId    Int
-  user      User       @relation(fields: [userId], references: [id])
-  cartItems CartItem[]
-}
-
-model CartItem {
-  id        Int     @id @default(autoincrement())
-  cartId    Int
-  productId Int
-  quantity  Int
-  cart      Cart    @relation(fields: [cartId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-
 model Order {
-  id                Int             @id @default(autoincrement())
-  userId            Int
-  shippingAddressId Int
-  totalPrice        Float
-  createdAt         DateTime        @default(now())
-  user              User            @relation(fields: [userId], references: [id])
-  shippingAddress   ShippingAddress @relation(fields: [shippingAddressId], references: [id])
-  orderItems        OrderItem[]
+  id           Int         @id @default(autoincrement())
+  userId       Int
+  totalPrice   Float
+  addressOrder String
+  createdAt    DateTime    @default(now())
+  user         User        @relation(fields: [userId], references: [id])
+  orderItems   OrderItem[]
+  status       Status
+}
+
+enum Status {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELED
 }
 
 model OrderItem {
@@ -98,10 +88,4 @@ model OrderItem {
   quantity  Int
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
-}
-
-model ShippingAddress {
-  id      Int     @id @default(autoincrement())
-  address String
-  orders  Order[]
 }

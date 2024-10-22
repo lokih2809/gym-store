@@ -1,4 +1,5 @@
-import { deleteProduct, deleteUser } from "@/lib/actions";
+import { deleteUser } from "@/lib/actions/authActions";
+import { deleteProduct } from "@/lib/actions/productActions";
 import Swal from "sweetalert2";
 
 // Format date
