@@ -1,3 +1,5 @@
+import { PaymentMethodEnum } from "@/types/common";
+
 export const KEYWORD_SEARCH = [
   "t shirt",
   "short",
@@ -353,5 +355,24 @@ export const UPCOMING_POSTERS = [
     image: "/Upcoming Posters/futureApps2.avif",
     tag: "apps",
     more: "Ứng dụng tập luyện Gymshark",
+  },
+];
+
+export const PAYMENT_METHOD = [
+  {
+    name: PaymentMethodEnum.SHIPCOD,
+    logo: "/Logo-ShipCod.png",
+  },
+  {
+    name: PaymentMethodEnum.VNPAY,
+    logo: "/Logo-VnPay.webp",
+  },
+  {
+    name: PaymentMethodEnum.MOMO,
+    logo: "/Logo-Momo.png",
+  },
+  {
+    name: PaymentMethodEnum.GPAY,
+    logo: "/Logo-Gpay.webp",
   },
 ];

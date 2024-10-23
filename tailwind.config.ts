@@ -17,7 +17,11 @@ const config: Config = {
         Montserrat: ["Montserrat", "sans-serif"],
       },
       keyframes: {
-        slideIn: {
+        slideInTop: {
+          "0%": { transform: "translateY(-80%)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        slideInBottom: {
           "0%": { transform: "translateY(80%)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
@@ -31,7 +35,8 @@ const config: Config = {
         },
       },
       animation: {
-        "slide-in": "slideIn 0.5s ease-in-out forwards",
+        "slide-in-top": "slideInTop 0.5s ease-in-out forwards",
+        "slide-in-bottom": "slideInBottom 0.5s ease-in-out forwards",
         "slide-in-left": "slideInLeft 0.5s ease-in-out forwards",
         "slide-in-right": "slideInRight 0.5s ease-in-out forwards",
       },

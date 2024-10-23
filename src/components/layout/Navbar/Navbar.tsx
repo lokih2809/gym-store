@@ -5,10 +5,10 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
-import UserOptions from "../UserOptions";
-import SearchDialog from "../SearchDialog";
-import Cart from "../Cart";
-import { COLLECTIONS_LINK } from "@/constants/common";
+import UserOptions from "./UserOptions";
+import { COLLECTIONS_LINK, LOGO_1 } from "@/constants/common";
+import Cart from "./Cart/Cart";
+import SearchDialog from "./SearchDialog";
 
 const Navbar = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -46,7 +46,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link href={"/"}>
             <Image
-              src="/logo.png"
+              src={LOGO_1}
               alt="logo"
               width={44}
               height={36}

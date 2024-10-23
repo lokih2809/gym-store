@@ -16,12 +16,13 @@ const userSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must have more than 8 characters"),
   name: z.string().min(1, "Name is required"),
+  phoneNumber: z.string().optional(),
   address: z.string().nullable().optional(),
-  role: z.enum(["CUSTOMER", "ADMIN"]),
+  role: z.enum(["CUSTOMER", "ADMIN"]).optional(),
 });
 
 export const createUser = async (formData: FormData) => {
-  const { email, username, password, name, address, role } =
+  const { email, username, password, name, phoneNumber, address, role } =
     userSchema.parse(formData);
 
   try {
@@ -56,11 +57,10 @@ export const createUser = async (formData: FormData) => {
         password: hashedPassword,
         name,
         address: address || null,
+        phoneNumber: phoneNumber || null,
         role: role ? role : "CUSTOMER",
       },
     });
-
-    console.log(newUser);
 
     return {
       status: "success",

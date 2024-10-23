@@ -56,12 +56,16 @@ const SidebarAccount = ({ user }: Props) => {
 
           <div className="flex flex-col gap-2 bg-gray-100 p-4">
             <span className="font-bold uppercase">Return</span>
-            <Button className="">Return an item</Button>
+            <Button className="" isPrimary>
+              Return an item
+            </Button>
           </div>
 
           <div className="flex flex-col gap-2 bg-gray-100 p-4">
             <span className="font-bold uppercase">Refer a friend</span>
-            <Button className="">Visit your dashboard</Button>
+            <Button className="" isPrimary>
+              Visit your dashboard
+            </Button>
           </div>
         </div>
 

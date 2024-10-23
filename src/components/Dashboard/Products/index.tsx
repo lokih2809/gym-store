@@ -254,21 +254,21 @@ const Products = ({ listProducts }: Props) => {
 
         {/* Bottom */}
         <div className="flex items-center justify-between">
-          <button
+          <Button
             className="w-20 bg-white p-1 text-black"
             disabled={currentPage === 1}
             onClick={previousPage}
           >
             Previous
-          </button>
+          </Button>
           <small>{currentPage}</small>
-          <button
+          <Button
             className="w-20 bg-white p-1 text-black"
             disabled={currentPage === totalPages}
             onClick={nextPage}
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
     </>

@@ -35,3 +35,10 @@ export type UserWithoutPassword = {
   role: Role;
   address: string | null;
 };
+
+export enum PaymentMethodEnum {
+  SHIPCOD = "SHIPCOD",
+  VNPAY = "VNPAY",
+  MOMO = "MOMO",
+  GPAY = "GPAY",
+}

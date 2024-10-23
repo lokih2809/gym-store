@@ -14,6 +14,8 @@ import React from "react";
 import MenuLink from "./MenuLink";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import { LOGO_2 } from "@/constants/common";
+import Link from "next/link";
 
 const menuItems = [
   {
@@ -82,18 +84,11 @@ const DashboardSidebar = () => {
   return (
     <div className="w-2/12">
       {/* Top */}
-      <div className="flex items-center gap-4 py-6">
-        <Image
-          src={"/avatar.png"}
-          alt=""
-          width={40}
-          height={40}
-          className="size-10 object-cover"
-        />
-        <div className="flex flex-col">
-          <b>Lok1</b>
-          <span>Administrator</span>
-        </div>
+      <div className="flex flex-col gap-4 py-6">
+        <Link href={"/"} className="relative h-8 w-40">
+          <Image fill src={LOGO_2} alt="" className="object-contain" />
+        </Link>
+        <span className="px-2 text-blue-500 underline">Administrator</span>
       </div>
 
       {/* Content */}

@@ -7,6 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Product
+
 enum Category {
   MEN
   WOMEN
@@ -45,33 +47,40 @@ model ProductSize {
   product   Product @relation(fields: [productId], references: [id])
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(CUSTOMER)
-  address   String?
-  orders    Order[]
-}
+// User
 
 enum Role {
   CUSTOMER
   ADMIN
 }
 
-model Order {
-  id           Int         @id @default(autoincrement())
-  userId       Int
-  totalPrice   Float
-  addressOrder String
-  createdAt    DateTime    @default(now())
-  user         User        @relation(fields: [userId], references: [id])
-  orderItems   OrderItem[]
-  status       Status
+model User {
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  username    String   @unique
+  password    String
+  name        String?
+  phoneNumber String?
+  address     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  role        Role     @default(CUSTOMER)
+  orders      Order[]
+}
+
+// Order
+
+enum PaymentMethod {
+  SHIPCOD
+  VNPAY
+  MOMO
+  GPAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }
 
 enum Status {
@@ -79,6 +88,20 @@ enum Status {
   PROCESSING
   COMPLETED
   CANCELED
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  totalPrice    Float
+  addressOrder  String
+  phoneNumber   String
+  paymentMethod PaymentMethod
+  paymentStatus PaymentStatus
+  status        Status
+  createdAt     DateTime      @default(now())
+  user          User          @relation(fields: [userId], references: [id])
+  orderItems    OrderItem[]
 }
 
 model OrderItem {

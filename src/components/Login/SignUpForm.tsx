@@ -98,7 +98,7 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           register={register}
           error={errors.confirmPassword?.message}
         />
-        <Button type="submit">
+        <Button type="submit" isPrimary>
           {isLoading ? "Creating..." : "Create account"}
         </Button>
       </form>

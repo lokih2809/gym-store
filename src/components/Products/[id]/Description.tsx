@@ -31,7 +31,7 @@ const Description = ({ productInfo }: { productInfo: ProductInfo }) => {
           {showDesc && (
             <div>
               <div className="fixed bottom-0 left-0 right-0 top-0 z-10 bg-black opacity-40"></div>
-              <div className="fixed bottom-0 left-0 right-0 top-[20%] z-20 transform animate-slide-in rounded-t-lg bg-white lg:left-[60%] lg:top-0 lg:animate-slide-in-right">
+              <div className="animate-slide-in-bottom fixed bottom-0 left-0 right-0 top-[20%] z-20 transform rounded-t-lg bg-white lg:left-[60%] lg:top-0 lg:animate-slide-in-right">
                 {/* Top */}
                 <div className="flex items-center justify-between p-4 lg:py-10">
                   <span className="mx-auto font-bold uppercase lg:text-xl">

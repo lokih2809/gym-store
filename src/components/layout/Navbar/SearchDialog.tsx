@@ -2,7 +2,6 @@
 
 import { ChevronLeft, Heart, TrendingUp, X } from "lucide-react";
 import Link from "next/link";
-import SearchBox from "./SearchBox";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "next/image";
@@ -12,6 +11,7 @@ import { searchProducts } from "@/lib/actions/productActions";
 import { ProductColor } from "@prisma/client";
 import { ListProducts, ProductInfo } from "@/types/common";
 import { PRODUCT_LINK } from "@/constants/common";
+import SearchBox from "./SearchBox";
 
 type Props = {
   setIsDialogOpen: (value: boolean) => void;

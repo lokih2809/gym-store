@@ -147,7 +147,7 @@ const EditProductColor = ({ product, color }: Props) => {
       {/* Edit form */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="absolute z-30 flex h-[90%] w-[90%] animate-slide-in flex-col rounded-lg bg-white px-4 text-black lg:animate-slide-in-right">
+          <div className="animate-slide-in-bottom absolute z-30 flex h-[90%] w-[90%] flex-col rounded-lg bg-white px-4 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Edit</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
@@ -236,7 +236,7 @@ const EditProductColor = ({ product, color }: Props) => {
                     />
                   )}
                 />
-                <Button className="w-1/3" type="submit">
+                <Button className="w-1/3" type="submit" isPrimary>
                   {isLoading ? "Updating..." : "Update"}
                 </Button>
               </form>

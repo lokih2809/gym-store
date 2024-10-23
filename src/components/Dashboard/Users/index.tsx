@@ -12,6 +12,7 @@ import { UserWithoutPassword } from "@/types/common";
 import { ADMIN_MAIL } from "@/constants/common";
 import CreateAccountForm from "./CreateAccountForm";
 import EditAccountForm from "./EditAccountForm";
+import Button from "@/components/common/Button";
 
 interface Props {
   listUsers: UserWithoutPassword[];
@@ -106,21 +107,21 @@ const Users = ({ listUsers }: Props) => {
 
         {/* Bottom */}
         <div className="flex items-center justify-between">
-          <button
+          <Button
             className="w-20 bg-white p-1 text-black"
             disabled={currentPage === 1}
             onClick={previousPage}
           >
             Previous
-          </button>
+          </Button>
           <small>{currentPage}</small>
-          <button
+          <Button
             className="w-20 bg-white p-1 text-black"
             disabled={currentPage === totalPages}
             onClick={nextPage}
           >
             Next
-          </button>
+          </Button>
         </div>
       </div>
     </>

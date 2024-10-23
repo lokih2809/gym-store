@@ -1,30 +1,31 @@
-import React from "react";
+import Image from "next/image";
+import React, { ReactNode } from "react";
 
 type Props = {
-  text?: string;
+  children?: ReactNode;
   className?: string;
-  children?: React.ReactNode;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  isPrimary?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };
 
 const Button = ({
-  text,
-  className,
   children,
+  className,
   type,
-  onClick,
   disabled = false,
+  isPrimary = false,
+  onClick,
 }: Props) => {
   return (
     <button
-      className={`${className} rounded-full bg-black py-3 text-center text-sm font-bold uppercase text-white ${disabled && "opacity-80"}`}
+      className={`flex cursor-pointer items-center justify-center rounded-full text-sm font-bold uppercase ${className} ${isPrimary && "bg-black py-3 text-white"} ${disabled && "cursor-default opacity-80"}`}
       type={type}
       disabled={disabled}
       onClick={onClick}
     >
-      {text || children}
+      {children}
     </button>
   );
 };

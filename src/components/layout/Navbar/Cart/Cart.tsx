@@ -1,13 +1,13 @@
 import { ShoppingCart, X } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
-import Button from "../common/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import CartItems from "./CartItems";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
 import Link from "next/link";
 import { COLLECTIONS_LINK } from "@/constants/common";
+import CartItems from "./CartItems";
+import Button from "@/components/common/Button";
 
 const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -33,7 +33,7 @@ const Cart = () => {
       <div
         className={`fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-25 ${!isCartOpen && "hidden"}`}
       >
-        <div className="fixed bottom-0 left-0 right-0 top-[10%] z-30 flex animate-slide-in flex-col rounded-t-lg bg-white lg:left-3/4 lg:top-0 lg:animate-slide-in-right">
+        <div className="animate-slide-in-bottom fixed bottom-0 left-0 right-0 top-[10%] z-30 flex flex-col rounded-t-lg bg-white lg:left-3/4 lg:top-0 lg:animate-slide-in-right">
           {/* Top */}
           <div className="flex items-center p-8">
             <b className="mx-auto uppercase">Your bag</b>
@@ -66,10 +66,9 @@ const Cart = () => {
                     key={i.name}
                     href={`${COLLECTIONS_LINK}/${i.name.replace("'s", "")}`}
                   >
-                    <Button
-                      text={`Shop ${i.name}`}
-                      className="w-[40vw] lg:w-60"
-                    />
+                    <Button className="w-[40vw] lg:w-60" isPrimary>
+                      Shop {i.name}
+                    </Button>
                   </Link>
                 ))}
               </div>

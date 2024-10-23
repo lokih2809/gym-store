@@ -1,8 +1,10 @@
 import { CartItemProps, removeFromCart } from "@/app/redux/slices/cartSlice";
-import { Heart, ShoppingBag, Trash2 } from "lucide-react";
+import Button from "@/components/common/Button";
+import { calculateTotal } from "@/utils/utils";
+import { Heart, Router, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
-import Button from "../common/Button";
 import { useDispatch } from "react-redux";
 
 interface Props {
@@ -10,16 +12,11 @@ interface Props {
 }
 
 const CartItems = ({ cartItems }: Props) => {
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const handleRemove = (payload: number) => {
     dispatch(removeFromCart(payload));
-  };
-
-  const calculateTotal = (items: CartItemProps[]): number => {
-    return items.reduce((total, item) => {
-      return total + item.price * item.quantity;
-    }, 0);
   };
 
   return (
@@ -79,10 +76,16 @@ const CartItems = ({ cartItems }: Props) => {
             </div>
           </div>
 
-          <Button className="mb-4 flex w-full items-center justify-center gap-4">
-            <ShoppingBag />
-            CHECKOUT SECURELY
-          </Button>
+          <div className="mb-4 flex items-center justify-center px-8">
+            <Button
+              className="w-full gap-4"
+              onClick={() => router.push("/checkout")}
+              isPrimary
+            >
+              <ShoppingBag />
+              CHECKOUT SECURELY
+            </Button>
+          </div>
         </div>
       </div>
     </>

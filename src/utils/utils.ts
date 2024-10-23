@@ -1,3 +1,4 @@
+import { CartItemProps } from "@/app/redux/slices/cartSlice";
 import { deleteUser } from "@/lib/actions/authActions";
 import { deleteProduct } from "@/lib/actions/productActions";
 import Swal from "sweetalert2";
@@ -96,4 +97,10 @@ export const handleDelete = async (
       confirmButtonText: "OK",
     });
   }
+};
+
+export const calculateTotal = (items: CartItemProps[]): number => {
+  return items.reduce((total, item) => {
+    return total + item.price * item.quantity;
+  }, 0);
 };

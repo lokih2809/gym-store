@@ -49,8 +49,11 @@ const SignInForm = () => {
       setErrorMessage("Invalid account or password. Please check again.");
       setIsLoading(false);
     } else {
+      const redirectUrl = new URLSearchParams(window.location.search).get(
+        "redirect",
+      );
       router.refresh();
-      router.push("/account");
+      router.push(redirectUrl || "/account");
     }
   };
 
@@ -76,7 +79,7 @@ const SignInForm = () => {
         <span className="text-center font-bold underline">
           Forgot password?
         </span>
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" disabled={isLoading} isPrimary>
           {isLoading ? "Loading ..." : "Login"}
         </Button>
       </form>
