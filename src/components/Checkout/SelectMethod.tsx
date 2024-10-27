@@ -25,6 +25,7 @@ const SelectMethod = ({ methods, register, name }: Props) => {
             {...register(name)}
             className="mr-2"
           />
+          {/* <span>{method.name}</span> */}
           <Image
             src={method.logo}
             alt={method.name}

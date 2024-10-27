@@ -1,25 +1,18 @@
+// types/next-auth.d.ts
 import { Role } from "@prisma/client";
 import NextAuth from "next-auth";
 
 declare module "next-auth" {
-  interface User {
+  export interface User {
+    id: number;
     username: string;
-    phoneNumber: string?;
-    address: string?;
+    phoneNumber?: string;
+    address?: string;
     role: Role;
   }
+
   interface Session {
-    user: User & {
-      username: string;
-      phoneNumber: string?;
-      address: string?;
-      role: Role;
-    };
-    token: {
-      username: string;
-      phoneNumber: string?;
-      address: string?;
-      role: Role;
-    };
+    user: User;
+    expires: string;
   }
 }

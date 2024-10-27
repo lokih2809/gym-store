@@ -99,6 +99,7 @@ model Order {
   paymentMethod PaymentMethod
   paymentStatus PaymentStatus
   status        Status
+  transactionId String        @unique
   createdAt     DateTime      @default(now())
   user          User          @relation(fields: [userId], references: [id])
   orderItems    OrderItem[]

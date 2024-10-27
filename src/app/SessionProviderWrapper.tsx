@@ -1,22 +1,14 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { ReactNode, useEffect, useState } from "react";
-import { getSession } from "next-auth/react";
-import { Session } from "next-auth"; 
+import { ReactNode } from "react";
+import { useInitSession } from "@/hooks/useInitSession"; // Đảm bảo import đúng hook
 
 const SessionProviderWrapper = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null); 
+  // Gọi hook khởi tạo session và lưu vào Redux
+  useInitSession();
 
-  useEffect(() => {
-    const fetchSession = async () => {
-      const session = await getSession();
-      setSession(session); 
-    };
-    fetchSession();
-  }, []);
-
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+  return <SessionProvider>{children}</SessionProvider>;
 };
 
 export default SessionProviderWrapper;

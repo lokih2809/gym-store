@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FEATURED_POSTERS,
   PRODUCT_CATEGORIES,

@@ -5,9 +5,10 @@ import React from "react";
 
 type Props = {
   cartItems: CartItemProps[];
+  total: string;
 };
 
-const CartSummary = ({ cartItems }: Props) => {
+const CartSummary = ({ cartItems, total }: Props) => {
   return (
     <>
       <div className="space-y-6 lg:w-2/3">
@@ -48,11 +49,11 @@ const CartSummary = ({ cartItems }: Props) => {
               Subtotal * {cartItems.length}
               {cartItems.length < 2 ? "item" : "items"}
             </span>
-            <span>${calculateTotal(cartItems).toFixed(2)}</span>
+            <span>${total}</span>
           </div>
           <div className="flex justify-between font-bold">
             <span>Total</span>
-            <span>usd ${calculateTotal(cartItems).toFixed(2)}</span>
+            <span>usd ${total}</span>
           </div>
         </div>
       </div>

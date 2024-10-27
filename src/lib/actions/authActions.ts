@@ -181,3 +181,16 @@ export const editUser = async (id: number, formData: FormData) => {
     };
   }
 };
+
+export const findUserWithEmail = async (email: string) => {
+  try {
+    const user = await db.user.findFirst({
+      where: {
+        email,
+      },
+    });
+    return { user };
+  } catch (error) {
+    console.log(error);
+  }
+};

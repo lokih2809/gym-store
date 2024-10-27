@@ -4,7 +4,7 @@ import OrderHistory from "./OrderHistory";
 import { User } from "next-auth";
 
 interface Props {
-  user: User;
+  user: User | null;
 }
 
 const Account = ({ user }: Props) => {

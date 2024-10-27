@@ -7,7 +7,7 @@ import { ShieldCheck, User as UserIcon } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
-  user?: User;
+  user: User | null;
 }
 
 const SidebarAccount = ({ user }: Props) => {

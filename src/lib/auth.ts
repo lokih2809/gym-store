@@ -1,3 +1,4 @@
+// auth.ts
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -49,8 +50,8 @@ export const authOptions: NextAuthOptions = {
           username: existingUser.username,
           email: existingUser.email,
           role: existingUser.role,
-          phoneNumber: existingUser.phoneNumber,
-          address: existingUser.address,
+          phoneNumber: existingUser.phoneNumber ?? undefined,
+          address: existingUser.address ?? undefined,
         };
       },
     }),
@@ -60,6 +61,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
+          id: user.id,
           username: user.username,
           role: user.role,
           phoneNumber: user.phoneNumber,
@@ -68,11 +70,13 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+
     async session({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
+          id: token.id,
           username: token.username,
           role: token.role,
           phoneNumber: token.phoneNumber,
