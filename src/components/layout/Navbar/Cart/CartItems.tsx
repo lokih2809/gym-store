@@ -21,7 +21,7 @@ const CartItems = ({ cartItems }: Props) => {
 
   return (
     <>
-      <div className="flex h-[90vh] flex-col">
+      <div className="flex h-[85vh] flex-col lg:h-[90vh]">
         {/* Content */}
         <div className="scrollbar-hide flex-1 overflow-y-scroll px-8">
           {cartItems.map((item, index) => (
@@ -29,7 +29,7 @@ const CartItems = ({ cartItems }: Props) => {
               key={item.id}
               className={`flex items-start gap-4 py-8 ${cartItems.length - 1 > index && "border-b"}`}
             >
-              <div className="relative h-40 w-36">
+              <div className="relative h-32 w-28 lg:h-40 lg:w-36">
                 <Image src={item.image} fill alt="" className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col gap-2">
@@ -61,7 +61,7 @@ const CartItems = ({ cartItems }: Props) => {
 
         {/* Bottom */}
         <div className="flex flex-col gap-4 px-2">
-          <div className="space-y-4 border-y p-8">
+          <div className="space-y-4 border-y p-4 lg:p-8">
             <div className="flex items-center justify-between text-lg">
               <span>Sub Total</span>
               <span>{calculateTotal(cartItems).toFixed(2)}</span>

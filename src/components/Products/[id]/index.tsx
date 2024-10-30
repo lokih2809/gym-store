@@ -9,11 +9,22 @@ import Description from "./Description";
 import { ProductInfo } from "@/types/common";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/app/redux/slices/cartSlice";
+import { notFound } from "next/navigation";
 
-const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
+const ProductDetail = ({
+  productInfo,
+}: {
+  productInfo: ProductInfo | null;
+}) => {
   const dispatch = useDispatch();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  // Check if productInfo is null, and return notFound() if it is
+  if (!productInfo) {
+    return notFound();
+  }
+
   const selectedColorImage =
     productInfo.colors.find((color) => color.colorName === selectedColor)
       ?.images[0] ||
@@ -29,12 +40,22 @@ const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
   };
 
   const handleAddToCart = () => {
+    const colorId = productInfo.colors.find(
+      (color) => color.colorName === selectedColor,
+    )?.id;
+
+    const sizeId =
+      (selectedSize &&
+        productInfo.productSizes.find((size) => size.size === selectedSize)
+          ?.id) ||
+      null;
+
     dispatch(
       addToCart({
         id: productInfo.id,
         name: productInfo.name,
         price: productInfo.price,
-        size: selectedSize || "",
+        size: selectedSize,
         color: selectedColor || productInfo.colors[0].colorName,
         fit: productInfo.fit,
         image: selectedColorImage,
@@ -49,7 +70,6 @@ const ProductDetail = ({ productInfo }: { productInfo: ProductInfo }) => {
         <ImagesInfo selectedColor={selectedColor} productInfo={productInfo} />
         <div className="mx-auto">
           <ProductInformation productInfo={productInfo} />
-
           <div className="mt-4 flex flex-col gap-6 px-4">
             <SelectOptions
               onColorChange={handleColorChange}

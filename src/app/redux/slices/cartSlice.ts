@@ -4,7 +4,7 @@ export interface CartItemProps {
   id: number;
   name: string;
   price: number;
-  size: string;
+  size: string | null;
   color: string;
   fit: string;
   image: string;
@@ -25,7 +25,10 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<CartItemProps>) => {
       const item = action.payload;
-      const existingItem = state.items.find((i) => i.id === item.id);
+      const existingItem = state.items.find(
+        (i) =>
+          i.id === item.id && i.color === item.color && i.size === item.size,
+      );
       if (existingItem) {
         existingItem.quantity += item.quantity;
       } else {

@@ -7,9 +7,11 @@ const UserOptions = () => {
   const user = useSelector((state: RootState) => state.session.user);
 
   return (
-    <Link href={user ? "/account" : "/login"}>
-      <User />
-    </Link>
+    <>
+      <Link href={user ? "/account" : "/login"}>
+        <User />
+      </Link>
+    </>
   );
 };
 

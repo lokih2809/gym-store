@@ -14,6 +14,7 @@ const UsersContainer = async () => {
       address: true,
     },
   });
+
   return <Users listUsers={listUsers} />;
 };
 

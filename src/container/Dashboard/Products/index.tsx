@@ -12,6 +12,7 @@ const ProductsManageContainer = async () => {
       productSizes: true,
     },
   });
+
   return <Products listProducts={listProducts} />;
 };
 

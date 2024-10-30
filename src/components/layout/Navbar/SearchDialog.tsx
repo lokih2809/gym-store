@@ -9,7 +9,7 @@ import { BeatLoader, ClipLoader } from "react-spinners";
 import { KEYWORD_SEARCH } from "@/constants/data";
 import { searchProducts } from "@/lib/actions/productActions";
 import { ProductColor } from "@prisma/client";
-import { ListProducts, ProductInfo } from "@/types/common";
+import { ProductInfo } from "@/types/common";
 import { PRODUCT_LINK } from "@/constants/common";
 import SearchBox from "./SearchBox";
 

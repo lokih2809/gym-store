@@ -15,7 +15,7 @@ const CheckoutLayout = ({ children }: Props) => {
   return (
     <>
       <div>
-        <div className="border-b px-24 py-8">
+        <div className="flex justify-center border-b px-24 py-8 lg:block">
           <div
             className="relative h-8 w-40 cursor-pointer"
             onClick={() => router.push("/")}

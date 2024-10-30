@@ -4,8 +4,9 @@ import { PaymentMethod } from "@prisma/client";
 import db from "../client";
 
 interface FormData {
-  userId?: number;
+  userId?: string;
   totalPrice: number;
+  name: string;
   addressOrder: string;
   phoneNumber: string;
   paymentMethod: PaymentMethod;
@@ -13,10 +14,11 @@ interface FormData {
   products: {
     id: number;
     quantity: number;
+    color?: string;
+    size?: string;
   }[];
 }
 
-// Function to create an order
 export const createOrder = async (formData: FormData) => {
   const userId =
     typeof formData.userId === "string"
@@ -47,6 +49,7 @@ export const createOrder = async (formData: FormData) => {
     const order = await db.order.create({
       data: {
         userId: userId || 1,
+        name: formData.name,
         addressOrder: formData.addressOrder,
         phoneNumber: formData.phoneNumber,
         paymentMethod: formData.paymentMethod,
@@ -58,16 +61,18 @@ export const createOrder = async (formData: FormData) => {
           create: formData.products.map((product) => ({
             productId: product.id,
             quantity: product.quantity,
+            color: product.color,
+            size: product.size,
           })),
         },
       },
     });
 
-    return { status: "Success", message: "Tạo đơn hàng thành công!", order };
+    return { status: "success", message: "Tạo đơn hàng thành công!", order };
   } catch (error) {
     console.log(error);
     return {
-      status: "Error",
+      status: "error",
       message: "Có lỗi xảy ra vui lòng liên hệ với chúng tôi.",
     };
   }

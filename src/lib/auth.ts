@@ -47,11 +47,12 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: `${existingUser.id}`,
-          username: existingUser.username,
           email: existingUser.email,
-          role: existingUser.role,
+          username: existingUser.username,
+          name: existingUser.name ?? undefined,
           phoneNumber: existingUser.phoneNumber ?? undefined,
           address: existingUser.address ?? undefined,
+          role: existingUser.role,
         };
       },
     }),
@@ -62,10 +63,12 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: user.id,
+          email: user.email,
           username: user.username,
-          role: user.role,
+          name: user.name,
           phoneNumber: user.phoneNumber,
           address: user.address,
+          role: user.role,
         };
       }
       return token;
@@ -77,10 +80,12 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
+          email: token.email,
           username: token.username,
-          role: token.role,
+          name: token.name,
           phoneNumber: token.phoneNumber,
           address: token.address,
+          role: token.role,
         },
       };
     },

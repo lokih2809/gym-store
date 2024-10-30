@@ -45,11 +45,13 @@ const ImagesInfo = ({ selectedColor, productInfo }: Props) => {
   };
 
   return (
-    <div className="scrollbar-hide flex h-[60vh] gap-2 overflow-x-scroll xl:h-[85vh] xl:w-1/2 xl:flex-wrap xl:overflow-x-visible xl:overflow-y-scroll">
-      {color?.images?.map((image, index) =>
-        imageLayout(index, color?.images, image),
-      )}
-    </div>
+    <>
+      <div className="scrollbar-hide flex h-[60vh] gap-2 overflow-x-scroll xl:h-[85vh] xl:w-1/2 xl:flex-wrap xl:overflow-x-visible xl:overflow-y-scroll">
+        {color?.images?.map((image, index) =>
+          imageLayout(index, color?.images, image),
+        )}
+      </div>
+    </>
   );
 };
 

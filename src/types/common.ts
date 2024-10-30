@@ -1,4 +1,12 @@
-import { Category, ProductColor, ProductSize, Role } from "@prisma/client";
+import {
+  Category,
+  Order,
+  OrderItem,
+  ProductColor,
+  ProductSize,
+  Role,
+  User,
+} from "@prisma/client";
 
 export interface ProductInfo {
   id: number;
@@ -13,10 +21,6 @@ export interface ProductInfo {
   productSizes: ProductSize[];
 }
 
-export interface ListProducts {
-  listProducts: ProductInfo[];
-}
-
 export interface Post {
   name: string;
   desc: string;
@@ -29,7 +33,7 @@ export type UserWithoutPassword = {
   id: number;
   email: string;
   username: string;
-  name: string;
+  name: string | null;
   createdAt: Date;
   updatedAt: Date;
   role: Role;
@@ -39,6 +43,20 @@ export type UserWithoutPassword = {
 export enum PaymentMethodEnum {
   SHIPCOD = "SHIPCOD",
   VNPAY = "VNPAY",
-  MOMO = "MOMO",
-  GPAY = "GPAY",
+}
+
+export interface OrderWithUser extends Order {
+  user: User;
+  orderItems: OrderItemWithProduct[];
+}
+
+export interface OrderItemWithProduct extends OrderItem {
+  product: {
+    name: string;
+    price: number;
+  };
+}
+
+export interface OrderWithProduct extends Order {
+  orderItems: OrderItemWithProduct[];
 }

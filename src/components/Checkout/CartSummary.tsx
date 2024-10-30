@@ -1,5 +1,4 @@
 import { CartItemProps } from "@/app/redux/slices/cartSlice";
-import { calculateTotal } from "@/utils/utils";
 import Image from "next/image";
 import React from "react";
 
@@ -11,7 +10,7 @@ type Props = {
 const CartSummary = ({ cartItems, total }: Props) => {
   return (
     <>
-      <div className="space-y-6 lg:w-2/3">
+      <div className="w-full space-y-6 lg:w-2/3">
         {/* Top */}
         {cartItems.map((item) => (
           <div key={item.id} className="flex items-center gap-4">

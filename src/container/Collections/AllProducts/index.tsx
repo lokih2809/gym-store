@@ -17,6 +17,7 @@ const AllProductsContainer = async ({ category }: { category?: string }) => {
       productSizes: true,
     },
   });
+
   return <AllProducts listProducts={listProducts} />;
 };
 

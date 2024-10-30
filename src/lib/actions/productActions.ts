@@ -46,11 +46,7 @@ export const createProduct = async (formData: FormDataProduct) => {
   const { name, price, sku, category, fit, description, color, sizes, images } =
     formData;
 
-  const existingSku = await db.product.findUnique({
-    where: { sku },
-  });
-  console.log("Checking SKU:", sku, "Exists:", existingSku);
-
+  const existingSku = await db.product.findUnique({ where: { sku } });
   if (existingSku) {
     return {
       status: "error",
@@ -73,7 +69,7 @@ export const createProduct = async (formData: FormDataProduct) => {
         price: priceAsNumber,
         sku,
         category,
-        fit: fit,
+        fit,
         description,
         colors: {
           create: {
@@ -82,11 +78,11 @@ export const createProduct = async (formData: FormDataProduct) => {
           },
         },
         productSizes: {
-          create:
-            sizes &&
-            sizes.map((size: string) => ({
-              size,
-            })),
+          create: sizes
+            ? sizes.map((size: string) => ({
+                size,
+              }))
+            : [],
         },
       },
     });
@@ -97,6 +93,7 @@ export const createProduct = async (formData: FormDataProduct) => {
       message: "Thêm sản phẩm mới thành công!",
     };
   } catch (error) {
+    console.error("Error creating product:", error);
     return {
       status: "error",
       message: "Có lỗi xảy ra trong quá trình thêm sản phẩm!",
@@ -193,12 +190,10 @@ export const updateProduct = async (
     category: Category;
     fit: string;
     description: string;
-    sizes: string[];
+    sizes?: string[]; // Now sizes can be provided or left out
   },
   updatedColorData: { colorName: string; images: string[] },
 ) => {
-  console.log("Updating Product ID:", productId);
-  console.log("Updating Color ID:", colorId);
   try {
     const existingProduct = await db.product.findUnique({
       where: { id: productId },
@@ -216,6 +211,7 @@ export const updateProduct = async (
       return { message: "Color not found.", status: "error" };
     }
 
+    // Update product color info
     await db.productColor.update({
       where: { id: colorId },
       data: {
@@ -224,6 +220,7 @@ export const updateProduct = async (
       },
     });
 
+    // Update product info
     await db.product.update({
       where: { id: productId },
       data: {
@@ -240,9 +237,13 @@ export const updateProduct = async (
       where: { productId: productId },
     });
 
+    // Delete sizes that are no longer present in the input
     await Promise.all(
       existingSizes
-        .filter((size) => !productData.sizes.includes(size.size))
+        .filter(
+          (size) =>
+            !productData.sizes || !productData.sizes.includes(size.size),
+        )
         .map((size) =>
           db.productSize.delete({
             where: { id: size.id },
@@ -250,8 +251,9 @@ export const updateProduct = async (
         ),
     );
 
+    // Add or update new sizes
     await Promise.all(
-      productData.sizes.map(async (size) => {
+      productData.sizes?.map(async (size) => {
         const existingSize = existingSizes.find((s) => s.size === size);
         if (!existingSize) {
           await db.productSize.create({
@@ -261,7 +263,7 @@ export const updateProduct = async (
             },
           });
         }
-      }),
+      }) || [],
     );
 
     return {

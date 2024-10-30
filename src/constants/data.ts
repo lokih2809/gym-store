@@ -36,16 +36,7 @@ export const PRODUCT_CATEGORIES = [
 
 export const CATEGORIES = ["WOMEN", "MEN", "ACCESSORIES"];
 
-export const PRODUCT_SIZES = [
-  "XS",
-  "S",
-  "M",
-  "L",
-  "XL",
-  "XXL",
-  "3XL",
-  "One Size",
-];
+export const PRODUCT_SIZES = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
 export const PRODUCT_COLORS = [
   "Black",
@@ -367,12 +358,6 @@ export const PAYMENT_METHOD = [
     name: PaymentMethodEnum.VNPAY,
     logo: "/Logo-VnPay.webp",
   },
-  {
-    name: PaymentMethodEnum.MOMO,
-    logo: "/Logo-Momo.png",
-  },
-  {
-    name: PaymentMethodEnum.GPAY,
-    logo: "/Logo-Gpay.webp",
-  },
 ];
+
+export const STATUS = ["PENDING", "PROCESSING", "COMPLETED", "CANCELED"];

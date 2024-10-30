@@ -70,14 +70,14 @@ const InputImages: React.FC<InputImagesProps> = ({
   };
 
   return (
-    <div>
+    <>
       <div className="mt-6 flex h-28 w-full flex-col gap-2 border-2 border-dashed border-blue-400">
         <label
           htmlFor={name}
           className="mt-4 flex cursor-pointer items-center justify-center text-xl"
         >
           {loading ? (
-            <span className="mt-8">
+            <span className="mt-4">
               <HashLoader color="blue" />
             </span>
           ) : (
@@ -112,7 +112,7 @@ const InputImages: React.FC<InputImagesProps> = ({
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

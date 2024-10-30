@@ -1,38 +1,31 @@
 "use client";
 
+import React, { useState } from "react";
 import SearchBoxDashboard from "../SearchBoxDashboard";
-import { useState } from "react";
+import { formatDate, getFilteredAndPaginatedData } from "@/utils/utils";
 import { useRouter } from "next/navigation";
-import {
-  formatDate,
-  getFilteredAndPaginatedData,
-  handleDelete,
-} from "@/utils/utils";
-import { ADMIN_MAIL } from "@/constants/common";
-import CreateAccountForm from "./CreateAccountForm";
-import EditAccountForm from "./EditAccountForm";
 import Button from "@/components/common/Button";
-import { UserWithoutPassword } from "@/types/common";
+import UpdateStatus from "./UpdateStatus";
+import { OrderWithUser } from "@/types/common";
 
 interface Props {
-  listUsers: UserWithoutPassword[];
+  listOrders: OrderWithUser[];
 }
 
-const Users = ({ listUsers }: Props) => {
+const Orders = ({ listOrders }: Props) => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const { paginatedData, totalPages, handleNext, handlePrevious } =
-    getFilteredAndPaginatedData(listUsers, searchTerm, currentPage, 10, [
-      "name",
-      "email",
-      "username",
+    getFilteredAndPaginatedData(listOrders, searchTerm, currentPage, 10, [
+      "status",
+      "paymentStatus",
+      "paymentMethod",
     ]);
 
   const nextPage = () => setCurrentPage(handleNext());
   const previousPage = () => setCurrentPage(handlePrevious());
-
   return (
     <>
       <div className="relative space-y-8 rounded-lg bg-dashboard p-8 text-white">
@@ -43,7 +36,6 @@ const Users = ({ listUsers }: Props) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <CreateAccountForm />
         </div>
 
         {/* Content */}
@@ -52,19 +44,27 @@ const Users = ({ listUsers }: Props) => {
             <thead className="text-xs uppercase text-white">
               <tr>
                 <th scope="col" className="px-6 py-3">
-                  Email
+                  User Mail
+                </th>
+
+                <th scope="col" className="px-6 py-3">
+                  Total Price
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Username
+                  Payment Method
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Name
+                  Payment Status
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  CreatedAt
+                  Transaction
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Role
+                  Created At
+                </th>
+
+                <th scope="col" className="px-6 py-3">
+                  Status
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Action
@@ -72,30 +72,36 @@ const Users = ({ listUsers }: Props) => {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((user) => (
-                <tr className="border-b text-white" key={user.id}>
+              {paginatedData.map((order: OrderWithUser) => (
+                <tr className="border-b text-white" key={order.id}>
                   <th
                     scope="row"
-                    className={`whitespace-nowrap px-6 py-4 font-medium ${user.email === ADMIN_MAIL && "text-red-500"}`}
+                    className={`whitespace-nowrap px-6 py-4 font-medium`}
                   >
-                    {user.email}
+                    {order.user.email}
                   </th>
-                  <td className={`$ px-6 py-4`}>{user.username}</td>
-                  <td className="px-6 py-4">{user.name}</td>
-                  <td className="px-6 py-4">{formatDate(user.createdAt)}</td>
-                  <td className="px-6 py-4">{user.role}</td>
-
-                  <td
-                    className={`flex gap-2 px-6 py-4 ${user.email === ADMIN_MAIL && "hidden"}`}
-                  >
-                    <EditAccountForm user={user} />
-                    <span>|</span>
-                    <button
-                      className="font-medium text-red-500 hover:underline"
-                      onClick={() => handleDelete(user.id, "user", router)}
+                  <td className="px-6 py-4">
+                    {order.totalPrice.toLocaleString("vi-VN")}đ
+                  </td>
+                  <td className="px-6 py-4">{order.paymentMethod}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`rounded-lg p-2 ${order.paymentStatus === "PENDING" ? "bg-yellow-400" : order.paymentStatus === "PAID" ? "bg-green-400" : "bg-red-400"}`}
                     >
-                      Delete
-                    </button>
+                      {order.paymentStatus}
+                    </span>
+                  </td>
+                  <td className={`$ px-6 py-4`}>{order.transactionId}</td>
+                  <td className="px-6 py-4">{formatDate(order.createdAt)}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`rounded-lg p-2 ${order.status === "PENDING" ? "bg-yellow-400" : order.status === "PROCESSING" ? "bg-blue-400" : order.status === "COMPLETED" ? "bg-green-400" : "bg-red-400"}`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className={`flex gap-2 px-6 py-4`}>
+                    <UpdateStatus order={order} />
                   </td>
                 </tr>
               ))}
@@ -126,4 +132,4 @@ const Users = ({ listUsers }: Props) => {
   );
 };
 
-export default Users;
+export default Orders;

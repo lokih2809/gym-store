@@ -1,4 +1,3 @@
-// hooks/useInitSession.ts
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getSession } from "next-auth/react";

@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./redux/store";
 import SessionProviderWrapper from "./SessionProviderWrapper";
 import { PersistGate } from "redux-persist/integration/react";
+import RouteChangeLoader from "./RouteChangeLoader";
 
 export default function RootLayout({
   children,
@@ -18,7 +19,10 @@ export default function RootLayout({
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
             <SessionProviderWrapper>
-              <LayoutWrapper>{children}</LayoutWrapper>
+              <LayoutWrapper>
+                <RouteChangeLoader />
+                {children}
+              </LayoutWrapper>
             </SessionProviderWrapper>
           </PersistGate>
         </Provider>

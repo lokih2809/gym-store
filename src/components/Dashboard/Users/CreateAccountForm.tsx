@@ -70,7 +70,7 @@ const CreateAccountForm = () => {
   };
 
   return (
-    <div>
+    <>
       {/* Button */}
       <Button
         className="bg-white px-4 py-2 text-black"
@@ -82,7 +82,7 @@ const CreateAccountForm = () => {
       {/* Edit box */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="animate-slide-in-bottom absolute z-30 flex w-1/2 flex-col rounded-lg bg-white py-8 text-black lg:animate-slide-in-right">
+          <div className="absolute z-30 flex w-1/2 animate-slide-in-bottom flex-col rounded-lg bg-white py-8 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Create</span>
               <X onClick={handleClose} className="cursor-pointer" />
@@ -138,7 +138,7 @@ const CreateAccountForm = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -62,28 +62,32 @@ const SignInForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        label="Email address or Username"
-        name="identifier"
-        register={register}
-        error={errors.identifier?.message}
-      />
-      <Input
-        label="Password"
-        name="password"
-        type="password"
-        register={register}
-        error={errors.password?.message}
-      />
+    <>
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="Email address or Username"
+          name="identifier"
+          register={register}
+          error={errors.identifier?.message}
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          register={register}
+          error={errors.password?.message}
+        />
 
-      {errorMessage && <small className="text-red-500">{errorMessage}</small>}
+        {errorMessage && <small className="text-red-500">{errorMessage}</small>}
 
-      <span className="text-center font-bold underline">Forgot password?</span>
-      <Button type="submit" disabled={isLoading} isPrimary>
-        {isLoading ? "Loading ..." : "Login"}
-      </Button>
-    </form>
+        <span className="text-center font-bold underline">
+          Forgot password?
+        </span>
+        <Button type="submit" disabled={isLoading} isPrimary>
+          {isLoading ? "Loading ..." : "Login"}
+        </Button>
+      </form>
+    </>
   );
 };
 

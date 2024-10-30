@@ -96,6 +96,7 @@ model Order {
   totalPrice    Float
   addressOrder  String
   phoneNumber   String
+  name          String
   paymentMethod PaymentMethod
   paymentStatus PaymentStatus
   status        Status
@@ -110,6 +111,8 @@ model OrderItem {
   orderId   Int
   productId Int
   quantity  Int
+  color     String?
+  size      String?
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
 }

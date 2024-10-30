@@ -7,8 +7,9 @@ interface Product {
 }
 
 export interface FormState {
-  userId?: number;
+  userId?: string;
   totalPrice: number;
+  name: string;
   addressOrder: string;
   phoneNumber: string;
   paymentMethod: PaymentMethod;
@@ -16,8 +17,9 @@ export interface FormState {
 }
 
 const initialState: FormState = {
-  userId: 0,
+  userId: "",
   totalPrice: 0,
+  name: "",
   addressOrder: "",
   phoneNumber: "",
   paymentMethod: "SHIPCOD" as PaymentMethod,
@@ -29,13 +31,13 @@ const formSlice = createSlice({
   initialState,
   reducers: {
     setFormValues(state, action: PayloadAction<FormState>) {
-      return { ...state, ...action.payload }; // Cập nhật tất cả các thuộc tính
+      return { ...state, ...action.payload };
     },
-    setUserInForm(state, action: PayloadAction<number>) {
+    setUserInForm(state, action: PayloadAction<string>) {
       state.userId = action.payload;
     },
     clearFormValues(state) {
-      return initialState; // Trở về trạng thái ban đầu
+      return initialState;
     },
   },
 });

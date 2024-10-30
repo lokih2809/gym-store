@@ -37,8 +37,8 @@ const menuItems = [
         icon: <Package />,
       },
       {
-        title: "Transactions",
-        path: "/dashboard/transactions",
+        title: "Orders",
+        path: "/dashboard/orders",
         icon: <CircleDollarSign />,
       },
     ],
@@ -82,39 +82,41 @@ const menuItems = [
 
 const DashboardSidebar = () => {
   return (
-    <div className="w-2/12">
-      {/* Top */}
-      <div className="flex flex-col gap-4 py-6">
-        <Link href={"/"} className="relative h-8 w-40">
-          <Image fill src={LOGO_2} alt="" className="object-contain" />
-        </Link>
-        <span className="px-2 text-blue-500 underline">Administrator</span>
-      </div>
+    <>
+      <div className="w-2/12">
+        {/* Top */}
+        <div className="flex flex-col gap-4 py-6">
+          <Link href={"/"} className="relative h-8 w-40">
+            <Image fill src={LOGO_2} alt="" className="object-contain" />
+          </Link>
+          <span className="px-2 text-blue-500 underline">Administrator</span>
+        </div>
 
-      {/* Content */}
-      <ul className="">
-        {menuItems.map((cat) => (
-          <li key={cat.title}>
-            <span className="text-sm font-bold">{cat.title}</span>
-            {cat.list.map((item) => (
-              <MenuLink key={item.title} item={item} />
-            ))}
-          </li>
-        ))}
-      </ul>
-      <div
-        className="flex cursor-pointer items-center gap-4 px-4 py-4 text-sm font-bold hover:bg-gray-200"
-        onClick={() =>
-          signOut({
-            redirect: true,
-            callbackUrl: "/",
-          })
-        }
-      >
-        <LogOut />
-        Logout
+        {/* Content */}
+        <ul className="">
+          {menuItems.map((cat) => (
+            <li key={cat.title}>
+              <span className="text-sm font-bold">{cat.title}</span>
+              {cat.list.map((item) => (
+                <MenuLink key={item.title} item={item} />
+              ))}
+            </li>
+          ))}
+        </ul>
+        <div
+          className="flex cursor-pointer items-center gap-4 px-4 py-4 text-sm font-bold hover:bg-gray-200"
+          onClick={() =>
+            signOut({
+              redirect: true,
+              callbackUrl: "/",
+            })
+          }
+        >
+          <LogOut />
+          Logout
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -3,7 +3,6 @@ import { deleteUser } from "@/lib/actions/authActions";
 import { deleteProduct } from "@/lib/actions/productActions";
 import Swal from "sweetalert2";
 
-// Format date
 export const formatDate = (date: Date) => {
   const d = new Date(date);
   const day = String(d.getDate()).padStart(2, "0");

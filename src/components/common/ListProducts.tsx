@@ -27,6 +27,7 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
     color: string,
     fit: string,
     image: string,
+    colorName: string,
   ) => {
     dispatch(
       addToCart({
@@ -39,6 +40,21 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
         image,
         quantity: 1,
       }),
+    );
+  };
+
+  const handleAddToCartLogic = (product: ProductInfo) => {
+    const colorName = product.colors[0]?.colorName;
+
+    handleAddToCart(
+      product.id,
+      product.name,
+      product.price,
+      product.productSizes.length > 0 ? product.productSizes[0].size : "",
+      product.colors[0].colorName,
+      product.fit,
+      product.colors[0].images[0],
+      colorName,
     );
   };
 
@@ -75,19 +91,7 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
                 <ShoppingBag
                   size={20}
                   className="cursor-pointer"
-                  onClick={() =>
-                    handleAddToCart(
-                      product.id,
-                      product.name,
-                      product.price,
-                      product.productSizes.length > 0
-                        ? product.productSizes[0].size
-                        : "",
-                      product.colors[0].colorName,
-                      product.fit,
-                      product.colors[0].images[0],
-                    )
-                  }
+                  onClick={() => handleAddToCartLogic(product)}
                 />
               </div>
               <div className="absolute right-2 top-2 z-10 rounded-full bg-white p-1">

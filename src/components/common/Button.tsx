@@ -19,14 +19,16 @@ const Button = ({
   onClick,
 }: Props) => {
   return (
-    <button
-      className={`flex cursor-pointer items-center justify-center rounded-full text-sm font-bold uppercase ${className} ${isPrimary && "bg-black py-3 text-white"} ${disabled && "cursor-default opacity-80"}`}
-      type={type}
-      disabled={disabled}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <>
+      <button
+        className={`flex cursor-pointer items-center justify-center rounded-full text-sm font-bold uppercase ${className} ${isPrimary && "bg-black py-3 text-white"} ${disabled && "cursor-default opacity-80"}`}
+        type={type}
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {children}
+      </button>
+    </>
   );
 };
 

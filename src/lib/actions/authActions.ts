@@ -151,7 +151,7 @@ export const editUser = async (id: number, formData: FormData) => {
 
     formData.forEach((value, key) => {
       if (key === "address" && value === "") {
-        data[key] = null; // Handle empty address
+        data[key] = null;
       } else {
         data[key] = value;
       }

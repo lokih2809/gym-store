@@ -24,8 +24,7 @@ import Swal from "sweetalert2";
 import { z } from "zod";
 import SizeSelector from "./SelectSize";
 import InputImages from "./InputImages";
-import { createProduct, updateProduct } from "@/lib/actions/productActions";
-import { ProductInfo } from "@/types/common";
+import { createProduct } from "@/lib/actions/productActions";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -91,7 +90,7 @@ const AddNewProduct = () => {
   };
 
   return (
-    <div>
+    <>
       <Button
         className="bg-white px-4 py-2 text-black"
         onClick={() => setShow(true)}
@@ -102,7 +101,7 @@ const AddNewProduct = () => {
       {/* Edit form */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="animate-slide-in-bottom absolute z-30 flex min-w-[80%] flex-col rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
+          <div className="absolute z-30 flex min-w-[80%] animate-slide-in-bottom flex-col rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Edit</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
@@ -204,7 +203,7 @@ const AddNewProduct = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
