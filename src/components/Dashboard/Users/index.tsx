@@ -35,9 +35,9 @@ const Users = ({ listUsers }: Props) => {
 
   return (
     <>
-      <div className="relative space-y-8 rounded-lg bg-dashboard p-8 text-white">
+      <div className="relative space-y-8 rounded-lg bg-dashboard px-2 py-4 text-white lg:p-8">
         {/* Top */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <SearchBoxDashboard
             placeholder="Search for a user"
             value={searchTerm}
@@ -51,22 +51,31 @@ const Users = ({ listUsers }: Props) => {
           <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
             <thead className="text-xs uppercase text-white">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
                   Email
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="p-2 lg:px-6 lg:py-3">
                   Username
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th
+                  scope="col"
+                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                >
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th
+                  scope="col"
+                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                >
                   CreatedAt
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th
+                  scope="col"
+                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                >
                   Role
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
                   Action
                 </th>
               </tr>
@@ -76,14 +85,20 @@ const Users = ({ listUsers }: Props) => {
                 <tr className="border-b text-white" key={user.id}>
                   <th
                     scope="row"
-                    className={`whitespace-nowrap px-6 py-4 font-medium ${user.email === ADMIN_MAIL && "text-red-500"}`}
+                    className={`max-w-44 truncate px-4 py-2 font-medium lg:whitespace-nowrap lg:px-6 lg:py-4 ${user.email === ADMIN_MAIL && "text-red-500"}`}
                   >
                     {user.email}
                   </th>
-                  <td className={`$ px-6 py-4`}>{user.username}</td>
-                  <td className="px-6 py-4">{user.name}</td>
-                  <td className="px-6 py-4">{formatDate(user.createdAt)}</td>
-                  <td className="px-6 py-4">{user.role}</td>
+                  <td className="p-2 lg:px-6 lg:py-3">{user.username}</td>
+                  <td className="hidden lg:table-cell lg:px-6 lg:py-3">
+                    {user.name}
+                  </td>
+                  <td className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3">
+                    {formatDate(user.createdAt)}
+                  </td>
+                  <td className="hidden lg:table-cell lg:px-6 lg:py-3">
+                    {user.role}
+                  </td>
 
                   <td
                     className={`flex gap-2 px-6 py-4 ${user.email === ADMIN_MAIL && "hidden"}`}

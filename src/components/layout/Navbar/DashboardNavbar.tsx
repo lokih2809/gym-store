@@ -1,14 +1,20 @@
 "use client";
 
-import { Bell, Earth, MessageSquareText } from "lucide-react";
+import { Bell, Earth, Menu, MessageSquareText } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const DashboardNavbar = () => {
+interface Props {
+  setIsSidebarOpen: (value: boolean) => void;
+}
+
+const DashboardNavbar = ({ setIsSidebarOpen }: Props) => {
   const pathname = usePathname();
+
   return (
     <>
-      <div className="flex items-center justify-between border-b p-6">
+      <div className="flex items-center justify-between border-b py-4 lg:p-6">
+        <Menu onClick={() => setIsSidebarOpen(true)} className="lg:hidden" />
         <span className="font-bold capitalize">
           {pathname.split("/").pop()}
         </span>

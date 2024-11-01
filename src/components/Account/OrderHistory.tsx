@@ -22,29 +22,29 @@ const OrderHistory = ({ listOrders }: Props) => {
 
         {/* Main */}
         {listOrders && listOrders.length > 0 ? (
-          <div className="relative mt-8 flex-1 sm:rounded-lg">
+          <div className="relative mt-8 flex-1 px-2 sm:rounded-lg">
             <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
               <thead className="border-b text-xs uppercase text-black">
                 <tr>
-                  <th scope="col" className="pr-4 lg:px-12 lg:py-3">
+                  <th scope="col" className="lg:px-12 lg:py-4">
                     Products
                   </th>
-                  <th scope="col" className="hidden px-6 py-3 lg:block">
+                  <th scope="col" className="lg: hidden px-6 py-4">
                     Payment Method
                   </th>
-                  <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
+                  <th scope="col" className="hidden px-6 py-4 lg:table-cell">
                     Total Price
                   </th>
-                  <th scope="col" className="hidden px-6 py-3 lg:block">
+                  <th scope="col" className="hidden px-6 py-4 lg:table-cell">
                     Payment Status
                   </th>
-                  <th scope="col" className="hidden px-6 py-3 lg:block">
+                  <th scope="col" className="hidden px-6 py-4 lg:table-cell">
                     CreatedAt
                   </th>
-                  <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
+                  <th scope="col" className="px-4 py-2 lg:px-6 lg:py-4">
                     Status
                   </th>
-                  <th scope="col" className="px-2 py-2 lg:px-6 lg:py-3"></th>
+                  <th scope="col" className="py-2 lg:px-6 lg:py-4"></th>
                 </tr>
               </thead>
               <tbody>
@@ -55,7 +55,7 @@ const OrderHistory = ({ listOrders }: Props) => {
                   >
                     <th
                       scope="row"
-                      className="max-w-24 truncate whitespace-nowrap pr-4 font-medium lg:px-12 lg:py-3"
+                      className="max-w-40 truncate whitespace-nowrap font-medium lg:px-12 lg:py-4"
                     >
                       {order.orderItems.map((item, index) => (
                         <span key={item.id}>
@@ -64,28 +64,28 @@ const OrderHistory = ({ listOrders }: Props) => {
                         </span>
                       ))}
                     </th>
-                    <td className="hidden px-6 py-3 lg:block">
+                    <td className="hidden px-6 py-4 lg:table-cell">
                       {order.paymentMethod}
                     </td>
-                    <td className="px-4 py-2 lg:px-6 lg:py-3">
+                    <td className="hidden px-6 py-4 lg:table-cell">
                       {order.totalPrice.toLocaleString("vi-VN")}đ
                     </td>
 
-                    <td className="hidden px-6 py-3 lg:block">
+                    <td className="hidden px-6 py-4 lg:table-cell">
                       {order.paymentStatus}
                     </td>
-                    <td className="hidden px-6 py-3 lg:block">
+                    <td className="hidden px-6 py-4 lg:table-cell">
                       {formatDate(order.createdAt)}
                     </td>
-                    <td className="px-4 py-4 lg:px-6 lg:py-3">
+                    <td className="px-4 py-4 lg:px-6 lg:py-4">
                       <span
-                        className={`rounded-lg p-2 text-sm font-bold ${order.status === "PENDING" ? "bg-yellow-400" : order.status === "PROCESSING" ? "bg-blue-400" : order.status === "COMPLETED" ? "bg-green-400" : "bg-red-400"}`}
+                        className={`rounded-lg p-1 text-xs font-bold lg:p-2 ${order.status === "PENDING" ? "bg-yellow-400" : order.status === "PROCESSING" ? "bg-blue-400" : order.status === "COMPLETED" ? "bg-green-400" : "bg-red-400"}`}
                       >
                         {order.status}
                       </span>
                     </td>
 
-                    <td className="px-2 py-2 lg:px-6 lg:py-3">
+                    <td className="py-2 lg:px-6 lg:py-4">
                       <button
                         className="font-medium text-blue-500 hover:underline"
                         onClick={() =>

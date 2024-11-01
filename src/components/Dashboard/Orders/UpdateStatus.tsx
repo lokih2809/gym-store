@@ -58,7 +58,7 @@ const UpdateStatus = ({ order }: Props) => {
     <>
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="absolute z-30 flex w-1/3 animate-slide-in-bottom flex-col rounded-lg bg-white py-8 text-black lg:animate-slide-in-right">
+          <div className="absolute z-30 flex w-11/12 animate-slide-in-bottom flex-col rounded-lg bg-white py-8 text-black lg:w-1/3 lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Information</span>
               <X onClick={handleClose} className="cursor-pointer" />

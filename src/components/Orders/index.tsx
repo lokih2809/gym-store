@@ -24,16 +24,16 @@ const OrderDetail = ({ order }: Props) => {
           <table className="mt-4 w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
             <thead className="border-b text-xs uppercase text-black">
               <tr>
-                <th scope="col" className="pr-4 lg:px-12 lg:py-3">
+                <th scope="col" className="py-4 pr-2 lg:px-12 lg:py-3">
                   Name product
                 </th>
-                <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
+                <th scope="col" className="px-4 lg:px-6 lg:py-3">
                   Color
                 </th>
-                <th scope="col" className="px-8 lg:py-3">
+                <th scope="col" className="px-8 lg:px-6 lg:py-3">
                   Size
                 </th>
-                <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
+                <th scope="col" className="px-4 lg:px-6 lg:py-3">
                   Price
                 </th>
               </tr>
@@ -45,7 +45,7 @@ const OrderDetail = ({ order }: Props) => {
                     <tr className={`border-b text-black`} key={item.id}>
                       <th
                         scope="row"
-                        className="max-w-24 truncate whitespace-nowrap pr-4 font-bold lg:px-12 lg:py-3"
+                        className="max-w-32 truncate whitespace-nowrap pr-4 font-bold lg:px-12 lg:py-3"
                       >
                         {item.product.name}
                       </th>
@@ -63,15 +63,13 @@ const OrderDetail = ({ order }: Props) => {
                 },
               )}
               <tr className="text-black">
-                <th
-                  scope="row"
-                  className="max-w-24 truncate whitespace-nowrap px-12 py-4 font-medium"
-                ></th>
-                <td className={`px-6 py-4`}></td>
-                <td className="py-2 font-bold lg:px-6 lg:py-3">
+                <td className="pl-8 lg:px-6 lg:py-3"></td>
+                <td className="pl-8 lg:px-6 lg:py-3"></td>
+
+                <td className="py-4 font-bold lg:px-6 lg:py-3">
                   Tổng giá trị:
                 </td>
-                <td className="px-4 py-2 text-lg font-bold lg:px-6 lg:py-3">
+                <td className="py-4 font-bold lg:px-6 lg:py-3 lg:text-lg">
                   {order.totalPrice.toLocaleString("vi-VN")}đ
                 </td>
               </tr>

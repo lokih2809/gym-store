@@ -16,8 +16,8 @@ import { CartItemProps } from "@/app/redux/slices/cartSlice";
 import { RootState } from "@/app/redux/store";
 import { FormState, setFormValues } from "@/app/redux/slices/formSlice";
 import SelectMethod from "./SelectMethod";
-import { createOrder } from "@/lib/actions/paymentActions";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import { createOrder } from "@/lib/actions/OrderActions";
 
 const FormSchema = z.object({
   name: z

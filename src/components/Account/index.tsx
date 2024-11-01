@@ -13,14 +13,14 @@ interface Props {
 const Account = ({ user, listOrders }: Props) => {
   return (
     <>
-      <div className="flex flex-col gap-4 px-8">
+      <div className="flex flex-col gap-4 px-4">
         {/* Top */}
         <span className="py-6 text-lg font-bold uppercase lg:mx-auto lg:text-3xl">
           Your gym account
         </span>
 
         {/* Content */}
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col lg:flex-row lg:gap-4">
           {/* Sidebar */}
           <SidebarAccount user={user} />
           <OrderHistory listOrders={listOrders} />
