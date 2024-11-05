@@ -14,10 +14,7 @@ import { Minus, Plus, PlusCircle } from "lucide-react";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { ProductInfo } from "@/types/common";
-import {
-  deleteColorProduct,
-  deleteProduct,
-} from "@/lib/actions/productActions";
+import { deleteProduct } from "@/lib/actions/productActions";
 import EditProductColor from "./EditColor";
 import AddNewProduct from "./AddProduct";
 
@@ -75,8 +72,6 @@ const Products = ({ listProducts }: Props) => {
       }
 
       if (confirmed.isConfirmed) {
-        const response = await deleteColorProduct(colorId);
-
         const remainingColors = product.colors.filter(
           (color) => color.id !== colorId,
         ).length;

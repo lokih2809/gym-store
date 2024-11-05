@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "next/image";
-import { BeatLoader, ClipLoader } from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import { KEYWORD_SEARCH } from "@/constants/data";
 import { searchProducts } from "@/lib/actions/productActions";
 import { ProductColor } from "@prisma/client";

@@ -38,12 +38,14 @@ const InputImages: React.FC<InputImagesProps> = ({
         formData.append("file", file);
         formData.append(
           "upload_preset",
-          process.env.NEXT_PUBLIC_UPLOAD_ASSETS_NAME!,
+          process.env.NEXT_PUBLIC_UPLOAD_ASSETS_NAME
+            ? process.env.NEXT_PUBLIC_UPLOAD_ASSETS_NAME
+            : "sozv4xcz",
         );
 
         try {
-          const response: any = await apiUpdateImages(formData);
-          if (response && response.secure_url) {
+          const response = await apiUpdateImages(formData);
+          if (response?.secure_url) {
             return response.secure_url;
           } else {
             console.error("Upload failed: ", response);

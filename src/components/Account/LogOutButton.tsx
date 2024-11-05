@@ -23,11 +23,8 @@ const LogOutButton = () => {
   return (
     <>
       {loading && <FullscreenLoading />}
-      <span
-        className="cursor-pointer font-bold underline"
-        onClick={handleLogout}
-      >
-        Log out
+      <span className="cursor-pointer" onClick={handleLogout}>
+        Logout
       </span>
     </>
   );

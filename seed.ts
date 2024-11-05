@@ -1,10 +1,10 @@
-const { PrismaClient } = require("@prisma/client");
-const bcrypt = require("bcrypt"); // For password hashing
+require("@prisma/client");
+import { Category, PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 
 const db = new PrismaClient();
 
 async function main() {
-  // Create an admin user
   const hashedPassword = await bcrypt.hash("@Password123", 10); // Hashing the password
 
   await db.user.create({
@@ -13,7 +13,7 @@ async function main() {
       username: "admin",
       password: hashedPassword,
       name: "Admin User",
-      role: "ADMIN", // Admin role
+      role: "ADMIN",
     },
   });
 
@@ -303,7 +303,7 @@ async function main() {
         description: product.description,
         price: product.price,
         sku: product.sku,
-        category: product.category,
+        category: product.category as Category,
         fit: product.fit,
         colors: product.colors,
       },

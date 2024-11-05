@@ -1,7 +1,6 @@
 import { DETAIL_ORDER_WITH_TRANSACTION_ID } from "@/constants/common";
 import { OrderWithProduct } from "@/types/common";
 import { formatDate } from "@/utils/utils";
-import { Order } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";

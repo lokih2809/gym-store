@@ -11,8 +11,8 @@ import Cart from "./Cart/Cart";
 import SearchDialog from "./SearchDialog";
 
 const Navbar = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -66,24 +66,23 @@ const Navbar = () => {
         </div>
 
         {/* Right */}
-        <div className="flex flex-grow basis-0 items-center justify-end gap-4">
-          <div className="hidden items-center gap-4 lg:flex">
-            <SearchIcon
-              className="hidden cursor-pointer lg:block"
-              onClick={() => setIsDialogOpen(true)}
-            />
-            <Heart />
+        <div className="flex flex-grow basis-0 items-center justify-end gap-2">
+          <div className="hidden items-center gap-2 lg:flex">
+            <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
+              <SearchIcon
+                className="hidden cursor-pointer lg:block"
+                onClick={() => setIsDialogOpen(true)}
+              />
+            </div>
+            <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
+              <Heart />
+            </div>
           </div>
           <UserOptions />
           <Cart />
         </div>
         {isDialogOpen && <SearchDialog setIsDialogOpen={setIsDialogOpen} />}
-        {isSidebarOpen && (
-          <Sidebar
-            setIsSidebarOpen={setIsSidebarOpen}
-            setIsDialogOpen={setIsDialogOpen}
-          />
-        )}
+        {isSidebarOpen && <Sidebar setIsSidebarOpen={setIsSidebarOpen} />}
       </div>
     </>
   );

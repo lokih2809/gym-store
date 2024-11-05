@@ -1,6 +1,5 @@
 import { OrderWithUser } from "@/types/common";
 import { formatDate } from "@/utils/utils";
-import Image from "next/image";
 import React from "react";
 import UpdateStatus from "./Orders/UpdateStatus";
 

@@ -19,10 +19,9 @@ const Cart = () => {
   return (
     <>
       <div className="relative">
-        <ShoppingCart
-          onClick={() => setIsCartOpen(true)}
-          className="cursor-pointer"
-        />
+        <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
+          <ShoppingCart onClick={() => setIsCartOpen(true)} className=" " />
+        </div>
         {cartItems.length > 0 && (
           <span className="absolute -right-4 -top-2 z-10 rounded-full bg-blue-300 px-2 py-[1px] text-sm font-bold">
             {cartItems.length}
@@ -33,9 +32,9 @@ const Cart = () => {
       <div
         className={`fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-25 ${!isCartOpen && "hidden"}`}
       >
-        <div className="fixed bottom-0 left-0 right-0 top-[5%] z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white lg:left-3/4 lg:top-0 lg:animate-slide-in-right">
+        <div className="fixed bottom-0 left-0 right-0 top-0 z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white lg:left-3/4 lg:top-0 lg:animate-slide-in-right">
           {/* Top */}
-          <div className="flex items-center p-8">
+          <div className="flex items-center p-4 lg:p-8">
             <b className="mx-auto uppercase">Your bag</b>
             <X
               onClick={() => setIsCartOpen(false)}

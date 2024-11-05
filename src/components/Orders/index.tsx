@@ -19,7 +19,7 @@ const OrderDetail = ({ order }: Props) => {
           <span>Trạng thái đơn hàng: {order.status}</span>
         </div>
 
-        <div className="mt-4 px-8 lg:mt-0 lg:w-4/5 lg:px-0">
+        <div className="mt-4 px-2 lg:mt-0 lg:w-4/5 lg:px-0">
           <span className="font-bold">Danh sách sản phẩm</span>
           <table className="mt-4 w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
             <thead className="border-b text-xs uppercase text-black">
@@ -39,29 +39,27 @@ const OrderDetail = ({ order }: Props) => {
               </tr>
             </thead>
             <tbody>
-              {order.orderItems.map(
-                (item: OrderItemWithProduct, index: number) => {
-                  return (
-                    <tr className={`border-b text-black`} key={item.id}>
-                      <th
-                        scope="row"
-                        className="max-w-32 truncate whitespace-nowrap pr-4 font-bold lg:px-12 lg:py-3"
-                      >
-                        {item.product.name}
-                      </th>
-                      <td className="px-4 py-2 lg:px-6 lg:py-3">
-                        {item.color || "No color"}
-                      </td>
-                      <td className="pl-8 lg:px-6 lg:py-3">
-                        {item.size || "No size"}
-                      </td>
-                      <td className="px-4 py-2 lg:px-6 lg:py-3">
-                        ${item.product.price}
-                      </td>
-                    </tr>
-                  );
-                },
-              )}
+              {order.orderItems.map((item: OrderItemWithProduct) => {
+                return (
+                  <tr className={`border-b text-black`} key={item.id}>
+                    <th
+                      scope="row"
+                      className="max-w-32 truncate whitespace-nowrap pr-4 font-bold lg:px-12 lg:py-3"
+                    >
+                      {item.product.name}
+                    </th>
+                    <td className="px-4 py-2 lg:px-6 lg:py-3">
+                      {item.color || "No color"}
+                    </td>
+                    <td className="pl-8 lg:px-6 lg:py-3">
+                      {item.size || "No size"}
+                    </td>
+                    <td className="px-4 py-2 lg:px-6 lg:py-3">
+                      ${item.product.price}
+                    </td>
+                  </tr>
+                );
+              })}
               <tr className="text-black">
                 <td className="pl-8 lg:px-6 lg:py-3"></td>
                 <td className="pl-8 lg:px-6 lg:py-3"></td>

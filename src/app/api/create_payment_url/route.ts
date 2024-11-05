@@ -3,33 +3,33 @@ import crypto from "crypto";
 import querystring from "qs";
 import { format } from "date-fns";
 
-// Hàm sắp xếp các tham số
-function sortObject(obj: any) {
-  const sorted: { [key: string]: any } = {};
+function sortObject(obj: {
+  [key: string]: number | string | boolean | undefined;
+}) {
+  const sorted: { [key: string]: string } = {};
   const str = Object.keys(obj).sort();
 
   str.forEach((key) => {
-    sorted[key] = encodeURIComponent(obj[key]).replace(/%20/g, "+");
+    sorted[key] = encodeURIComponent(String(obj[key])).replace(/%20/g, "+");
   });
 
   return sorted;
 }
 
-// POST request handler
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const ipAddr = req.headers.get("x-forwarded-for") || "::1"; // IP mặc định "::1" (localhost)
+    const ipAddr = req.headers.get("x-forwarded-for") || "::1";
 
-    const tmnCode = process.env.VNP_TMN_CODE; // Lấy từ biến môi trường
-    const secretKey = process.env.VNP_HASH_SECRET; // Lấy từ biến môi trường
+    const tmnCode = process.env.VNP_TMN_CODE;
+    const secretKey = process.env.VNP_HASH_SECRET;
     const vnpUrl = process.env.VNP_URL;
     const returnUrl = process.env.VNP_RETURN_URL;
 
     const now = new Date();
     const createDate = format(now, "yyyyMMddHHmmss");
     const orderId = format(now, "HHmmss");
-    const amount = body.amount * 100; // VNPay yêu cầu số tiền tính bằng đồng
+    const amount = body.amount * 100;
     const bankCode = body.bankCode;
     const orderInfo = body.orderDescription;
     const orderType = body.orderType;
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const currCode = "VND";
 
     // Các tham số cần truyền vào URL
-    let vnp_Params: { [key: string]: any } = {
+    let vnp_Params: { [key: string]: number | string | boolean | undefined } = {
       vnp_Version: "2.1.0",
       vnp_Command: "pay",
       vnp_TmnCode: tmnCode,

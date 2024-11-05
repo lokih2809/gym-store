@@ -4,7 +4,7 @@ import {
   DETAIL_ORDER_WITH_TRANSACTION_ID,
   LOGO_PAYMENT_RESULT,
 } from "@/constants/common";
-import { Check, Route, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,7 +20,6 @@ import { createOrder } from "@/lib/actions/OrderActions";
 const PaymentResult = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const dispatch = useDispatch();
   const form = useSelector((state: RootState) => state.form);
 
@@ -37,6 +36,17 @@ const PaymentResult = () => {
   const vnp_ResponseCode = searchParams?.get("vnp_ResponseCode");
   const vnp_TxnRef = searchParams?.get("vnp_TxnRef") || "";
 
+  const orderData = {
+    transactionId: vnp_TxnRef,
+    userId: form.userId,
+    totalPrice: form.totalPrice,
+    name: form.name,
+    addressOrder: form.addressOrder,
+    phoneNumber: form.phoneNumber,
+    paymentMethod: form.paymentMethod,
+    products: form.products,
+  };
+
   useEffect(() => {
     const processPayment = async () => {
       if (vnp_ResponseCode === "00") {
@@ -46,26 +56,16 @@ const PaymentResult = () => {
         );
         setLoading(true);
 
-        const orderData = {
-          transactionId: vnp_TxnRef,
-          userId: form.userId,
-          totalPrice: form.totalPrice,
-          name: form.name,
-          addressOrder: form.addressOrder,
-          phoneNumber: form.phoneNumber,
-          paymentMethod: form.paymentMethod,
-          products: form.products,
-        };
-
         const response = await createOrder(orderData);
         setLoading(false);
 
         if (response.status === "success") {
           setOrderMessage(response.message);
+          dispatch(clearCart());
+          dispatch(clearFormValues());
         } else {
           setOrderMessage(
-            response.message ||
-              "Đơn hàng tạo thất bại, có lỗi xảy ra, vui lòng liên hệ chúng tôi",
+            "Đơn hàng tạo thất bại, có lỗi xảy ra, vui lòng liên hệ chúng tôi",
           );
         }
       } else {
@@ -74,13 +74,7 @@ const PaymentResult = () => {
         setLoading(false);
       }
     };
-
     processPayment();
-  }, []);
-
-  useEffect(() => {
-    dispatch(clearCart());
-    dispatch(clearFormValues());
   }, []);
 
   let icon;
@@ -92,7 +86,7 @@ const PaymentResult = () => {
 
   return (
     <>
-      <div className="mt-24 flex w-full flex-col px-4 lg:flex-row lg:px-0">
+      <div className="mt-24 flex w-full flex-col gap-4 px-4 lg:flex-row lg:px-0">
         {/* Left */}
         <div className="flex w-full items-center justify-center lg:w-1/2">
           <div className="relative h-96 w-2/3">
@@ -106,37 +100,38 @@ const PaymentResult = () => {
         </div>
 
         {/* Right */}
-        <div className="flex flex-col items-center gap-8">
-          {form.paymentMethod === "VNPAY" && paymentStatus === "success" && (
-            <>
-              <h1 className="text-lg font-bold lg:text-3xl">
-                Kết quả thanh toán
-              </h1>
-              <div className="flex gap-4 lg:items-center">
-                {icon}
-                <span className="lg:text-2xl">{paymentMessage}</span>
-              </div>
-            </>
-          )}
-
-          <div className="py-8">
-            {loading ? (
-              <div className="flex gap-4">
-                <p className="text-lg">{orderMessage}</p>
-                <BeatLoader loading margin={10} size={10} speedMultiplier={1} />
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-4 lg:flex-row">
-                <p className="text-lg">{orderMessage}</p>
-                <Link
-                  href={`${DETAIL_ORDER_WITH_TRANSACTION_ID}${vnp_TxnRef}`}
-                  className="text-sm font-bold underline"
-                >
-                  Nhấn vào đây để xem chi tiết đơn hàng
-                </Link>
-              </div>
-            )}
+        <div className="flex flex-col items-center gap-4">
+          <h1 className="text-lg font-bold lg:text-3xl">Kết quả thanh toán</h1>
+          <div className="flex items-center gap-4">
+            {icon}
+            <span className="lg:text-2xl">{paymentMessage}</span>
           </div>
+
+          {paymentStatus !== "failed" && (
+            <div className="py-8">
+              {loading ? (
+                <div className="flex gap-4">
+                  <p className="text-lg">{orderMessage}</p>
+                  <BeatLoader
+                    loading
+                    margin={10}
+                    size={10}
+                    speedMultiplier={1}
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-4 lg:flex-row">
+                  <p className="text-lg">{orderMessage}</p>
+                  <Link
+                    href={`${DETAIL_ORDER_WITH_TRANSACTION_ID}${vnp_TxnRef}`}
+                    className="text-sm font-bold underline"
+                  >
+                    Nhấn vào đây để xem chi tiết đơn hàng
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
           <Button
             className="mt-4 w-1/3 bg-blue-600 py-4 text-lg text-white"
             onClick={() => router.push("/")}

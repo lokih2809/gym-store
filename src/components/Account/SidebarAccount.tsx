@@ -3,7 +3,7 @@ import Button from "../common/Button";
 import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import LogOutButton from "./LogOutButton";
-import { ShieldCheck, User as UserIcon } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -59,7 +59,9 @@ const SidebarAccount = ({ user }: Props) => {
               )}
             </div>
             <span>{user?.email}</span>
-            <LogOutButton />
+            <div className="font-bold underline">
+              <LogOutButton />
+            </div>
           </div>
         </div>
 

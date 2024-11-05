@@ -27,7 +27,6 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
     color: string,
     fit: string,
     image: string,
-    colorName: string,
   ) => {
     dispatch(
       addToCart({
@@ -44,8 +43,6 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
   };
 
   const handleAddToCartLogic = (product: ProductInfo) => {
-    const colorName = product.colors[0]?.colorName;
-
     handleAddToCart(
       product.id,
       product.name,
@@ -54,7 +51,6 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
       product.colors[0].colorName,
       product.fit,
       product.colors[0].images[0],
-      colorName,
     );
   };
 

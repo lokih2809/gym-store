@@ -4,7 +4,7 @@ import { UseFormRegister } from "react-hook-form";
 interface Props {
   dataArray: string[];
   name: string;
-  register?: UseFormRegister<any>;
+  register?: UseFormRegister<FieldValues>;
   required?: boolean;
   className?: string;
   error?: string;

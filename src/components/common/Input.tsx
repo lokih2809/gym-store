@@ -29,7 +29,7 @@ const Input = ({
         </label>
         <input
           type={type || "text"}
-          {...(register && register(name))}
+          {...register?.(name)}
           id={name}
           placeholder={`Enter ${placeholder || label || name}`}
           className={`rounded-md border px-4 py-2 ${

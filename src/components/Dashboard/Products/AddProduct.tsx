@@ -3,14 +3,9 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import {
-  CATEGORIES,
-  PRODUCT_COLORS,
-  PRODUCT_FITS,
-  PRODUCT_SIZES,
-} from "@/constants/data";
+import { CATEGORIES, PRODUCT_COLORS, PRODUCT_SIZES } from "@/constants/data";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Category, ProductColor } from "@prisma/client";
+import { Category } from "@prisma/client";
 import { Camera, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -77,11 +72,11 @@ const AddNewProduct = () => {
       } else {
         throw new Error(response.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Lỗi",
-        text: error.message || "Something went wrong!",
+        text: "Something went wrong!",
         confirmButtonText: "OK",
       });
     } finally {

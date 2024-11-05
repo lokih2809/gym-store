@@ -3,12 +3,7 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import {
-  CATEGORIES,
-  PRODUCT_COLORS,
-  PRODUCT_FITS,
-  PRODUCT_SIZES,
-} from "@/constants/data";
+import { CATEGORIES, PRODUCT_COLORS, PRODUCT_SIZES } from "@/constants/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category, ProductColor } from "@prisma/client";
 import { Camera, X } from "lucide-react";

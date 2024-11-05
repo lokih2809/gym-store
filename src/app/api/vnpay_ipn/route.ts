@@ -3,12 +3,14 @@ import crypto from "crypto";
 import querystring from "qs";
 
 // Hàm sắp xếp các tham số (tương tự như hàm đã dùng ở file create_payment_url)
-function sortObject(obj: any) {
-  const sorted: { [key: string]: any } = {};
+function sortObject(obj: {
+  [key: string]: number | string | boolean | undefined;
+}) {
+  const sorted: { [key: string]: string } = {};
   const str = Object.keys(obj).sort();
 
   str.forEach((key) => {
-    sorted[key] = encodeURIComponent(obj[key]).replace(/%20/g, "+");
+    sorted[key] = encodeURIComponent(String(obj[key])).replace(/%20/g, "+");
   });
 
   return sorted;
@@ -38,8 +40,8 @@ export async function GET(req: NextRequest) {
     // So sánh secureHash nhận được và secureHash đã ký
     if (secureHash === signed) {
       // Thanh toán hợp lệ, xử lý cập nhật trạng thái đơn hàng
-      const orderId = vnp_Params["vnp_TxnRef"];
-      const rspCode = vnp_Params["vnp_ResponseCode"];
+      // const orderId = vnp_Params["vnp_TxnRef"];
+      // const rspCode = vnp_Params["vnp_ResponseCode"];
 
       // TODO: Kiểm tra và cập nhật trạng thái đơn hàng dựa trên orderId và rspCode
 

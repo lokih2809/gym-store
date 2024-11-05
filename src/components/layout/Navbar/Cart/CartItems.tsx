@@ -1,7 +1,7 @@
 import { CartItemProps, removeFromCart } from "@/app/redux/slices/cartSlice";
 import Button from "@/components/common/Button";
 import { calculateTotal } from "@/utils/utils";
-import { Heart, Router, ShoppingBag, Trash2 } from "lucide-react";
+import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -21,7 +21,7 @@ const CartItems = ({ cartItems }: Props) => {
 
   return (
     <>
-      <div className="flex h-[85vh] flex-col lg:h-[90vh]">
+      <div className="flex h-[100vh] flex-col lg:h-[90vh]">
         {/* Content */}
         <div className="scrollbar-hide flex-1 overflow-y-scroll px-8">
           {cartItems.map((item, index) => (
@@ -61,22 +61,22 @@ const CartItems = ({ cartItems }: Props) => {
 
         {/* Bottom */}
         <div className="flex flex-col gap-4 px-2">
-          <div className="space-y-4 border-y p-4 lg:p-8">
-            <div className="flex items-center justify-between text-lg">
+          <div className="space-y-4 border-y p-4 text-sm lg:p-8 lg:text-lg">
+            <div className="flex items-center justify-between">
               <span>Sub Total</span>
               <span>{calculateTotal(cartItems).toFixed(2)}</span>
             </div>
-            <div className="flex items-center justify-between text-lg">
+            <div className="flex items-center justify-between">
               <span>Standard Shipping</span>
               <span>Free</span>
             </div>
-            <div className="flex items-center justify-between text-lg font-bold">
+            <div className="flex items-center justify-between font-bold">
               <span>Total</span>
               <span>${calculateTotal(cartItems).toFixed(2)}</span>
             </div>
           </div>
 
-          <div className="mb-4 flex items-center justify-center px-8">
+          <div className="mb-[45%] flex items-center justify-center px-8 lg:mb-4">
             <Button
               className="w-full gap-4"
               onClick={() => router.push("/checkout")}

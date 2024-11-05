@@ -6,32 +6,36 @@ import sessionReducer from "./slices/sessionSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-// Cấu hình riêng cho form và session
+const createNoopStorage = () => ({
+  getItem: (_key: string) => Promise.resolve(null),
+  setItem: (_key: string, _value: any) => Promise.resolve(),
+  removeItem: (_key: string) => Promise.resolve(),
+});
+
+const isClient = typeof window !== "undefined";
+
 const formPersistConfig = {
   key: "form",
-  storage,
+  storage: isClient ? storage : createNoopStorage(),
 };
 
 const sessionPersistConfig = {
   key: "session",
-  storage,
+  storage: isClient ? storage : createNoopStorage(),
 };
 
-// Cấu hình rootPersist chỉ cho những slice không có cấu hình persist riêng
 const rootPersistConfig = {
   key: "root",
-  storage,
-  blacklist: ["form", "session"], // Loại bỏ các slice đã được persist riêng
+  storage: isClient ? storage : createNoopStorage(),
+  blacklist: ["form", "session"],
 };
 
-// Kết hợp tất cả reducer và áp dụng persist cho từng slice nếu cần thiết
 const rootReducer = combineReducers({
-  cart: cartReducer, // Không cần persist cho cart nếu không cần lưu vào storage
+  cart: cartReducer,
   form: persistReducer(formPersistConfig, formReducer),
   session: persistReducer(sessionPersistConfig, sessionReducer),
 });
 
-// Áp dụng persist cho rootReducer với cấu hình root tổng thể
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
 export const store = configureStore({

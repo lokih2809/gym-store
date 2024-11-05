@@ -1,4 +1,3 @@
-// components/RouteChangeLoader.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,13 +9,10 @@ export default function RouteChangeLoader() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Khi pathname thay đổi, kích hoạt loading
     setLoading(true);
 
-    // Giả lập thời gian load hoàn tất
     const timer = setTimeout(() => setLoading(false), 500);
 
-    // Cleanup timer khi component unmount hoặc pathname thay đổi
     return () => clearTimeout(timer);
   }, [pathname]);
 

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import SearchBoxDashboard from "../SearchBoxDashboard";
 import { formatDate, getFilteredAndPaginatedData } from "@/utils/utils";
-import { useRouter } from "next/navigation";
 import Button from "@/components/common/Button";
 import UpdateStatus from "./UpdateStatus";
 import { OrderWithUser } from "@/types/common";
@@ -13,7 +12,6 @@ interface Props {
 }
 
 const Orders = ({ listOrders }: Props) => {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
 

@@ -10,7 +10,7 @@ type PaymentMethod = {
 
 type Props = {
   methods: PaymentMethod[];
-  register: UseFormRegister<any>;
+  register: UseFormRegister<FieldValues>;
   name: string;
 };
 

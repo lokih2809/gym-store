@@ -46,7 +46,7 @@ const CartSummary = ({ cartItems, total }: Props) => {
           <div className="flex justify-between">
             <span>
               Subtotal * {cartItems.length}
-              {cartItems.length < 2 ? "item" : "items"}
+              {cartItems.length < 2 ? " item" : " items"}
             </span>
             <span>${total}</span>
           </div>
