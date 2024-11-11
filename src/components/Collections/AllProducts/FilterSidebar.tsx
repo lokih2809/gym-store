@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
 import React from "react";
 
-type Props = {
+interface Props {
   setShowFilter: (value: boolean) => void;
-};
+}
 
 const FilterSidebar = ({ setShowFilter }: Props) => {
   return (

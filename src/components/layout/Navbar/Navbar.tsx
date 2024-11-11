@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
 import UserOptions from "./UserOptions";
-import { COLLECTIONS_LINK, LOGO_1 } from "@/constants/common";
+import { LOGO_1 } from "@/constants/common";
 import Cart from "./Cart/Cart";
 import SearchDialog from "./SearchDialog";
 
@@ -54,12 +54,9 @@ const Navbar = () => {
             />
           </Link>
           <div className="hidden items-center gap-6 text-sm font-bold lg:flex">
-            {PRODUCT_CATEGORIES.map((link) => (
-              <Link
-                key={link.name}
-                href={`${COLLECTIONS_LINK}/${link.name.replace("'s", "")}`}
-              >
-                {link.name.toUpperCase()}
+            {PRODUCT_CATEGORIES.map((item) => (
+              <Link key={item.name} href={item.link}>
+                {item.name.toUpperCase()}
               </Link>
             ))}
           </div>

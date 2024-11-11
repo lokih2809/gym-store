@@ -129,24 +129,33 @@ export const deleteProduct = async (id: number) => {
     });
 
     if (!existingProduct) {
-      throw new Error(
-        `Product with ID ${id} not found or has already been deleted.`,
-      );
+      throw new Error(`Product with ID ${id} not found.`);
     }
 
-    await db.productColor.deleteMany({
+    const productInOrderItems = await db.orderItem.findMany({
       where: { productId: id },
     });
 
-    await db.productSize.deleteMany({
-      where: { productId: id },
-    });
+    if (productInOrderItems.length > 0) {
+      await db.product.update({
+        where: { id },
+        data: { deleted: true },
+      });
+      return { message: "Product soft-deleted successfully." };
+    } else {
+      await db.product.delete({
+        where: { id },
+      });
 
-    await db.product.delete({
-      where: { id },
-    });
+      await db.productColor.deleteMany({
+        where: { productId: id },
+      });
+      await db.productSize.deleteMany({
+        where: { productId: id },
+      });
 
-    return { message: "Xóa sản phẩm thành công." };
+      return { message: "Product and related data deleted successfully." };
+    }
   } catch (error) {
     console.error("Error deleting Product:", error);
     throw new Error("Failed to delete Product");
@@ -157,7 +166,6 @@ export const searchProducts = async (query: string): Promise<ProductInfo[]> => {
   if (!query || typeof query !== "string") {
     throw new Error("Invalid query");
   }
-
   try {
     const result = await db.product.findMany({
       take: 4,
@@ -182,7 +190,6 @@ export const searchProducts = async (query: string): Promise<ProductInfo[]> => {
 
 export const updateProduct = async (
   productId: number,
-  colorId: number,
   productData: {
     name: string;
     price: string;
@@ -192,7 +199,6 @@ export const updateProduct = async (
     description: string;
     sizes?: string[];
   },
-  updatedColorData: { colorName: string; images: string[] },
 ) => {
   try {
     const existingProduct = await db.product.findUnique({
@@ -202,22 +208,6 @@ export const updateProduct = async (
     if (!existingProduct) {
       return { message: "Product not found.", status: "error" };
     }
-
-    const existingColor = await db.productColor.findUnique({
-      where: { id: colorId },
-    });
-
-    if (!existingColor) {
-      return { message: "Color not found.", status: "error" };
-    }
-
-    await db.productColor.update({
-      where: { id: colorId },
-      data: {
-        colorName: updatedColorData.colorName,
-        images: updatedColorData.images,
-      },
-    });
 
     await db.product.update({
       where: { id: productId },
@@ -263,57 +253,109 @@ export const updateProduct = async (
     );
 
     return {
-      message: "Product updated successfully.",
       status: "success",
+      message: "Product updated successfully.",
     };
   } catch (error) {
-    console.error("Error updating product:", error);
     return {
-      message: "Failed to update product",
       status: "error",
+      message: "Failed to update product",
     };
   }
 };
 
-export const addProductColor = async (productId: number, colorName: string) => {
+export const addProductColor = async (
+  productId: number,
+  color: { colorName: string; images: string[] },
+) => {
+  const { colorName, images } = color;
+
   try {
+    // Check if the product exists
     const existingProduct = await db.product.findUnique({
       where: { id: productId },
       include: { colors: true },
     });
-
     if (!existingProduct) {
       return { status: "error", message: "Product not found." };
     }
 
+    // Check if the color already exists
     const existingColor = existingProduct.colors.find(
       (color) => color.colorName === colorName,
     );
-
     if (existingColor) {
-      return { status: "error", message: "Color not found." };
+      return { status: "error", message: "Color already exists." };
     }
 
+    // Create the new color
     const newColor = await db.productColor.create({
       data: {
         colorName,
-        productId: productId,
+        images,
+        productId,
       },
     });
 
-    const updatedProduct = await db.product.update({
-      where: { id: productId },
-      data: {
-        colors: {
-          connect: { id: newColor.id },
-        },
-      },
-    });
-
-    if (!updatedProduct) return { status: "error", message: "Update fail!" };
-
-    return { status: "success", message: "Add color complete!" };
+    return {
+      status: "success",
+      message: "Color added successfully!",
+      newColor,
+    };
   } catch (error) {
-    return { status: "success", message: "Add color complete!" };
+    console.error("Error adding color:", error);
+    return {
+      status: "error",
+      message: "An error occurred while adding color.",
+      error,
+    };
+  }
+};
+
+export const deleteColor = async (colorId: number) => {
+  try {
+    const response = await db.productColor.delete({
+      where: {
+        id: colorId,
+      },
+    });
+    return { status: "success", message: "Color deleted.", response };
+  } catch (error) {
+    return { status: "error", message: "Something went wrong!" };
+  }
+};
+
+export const deleteOrderItemAndCheckProduct = async (
+  orderItemId: number,
+  productId: number,
+) => {
+  try {
+    await db.orderItem.delete({
+      where: { id: orderItemId },
+    });
+
+    const remainingOrderItems = await db.orderItem.findMany({
+      where: { productId },
+    });
+
+    if (remainingOrderItems.length === 0) {
+      const product = await db.product.findUnique({
+        where: { id: productId },
+      });
+
+      if (product?.deleted) {
+        await db.product.delete({
+          where: { id: productId },
+        });
+      }
+    }
+
+    return {
+      message:
+        "Order item deleted, and product deleted if it had no remaining order items and was marked as deleted.",
+    };
+  } catch (error) {
+    console.error("Error deleting OrderItem and checking Product:", error);
+    throw new Error("Failed to delete OrderItem and/or Product");
   }
 };

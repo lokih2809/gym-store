@@ -3,7 +3,7 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import { CATEGORIES, PRODUCT_COLORS, PRODUCT_SIZES } from "@/constants/data";
+import { CATEGORIES, PRODUCT_SIZES } from "@/constants/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
 import { Camera, X } from "lucide-react";
@@ -18,21 +18,22 @@ import {
 import Swal from "sweetalert2";
 import { z } from "zod";
 import SizeSelector from "./SelectSize";
-import InputImages from "./InputImages";
 import { createProduct } from "@/lib/actions/productActions";
+import InputImages from "./InputImages";
+import { confirmWithNotification } from "@/utils/utils";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
   price: z.string().min(1, "Price is required"),
-  sku: z.string().min(8, "SKU must have at least 8 characters"),
+  sku: z.string().min(6, "SKU must have at least 6 characters"),
   category: z.nativeEnum(Category),
   fit: z.string().min(1, "Fit is required"),
   description: z.string().min(1, "Description is required"),
+  sizes: z.array(z.string()).optional(),
   color: z.string().min(1, "Color is required"),
   images: z
     .array(z.string().url("Invalid image URL"))
     .min(1, "At least one image is required"),
-  sizes: z.array(z.string()).optional(),
 });
 
 type FormValues = z.infer<typeof productSchema>;
@@ -55,32 +56,38 @@ const AddNewProduct = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     setIsLoading(true);
+    const confirmResult = await confirmWithNotification();
 
-    const response = await createProduct(values);
+    if (confirmResult.isConfirmed) {
+      const response = await createProduct(values);
 
-    try {
-      if (response.status === "success") {
+      try {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message,
+            confirmButtonText: "OK",
+          }).then(() => {
+            setShow(false);
+            router.refresh();
+          });
+        } else {
+          throw new Error(response.message);
+        }
+      } catch (error) {
         Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: response.message,
+          icon: "error",
+          title: "Lỗi",
+          text: "Something went wrong!",
           confirmButtonText: "OK",
-        }).then(() => {
-          setShow(false);
-          router.refresh();
         });
-      } else {
-        throw new Error(response.message);
+      } finally {
+        setIsLoading(false);
+        router.refresh();
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: "Something went wrong!",
-        confirmButtonText: "OK",
-      });
-    } finally {
-      setIsLoading(false);
+    } else {
+      return;
     }
   };
 
@@ -96,62 +103,26 @@ const AddNewProduct = () => {
       {/* Edit form */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="absolute z-30 flex min-w-[80%] animate-slide-in-bottom flex-col rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
+          <div className="absolute z-30 flex max-h-[100vh] min-w-[50%] animate-slide-in-bottom flex-col overflow-y-scroll rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
-              <span className="m-auto text-xl font-bold">Edit</span>
+              <span className="m-auto text-xl font-bold">Add New Product</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
             </div>
 
             <FormProvider {...methods}>
               <form
-                className="flex flex-col gap-8"
+                className="flex flex-col gap-4"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex items-center gap-4">
+                <div className="flex gap-4">
                   <Input
                     label="Name"
                     placeholder="Name"
-                    className="w-1/2"
                     name="name"
                     register={register}
                     error={errors.name?.message}
-                  />
-                  <Input
-                    label="Price"
-                    placeholder="Price"
                     className="w-1/2"
-                    name="price"
-                    register={register}
-                    error={errors.price?.message}
                   />
-                </div>
-                <div className="flex items-start gap-4">
-                  <Input
-                    label="SKU"
-                    placeholder="SKU"
-                    className="w-1/2"
-                    name="sku"
-                    register={register}
-                    error={errors.sku?.message}
-                  />
-                  <div className="flex w-1/2 gap-4">
-                    <Select
-                      dataArray={PRODUCT_COLORS}
-                      name="color"
-                      register={register}
-                      label="Color"
-                      className="w-1/2"
-                    />
-                    <Input
-                      label="Fit"
-                      className="w-1/2"
-                      name="fit"
-                      register={register}
-                      error={errors.fit?.message}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
                   <Select
                     dataArray={CATEGORIES}
                     name="category"
@@ -159,29 +130,57 @@ const AddNewProduct = () => {
                     label="Loại sản phẩm"
                     className="w-1/2"
                   />
-                  <Controller
-                    name="sizes"
-                    control={control}
-                    render={({ field }) => (
-                      <SizeSelector
-                        sizes={PRODUCT_SIZES}
-                        {...field}
-                        className="w-1/2 px-4"
-                      />
-                    )}
+                </div>
+                <div className="flex gap-4">
+                  <Input
+                    label="Price"
+                    placeholder="Price"
+                    name="price"
+                    register={register}
+                    error={errors.price?.message}
+                    className="w-1/3"
+                  />
+                  <Input
+                    label="SKU"
+                    placeholder="SKU"
+                    name="sku"
+                    register={register}
+                    error={errors.sku?.message}
+                    className="w-1/3"
+                  />
+                  <Input
+                    label="Fit"
+                    name="fit"
+                    register={register}
+                    error={errors.fit?.message}
+                    className="w-1/3"
                   />
                 </div>
+                <Controller
+                  name="sizes"
+                  control={control}
+                  render={({ field }) => (
+                    <SizeSelector sizes={PRODUCT_SIZES} {...field} />
+                  )}
+                />
                 <textarea
                   {...register("description")}
                   placeholder="Description"
-                  className="mt-4 w-full rounded-lg border border-gray-300 p-4"
+                  className="mt-4 min-h-40 w-full rounded-lg border border-gray-300 p-4"
+                />
+                <Input
+                  label="Color"
+                  name="color"
+                  register={register}
+                  error={errors.color?.message}
+                  className="w-1/2"
                 />
                 <Controller
                   name="images"
                   control={control}
                   render={({ field }) => (
                     <InputImages
-                      icon={<Camera size={60} />}
+                      icon={<Camera size={40} />}
                       label="Chọn ảnh"
                       name="images"
                       type="file"
@@ -190,8 +189,8 @@ const AddNewProduct = () => {
                     />
                   )}
                 />
-                <Button className="w-1/3" type="submit" isPrimary>
-                  {isLoading ? "Updating..." : "Update"}
+                <Button type="submit" isPrimary>
+                  {isLoading ? "Adding..." : "Add"}
                 </Button>
               </form>
             </FormProvider>

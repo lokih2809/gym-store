@@ -8,9 +8,9 @@ import CheckoutLayout from "@/components/layout/CheckoutLayout";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 const LayoutWrapper = ({ children }: Props) => {
   const pathName = usePathname();

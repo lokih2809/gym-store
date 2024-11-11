@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
 
-type Props = {
+interface Props {
   bannerSmall: string;
   bannerLarge: string;
-};
+}
 
 const Banner = ({ bannerSmall, bannerLarge }: Props) => {
   return (

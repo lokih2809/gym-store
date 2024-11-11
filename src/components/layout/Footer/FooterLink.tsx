@@ -1,13 +1,40 @@
 "use client";
 
-import { FOOTER_LINKS } from "@/constants/data";
 import { Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
-type Props = {
+const FOOTER_LINKS = [
+  {
+    title: "help",
+    links: [
+      "FAQ",
+      "Delivery Information",
+      "Returns Policy",
+      "Make A Return",
+      "Orders",
+      "Submit a Fake",
+    ],
+  },
+  {
+    title: "My Account",
+    links: ["Login", "Register"],
+  },
+  {
+    title: "Pages",
+    links: [
+      "Gymshark Central",
+      "Careers",
+      "About Us",
+      "Student Discount",
+      "Factory List",
+    ],
+  },
+];
+
+interface Props {
   isMobile?: boolean;
-};
+}
 
 const FooterLink = ({ isMobile }: Props) => {
   const [showLinks, setShowLinks] = useState<{ [key: string]: boolean }>({});

@@ -1,254 +1,138 @@
-// "use client";
+import React, { useState } from "react";
+import InputImages from "./InputImages";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import Input from "@/components/common/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "@/components/common/Button";
+import { Camera } from "lucide-react";
+import { z } from "zod";
+import { addProductColor } from "@/lib/actions/productActions";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
+import { confirmWithNotification } from "@/utils/utils";
 
-// import Button from "@/components/common/Button";
-// import Input from "@/components/common/Input";
-// import Select from "@/components/common/Select";
-// import {
-//   CATEGORIES,
-//   PRODUCT_COLORS,
-//   PRODUCT_FITS,
-//   PRODUCT_SIZES,
-// } from "@/constants/fakeData";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { Category, ProductColor } from "@prisma/client";
-// import { Camera, X } from "lucide-react";
-// import { useRouter } from "next/navigation";
-// import React, { useState } from "react";
-// import {
-//   Controller,
-//   FormProvider,
-//   SubmitHandler,
-//   useForm,
-// } from "react-hook-form";
-// import Swal from "sweetalert2";
-// import { z } from "zod";
-// import SizeSelector from "./Add/SelectSize";
-// import InputImages from "./Add/InputImages";
-// import { addProductColor, updateProduct } from "@/lib/actions/productActions";
-// import { ProductInfo } from "@/types/common";
+const productColorSchema = z.object({
+  colorName: z.string().min(1, "Color name is required"),
+  images: z
+    .array(z.string().url("Invalid image URL"))
+    .min(1, "At least one image is required"),
+});
 
-// const productSchema = z.object({
-//   name: z.string().min(1, "Product name is required"),
-//   price: z.string().min(1, "Price is required"),
-//   sku: z.string().min(8, "SKU must have at least 8 characters"),
-//   category: z.nativeEnum(Category),
-//   fit: z.string().min(1, "Fit is required"),
-//   description: z.string().min(1, "Description is required"),
-//   color: z.string().min(1, "Color is required"),
-//   images: z
-//     .array(z.string().url("Invalid image URL"))
-//     .min(1, "At least one image is required"),
-//   sizes: z.array(z.string()).optional(),
-// });
+type FormValues = z.infer<typeof productColorSchema>;
 
-// type FormValues = z.infer<typeof productSchema>;
+interface Props {
+  productId: number;
+}
 
-// interface Props {
-//   product: ProductInfo;
-//   color: ProductColor;
-// }
+const AddColor = ({ productId }: Props) => {
+  const router = useRouter();
 
-// const EditProductColor = ({ product }: Props) => {
-//   const [show, setShow] = useState<boolean>(false);
-//   const [isLoading, setIsLoading] = useState<boolean>(false);
-//   const router = useRouter();
+  const [show, setShow] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-//   const methods = useForm<FormValues>({
-//     resolver: zodResolver(productSchema),
-//     defaultValues: {
-//       name: product.name,
-//       price: product.price.toString(),
-//       sku: product.sku,
-//       category: product.category,
-//       fit: product.fit,
-//       description: product.description,
-//       sizes: product.productSizes.map((size) => size.size),
-//     },
-//   });
+  const methods = useForm<FormValues>({
+    resolver: zodResolver(productColorSchema),
+  });
 
-//   const {
-//     register,
-//     handleSubmit,
-//     control,
-//     formState: { errors },
-//   } = methods;
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = methods;
 
-//   const onSubmit: SubmitHandler<FormValues> = async (values) => {
-//     const formData = new FormData();
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    const confirmResult = await confirmWithNotification();
 
-//     Object.entries(values).forEach(([key, value]) => {
-//       if (Array.isArray(value)) {
-//         value.forEach((val) => formData.append(key, val));
-//       } else {
-//         formData.append(key, value as string | Blob);
-//       }
-//     });
+    if (confirmResult.isConfirmed) {
+      const response = await addProductColor(productId, values);
+      try {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Thêm màu thành công.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            setShow(false);
+            router.refresh();
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Thất bại",
+            text: response.message || "Something went wrong.",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Lỗi",
+          text: "Something went wrong!",
+          confirmButtonText: "OK",
+        });
+      } finally {
+        setIsLoading(false);
+        reset();
+      }
+    } else {
+      return;
+    }
+  };
 
-//     setIsLoading(true);
-//     try {
-//       const updatedColorData = {
-//         colorName: values.color,
-//         images: values.images,
-//       };
+  return (
+    <>
+      {!show && (
+        <Button isPrimary className="w-1/2 px-4" onClick={() => setShow(true)}>
+          Add New Color
+        </Button>
+      )}
 
-//       const productData = {
-//         name: values.name,
-//         price: values.price.toString(),
-//         sku: values.sku,
-//         category: values.category,
-//         fit: values.fit,
-//         description: values.description,
-//         sizes: values.sizes ?? [],
-//       };
+      {show && (
+        <div className="w-full">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              label="Color Name"
+              name="colorName"
+              register={register}
+              error={errors.colorName?.message}
+              className="w-1/2"
+            />
+            <Controller
+              name="images"
+              control={control}
+              render={({ field }) => (
+                <InputImages
+                  icon={<Camera size={40} />}
+                  label="Chọn ảnh"
+                  name="images"
+                  type="file"
+                  error={errors.images?.message}
+                  onChange={(newImages: string[]) => {
+                    field.onChange(newImages);
+                  }}
+                />
+              )}
+            />
 
-//       const response = await addProductColor(
-//         product.id,
-//         ,
-//         updatedColorData,
-//       );
+            <div className="flex gap-4 py-4">
+              <Button type="submit" isPrimary className="px-4">
+                {isLoading ? "Updating..." : "Update"}
+              </Button>
+              <Button
+                className="border bg-gray-200 px-4"
+                onClick={() => setShow(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
+  );
+};
 
-//       if (response.status === "success") {
-//         Swal.fire({
-//           icon: "success",
-//           title: "Thành công",
-//           text: response.message,
-//           confirmButtonText: "OK",
-//         }).then(() => {
-//           setShow(false);
-//           router.refresh();
-//         });
-//       } else {
-//         throw new Error(response.message);
-//       }
-//     } catch (error: any) {
-//       Swal.fire({
-//         icon: "error",
-//         title: "Lỗi",
-//         text: error.message || "Something went wrong!",
-//         confirmButtonText: "OK",
-//       });
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <button
-//         className="font-medium text-blue-500 hover:underline"
-//         onClick={() => setShow(true)}
-//       >
-//         Edit
-//       </button>
-
-//       {/* Edit form */}
-//       {show && (
-//         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-//           <div className="absolute z-30 flex h-[90%] w-[90%] animate-slide-in-bottom  flex-col rounded-lg bg-white px-4 text-black lg:animate-slide-in-right">
-//             <div className="flex justify-center p-4">
-//               <span className="m-auto text-xl font-bold">Edit</span>
-//               <X onClick={() => setShow(false)} className="cursor-pointer" />
-//             </div>
-
-//             <FormProvider {...methods}>
-//               <form
-//                 className="flex flex-col gap-4"
-//                 onSubmit={handleSubmit(onSubmit)}
-//               >
-//                 <div className="flex items-center gap-4">
-//                   <Input
-//                     label="Name"
-//                     placeholder="Name"
-//                     className="w-1/2"
-//                     name="name"
-//                     register={register}
-//                     error={errors.name?.message}
-//                   />
-//                   <Input
-//                     label="Price"
-//                     placeholder="Price"
-//                     className="w-1/2"
-//                     name="price"
-//                     register={register}
-//                     error={errors.price?.message}
-//                   />
-//                 </div>
-//                 <div className="flex items-start gap-4">
-//                   <Input
-//                     label="SKU"
-//                     placeholder="SKU"
-//                     className="w-1/2"
-//                     name="sku"
-//                     register={register}
-//                     error={errors.sku?.message}
-//                   />
-//                   <div className="flex w-1/2 gap-4">
-//                     <Select
-//                       dataArray={PRODUCT_COLORS}
-//                       name="color"
-//                       register={register}
-//                       label="Color"
-//                       className="w-1/2"
-//                     />
-//                     <Input
-//                       label="Fit"
-//                       className="w-1/2"
-//                       name="fit"
-//                       register={register}
-//                       error={errors.fit?.message}
-//                     />
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center gap-4">
-//                   <Select
-//                     dataArray={CATEGORIES}
-//                     name="category"
-//                     register={register}
-//                     label="Loại sản phẩm"
-//                     className="w-1/2"
-//                   />
-//                   <Controller
-//                     name="sizes"
-//                     control={control}
-//                     render={({ field }) => (
-//                       <SizeSelector
-//                         sizes={PRODUCT_SIZES}
-//                         {...field}
-//                         className="w-1/2 px-4"
-//                       />
-//                     )}
-//                   />
-//                 </div>
-//                 <textarea
-//                   {...register("description")}
-//                   placeholder="Description"
-//                   className="mt-4 w-full rounded-lg border border-gray-300 p-4"
-//                 />
-//                 <Controller
-//                   name="images"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <InputImages
-//                       icon={<Camera size={100} />}
-//                       label="Chọn ảnh"
-//                       name="images"
-//                       type="file"
-//                       error={errors.images?.message}
-//                       onChange={field.onChange}
-//                       defaultImages={color.images}
-//                     />
-//                   )}
-//                 />
-//                 <Button className="w-1/3" type="submit">
-//                   {isLoading ? "Updating..." : "Update"}
-//                 </Button>
-//               </form>
-//             </FormProvider>
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default EditProductColor;
+export default AddColor;

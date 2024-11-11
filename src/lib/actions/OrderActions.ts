@@ -42,7 +42,6 @@ export const findOrders = async ({
 
     return { status: "success", listOrders };
   } catch (error) {
-    console.log(error);
     return { status: "error", listOrders: [] };
   }
 };
@@ -112,9 +111,13 @@ export const createOrder = async (formData: CreateOrderFormData) => {
       },
     });
 
-    return { status: "success", message: "Tạo đơn hàng thành công!", order };
+    return {
+      status: "success",
+      message:
+        "Tạo đơn hàng thành công, vui lòng ấn vào link bên dưới để xem chi tiết!",
+      order,
+    };
   } catch (error) {
-    console.log(error);
     return {
       status: "error",
       message: "Có lỗi xảy ra vui lòng liên hệ với chúng tôi.",
@@ -140,6 +143,7 @@ export const updateStatus = async (id: number, status: Status) => {
     });
 
     return {
+      updateOrderStatus,
       status: "success",
       message: "Status updated successfully.",
     };

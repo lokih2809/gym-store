@@ -26,8 +26,9 @@ model Product {
   createdAt    DateTime       @default(now())
   colors       ProductColor[] @relation("ProductColors")
   productSizes ProductSize[]
+  orderItems   OrderItem[]
 
-  orderItems OrderItem[]
+  deleted Boolean @default(false)
 }
 
 model ProductColor {
@@ -73,8 +74,6 @@ model User {
 enum PaymentMethod {
   SHIPCOD
   VNPAY
-  MOMO
-  GPAY
 }
 
 enum PaymentStatus {

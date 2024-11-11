@@ -1,13 +1,13 @@
 import React, { ReactNode } from "react";
 
-type Props = {
+interface Props {
   children?: ReactNode;
   className?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   isPrimary?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-};
+}
 
 const Button = ({
   children,

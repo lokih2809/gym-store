@@ -6,13 +6,12 @@ DashboardSidebar;
 import DashboardNavbar from "./Navbar/DashboardNavbar";
 import RightBar from "../Dashboard/RightBar";
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 const AdminLayout = ({ children }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  console.log(setIsSidebarOpen);
 
   return (
     <>

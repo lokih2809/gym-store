@@ -4,10 +4,16 @@ import Image from "next/image";
 const RightBar = () => {
   return (
     <>
-      <div className="top-1/2 hidden w-1/5 space-y-8 text-white lg:block">
+      <div className="top-1/2 hidden w-1/5 space-y-8 text-white xl:block">
         <div className="relative rounded-lg bg-dashboard p-6">
           <div className="absolute bottom-5 right-5 z-0 h-24 w-24 opacity-50">
-            <Image src="/astronaut.png" alt="" fill object-cover />
+            <Image
+              src="/astronaut.png"
+              alt=""
+              fill
+              className="object-contain"
+              sizes="10vw"
+            />
           </div>
           <div className="flex flex-col gap-4">
             <span className="font-bold">🔥 Available Now</span>

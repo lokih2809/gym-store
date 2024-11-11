@@ -3,9 +3,9 @@ import Notification from "./Navbar/Notification";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 const UserLayout = ({ children }: Props) => {
   return (

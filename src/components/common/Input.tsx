@@ -1,7 +1,7 @@
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 
-type Props = {
+interface Props {
   label?: string;
   placeholder?: string;
   name: string;
@@ -9,7 +9,7 @@ type Props = {
   type?: string;
   register?: UseFormRegister<any>;
   className?: string;
-};
+}
 
 const Input = ({
   label,

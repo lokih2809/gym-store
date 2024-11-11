@@ -3,16 +3,16 @@ import Image from "next/image";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
 
-type PaymentMethod = {
+interface PaymentMethod {
   name: PaymentMethodEnum;
   logo: string;
-};
+}
 
-type Props = {
+interface Props {
   methods: PaymentMethod[];
-  register: UseFormRegister<FieldValues>;
+  register: UseFormRegister<any>;
   name: string;
-};
+}
 
 const SelectMethod = ({ methods, register, name }: Props) => {
   return (

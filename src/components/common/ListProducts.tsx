@@ -10,10 +10,10 @@ import { notFound } from "next/navigation";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-type Props = {
+interface Props {
   forHomepage?: boolean;
   listProducts?: ProductInfo[];
-};
+}
 
 const ListProducts = ({ forHomepage, listProducts }: Props) => {
   const dispatch = useDispatch();

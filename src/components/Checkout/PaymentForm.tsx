@@ -7,7 +7,6 @@ import { LOGO_VNPAY } from "@/constants/common";
 import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Input from "../common/Input";
-import { PAYMENT_METHOD } from "@/constants/data";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PaymentMethodEnum } from "@/types/common";
@@ -17,7 +16,18 @@ import { RootState } from "@/app/redux/store";
 import { FormState, setFormValues } from "@/app/redux/slices/formSlice";
 import SelectMethod from "./SelectMethod";
 import Swal from "sweetalert2"; // Import SweetAlert2
-import { createOrder } from "@/lib/actions/OrderActions";
+import { confirmWithNotification } from "@/utils/utils";
+
+export const PAYMENT_METHOD = [
+  {
+    name: PaymentMethodEnum.SHIPCOD,
+    logo: "/Logo-ShipCod.png",
+  },
+  {
+    name: PaymentMethodEnum.VNPAY,
+    logo: "/Logo-VnPay.webp",
+  },
+];
 
 const FormSchema = z.object({
   name: z
@@ -90,14 +100,9 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
       })),
     };
 
-    const confirmResult = await Swal.fire({
-      title: "Confirm Order",
-      text: "Do you want to confirm your order?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
+    const confirmResult = await confirmWithNotification(
+      "Do you want to confirm your order?",
+    );
 
     if (confirmResult.isConfirmed) {
       await dispatch(setFormValues({ ...forms, ...newForm }));
@@ -114,19 +119,10 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
           paymentMethod: newForm.paymentMethod,
           products: newForm.products,
         };
-
-        try {
-          const response = await createOrder(orderData);
-          if (response.status === "success") {
-            router.push(
-              `/payment-result?vnp_TxnRef=${transactionId}&vnp_ResponseCode=00&shipcod`,
-            );
-          } else {
-            console.error("Error creating order:", response);
-          }
-        } catch (error) {
-          console.log("Error creating order:", error);
-        }
+        await dispatch(setFormValues(orderData));
+        await router.push(
+          `/payment-result?vnp_TxnRef=${transactionId}&ship_cod=00`,
+        );
       } else {
         try {
           const response = await fetch("/api/create_payment_url", {

@@ -6,16 +6,28 @@ import { useEffect, useRef, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import Image from "next/image";
 import { BeatLoader } from "react-spinners";
-import { KEYWORD_SEARCH } from "@/constants/data";
 import { searchProducts } from "@/lib/actions/productActions";
 import { ProductColor } from "@prisma/client";
 import { ProductInfo } from "@/types/common";
 import { PRODUCT_LINK } from "@/constants/common";
 import SearchBox from "./SearchBox";
 
-type Props = {
+export const KEYWORD_SEARCH = [
+  "t shirt",
+  "short",
+  "joggers",
+  "leggings",
+  "hoodie",
+  "compression",
+  "oversized",
+  "mini bag",
+  "socks",
+  "pants",
+];
+
+interface Props {
   setIsDialogOpen: (value: boolean) => void;
-};
+}
 
 const SearchDialog = ({ setIsDialogOpen }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -110,7 +122,7 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
 
           {/* Content */}
           {searchValue === "" ? (
-            <div className="lg:px-[15vw]">
+            <div className="lg:px-[10vw] xl:px-[15vw]">
               {/* Keyword population */}
               <div className="space-y-4 pb-12">
                 <h3 className="font-bold uppercase">Trending Searches</h3>
@@ -132,7 +144,7 @@ const SearchDialog = ({ setIsDialogOpen }: Props) => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col gap-8 pb-12 lg:flex-row lg:px-[15vw]">
+            <div className="flex flex-col gap-8 pb-12 lg:flex-row lg:px-[5vw] xl:px-[15vw]">
               {/* Suggestions */}
               <div className="flex flex-col gap-4">
                 <span className="text-sm font-bold uppercase">Suggestions</span>

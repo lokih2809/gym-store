@@ -35,6 +35,7 @@ const PaymentResult = () => {
 
   const vnp_ResponseCode = searchParams?.get("vnp_ResponseCode");
   const vnp_TxnRef = searchParams?.get("vnp_TxnRef") || "";
+  const shipCodParams = searchParams?.get("ship_cod");
 
   const orderData = {
     transactionId: vnp_TxnRef,
@@ -66,6 +67,19 @@ const PaymentResult = () => {
         } else {
           setOrderMessage(
             "Đơn hàng tạo thất bại, có lỗi xảy ra, vui lòng liên hệ chúng tôi",
+          );
+        }
+      } else if (shipCodParams === "00") {
+        const response = await createOrder(orderData);
+        setLoading(false);
+
+        if (response.status === "success") {
+          setOrderMessage(response.message);
+          dispatch(clearCart());
+          dispatch(clearFormValues());
+        } else {
+          setOrderMessage(
+            "Đơn hàng bạn đã tồn tại, nếu có lỗi xảy ra vui lòng liên hệ chúng tôi !",
           );
         }
       } else {
@@ -101,11 +115,17 @@ const PaymentResult = () => {
 
         {/* Right */}
         <div className="flex flex-col items-center gap-4">
-          <h1 className="text-lg font-bold lg:text-3xl">Kết quả thanh toán</h1>
-          <div className="flex items-center gap-4">
-            {icon}
-            <span className="lg:text-2xl">{paymentMessage}</span>
-          </div>
+          {form.paymentMethod !== "SHIPCOD" && (
+            <>
+              <h1 className="text-lg font-bold lg:text-3xl">
+                Kết quả thanh toán
+              </h1>
+              <div className="flex items-center gap-4">
+                {icon}
+                <span className="lg:text-2xl">{paymentMessage}</span>
+              </div>{" "}
+            </>
+          )}
 
           {paymentStatus !== "failed" && (
             <div className="py-8">
@@ -120,7 +140,7 @@ const PaymentResult = () => {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-4 lg:flex-row">
+                <div className="flex flex-col items-center gap-4 xl:flex-row">
                   <p className="text-lg">{orderMessage}</p>
                   <Link
                     href={`${DETAIL_ORDER_WITH_TRANSACTION_ID}${vnp_TxnRef}`}
@@ -133,7 +153,7 @@ const PaymentResult = () => {
             </div>
           )}
           <Button
-            className="mt-4 w-1/3 bg-blue-600 py-4 text-lg text-white"
+            className="mt-4 w-1/3 bg-blue-600 px-6 py-4 text-lg text-white"
             onClick={() => router.push("/")}
           >
             Trang chủ

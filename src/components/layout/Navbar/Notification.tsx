@@ -1,11 +1,16 @@
 "use client";
 
-import { NOTIFICATION_MESSAGES } from "@/constants/data";
 import React, { useEffect, useState } from "react";
 
-type Props = {
+export const NOTIFICATION_MESSAGES = [
+  "10% student discount",
+  "free 30-day return policy. *exclusive apply ",
+  "shipping: please refer to our delivery information",
+];
+
+interface Props {
   isMobile?: boolean;
-};
+}
 
 const Notification = ({ isMobile }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,7 +29,7 @@ const Notification = ({ isMobile }: Props) => {
       >
         <div
           key={NOTIFICATION_MESSAGES[currentIndex]}
-          className="absolute transform animate-slide-in"
+          className="animate-slide-in absolute transform"
         >
           <span
             className={`block cursor-pointer text-sm font-bold hover:underline ${isMobile && "text-xs"}`}

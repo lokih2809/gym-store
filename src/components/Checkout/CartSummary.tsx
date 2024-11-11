@@ -2,10 +2,10 @@ import { CartItemProps } from "@/app/redux/slices/cartSlice";
 import Image from "next/image";
 import React from "react";
 
-type Props = {
+interface Props {
   cartItems: CartItemProps[];
   total: string;
-};
+}
 
 const CartSummary = ({ cartItems, total }: Props) => {
   return (

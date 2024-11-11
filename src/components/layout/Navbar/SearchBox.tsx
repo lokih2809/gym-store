@@ -1,14 +1,14 @@
 import React from "react";
 import { Search, X } from "lucide-react";
 
-type Props = {
+interface Props {
   disable?: boolean;
   className?: string;
   searchValue?: string;
   onClick?: () => void;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleClear?: () => void;
-};
+}
 
 const SearchBox = ({
   disable,

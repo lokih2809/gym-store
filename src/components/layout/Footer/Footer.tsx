@@ -87,7 +87,9 @@ const Footer = () => {
                         src={item.img}
                         alt=""
                         fill
+                        sizes="(max-width: 1280px) 44vw, 45vw"
                         className="object-cover"
+                        priority
                       />
                     </div>
                     <div className="w-full bg-gray-300 p-2">

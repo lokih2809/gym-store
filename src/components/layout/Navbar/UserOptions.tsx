@@ -34,6 +34,11 @@ const UserOptions = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
+            {user.role === "ADMIN" && (
+              <MenuItem onClick={handleClose}>
+                <Link href="/dashboard">Admin</Link>
+              </MenuItem>
+            )}
             <MenuItem onClick={handleClose}>
               <Link href="/account">Profile</Link>
             </MenuItem>

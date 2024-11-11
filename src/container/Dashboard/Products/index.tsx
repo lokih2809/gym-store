@@ -4,8 +4,11 @@ import React from "react";
 
 const ProductsManageContainer = async () => {
   const listProducts = await db.product.findMany({
+    where: {
+      deleted: false,
+    },
     orderBy: {
-      id: "asc",
+      id: "desc",
     },
     include: {
       colors: true,

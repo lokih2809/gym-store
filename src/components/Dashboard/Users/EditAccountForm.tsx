@@ -5,6 +5,7 @@ import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
 import { editUser } from "@/lib/actions/authActions";
 import { UserWithoutPassword } from "@/types/common";
+import { confirmWithNotification } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -58,26 +59,36 @@ const EditAccountForm = ({ user }: Props) => {
       formData.append(key, value || "");
     }
 
-    const response = await editUser(user.id, formData);
+    const confirmResult = await confirmWithNotification();
+    if (confirmResult.isConfirmed) {
+      try {
+        const response = await editUser(user.id, formData);
 
-    setIsLoading(false);
-    if (response.status === "success") {
-      Swal.fire({
-        icon: "success",
-        title: "Thành công",
-        text: response.message || "Tạo tài khoản người dùng thành công.",
-        confirmButtonText: "OK",
-      }).then(() => {
-        setShow(false);
-        router.refresh();
-      });
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Tạo tài khoản người dùng thành công.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            setShow(false);
+            router.refresh();
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: response.message || "Có lỗi xảy ra ! vui lòng thử lại sau",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: response.message || "Có lỗi xảy ra ! vui lòng thử lại sau",
-        confirmButtonText: "OK",
-      });
+      return;
     }
   };
 

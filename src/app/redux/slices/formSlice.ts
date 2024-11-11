@@ -36,7 +36,7 @@ const formSlice = createSlice({
     setUserInForm(state, action: PayloadAction<string>) {
       state.userId = action.payload;
     },
-    clearFormValues(state) {
+    clearFormValues() {
       return initialState;
     },
   },

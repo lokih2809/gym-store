@@ -2,6 +2,7 @@ import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
 import { createUser } from "@/lib/actions/authActions";
+import { confirmWithNotification } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -39,28 +40,35 @@ const CreateAccountForm = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (values: any) => {
     setIsLoading(true);
+    const confirmResult = await confirmWithNotification();
 
-    const response = await createUser(values);
-
-    setIsLoading(false);
-    if (response.status === "success") {
-      Swal.fire({
-        icon: "success",
-        title: "Thành công",
-        text: response.message || "Tạo tài khoản người dùng thành công.",
-        confirmButtonText: "OK",
-      }).then(() => {
-        setShow(false);
-        reset();
-        router.refresh();
-      });
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: response.message || "Có lỗi xảy ra! Vui lòng thử lại sau.",
-        confirmButtonText: "OK",
-      });
+    if (confirmResult.isConfirmed) {
+      const response = await createUser(values);
+      try {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Tạo tài khoản người dùng thành công.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            setShow(false);
+            reset();
+            router.refresh();
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: response.message || "Có lỗi xảy ra! Vui lòng thử lại sau.",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 

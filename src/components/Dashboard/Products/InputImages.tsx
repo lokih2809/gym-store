@@ -94,7 +94,7 @@ const InputImages: React.FC<InputImagesProps> = ({
       {error && <small className="text-red-500">{error}</small>}
       <div className="w-full">
         <h3 className="py-4 font-bold">Preview</h3>
-        <div className="flex flex-wrap gap-4">
+        <div className="scrollbar-hide flex flex-wrap gap-4 overflow-x-scroll">
           {imagesPreview.map((item, index) => (
             <div className="relative" key={index}>
               <div

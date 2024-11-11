@@ -54,16 +54,7 @@ export const handleDelete = async (
   entityType: EntityType,
   router?: any,
 ) => {
-  const confirmed = await Swal.fire({
-    icon: "warning",
-    title: "Xác nhận",
-    text:
-      entityType === "user"
-        ? "Bạn có thực sự muốn xóa nguời dùng này chứ!"
-        : "Bạn có thực sự muốn xóa sản phẩm này chứ!",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-  });
+  const confirmed = await confirmWithNotification();
 
   try {
     if (entityType === "user") {
@@ -102,4 +93,17 @@ export const calculateTotal = (items: CartItemProps[]): number => {
   return items.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
+};
+
+export const confirmWithNotification = (message?: string) => {
+  const confirmResult = Swal.fire({
+    title: "Confirm",
+    text: message || "Do you want to confirm your change?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes",
+    cancelButtonText: "No",
+  });
+
+  return confirmResult;
 };

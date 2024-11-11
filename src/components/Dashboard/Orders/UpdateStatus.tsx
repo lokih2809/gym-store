@@ -11,9 +11,9 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-type Props = {
+interface Props {
   order: OrderWithUser;
-};
+}
 
 type FormValues = {
   status: "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELED";
@@ -44,9 +44,16 @@ const UpdateStatus = ({ order }: Props) => {
           setShow(false);
           router.refresh();
         });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: response.message || "Cập nhật trạng thái thất bại.",
+          confirmButtonText: "OK",
+        });
       }
     } catch (error) {
-      console.error("Update failed", error);
+      console.error(error);
     }
   };
 

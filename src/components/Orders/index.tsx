@@ -1,9 +1,9 @@
 import { OrderItemWithProduct, OrderWithProduct } from "@/types/common";
 import React from "react";
 
-type Props = {
+interface Props {
   order: OrderWithProduct;
-};
+}
 
 const OrderDetail = ({ order }: Props) => {
   return (

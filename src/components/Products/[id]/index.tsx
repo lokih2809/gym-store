@@ -40,16 +40,6 @@ const ProductDetail = ({
   };
 
   const handleAddToCart = () => {
-    const colorId = productInfo.colors.find(
-      (color) => color.colorName === selectedColor,
-    )?.id;
-
-    const sizeId =
-      (selectedSize &&
-        productInfo.productSizes.find((size) => size.size === selectedSize)
-          ?.id) ||
-      null;
-
     dispatch(
       addToCart({
         id: productInfo.id,

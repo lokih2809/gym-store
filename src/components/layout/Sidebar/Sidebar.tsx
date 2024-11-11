@@ -1,17 +1,27 @@
 import { Heart, Sun, X } from "lucide-react";
 import React, { useState } from "react";
-import {
-  PRODUCT_CATEGORIES,
-  ADDITIONAL_OPTIONS,
-  RECOMMENDED_CATEGORIES,
-} from "@/constants/data";
+import { PRODUCT_CATEGORIES } from "@/constants/data";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { COLLECTIONS_LINK } from "@/constants/common";
 
-type Props = {
+export const RECOMMENDED_CATEGORIES = [
+  "popular",
+  "products",
+  "explore",
+  "ACCESSORIES",
+  "sale",
+];
+
+export const ADDITIONAL_OPTIONS = [
+  "accessibility statement",
+  "Help",
+  "email sign up",
+  "blog",
+];
+
+interface Props {
   setIsSidebarOpen: (value: boolean) => void;
-};
+}
 
 const Sidebar = ({ setIsSidebarOpen }: Props) => {
   const router = useRouter();
@@ -23,9 +33,9 @@ const Sidebar = ({ setIsSidebarOpen }: Props) => {
     setActiveCategory(category);
   };
 
-  const handlePageChange = (name: string) => {
+  const handlePageChange = (link: string) => {
     setIsSidebarOpen(false);
-    router.push(`${COLLECTIONS_LINK}/${name.replace("'s", "")}`);
+    router.push(link);
   };
 
   return (
@@ -74,7 +84,7 @@ const Sidebar = ({ setIsSidebarOpen }: Props) => {
                       alt=""
                       fill
                       className="rounded-lg object-cover"
-                      onClick={() => handlePageChange(item.name)}
+                      onClick={() => handlePageChange(item.link)}
                     />
                     <span className="absolute bottom-2 left-4 text-sm font-bold text-white">
                       NEW RELEASES

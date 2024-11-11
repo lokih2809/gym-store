@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
 import Link from "next/link";
-import { COLLECTIONS_LINK } from "@/constants/common";
 import CartItems from "./CartItems";
 import Button from "@/components/common/Button";
 
@@ -32,7 +31,7 @@ const Cart = () => {
       <div
         className={`fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-25 ${!isCartOpen && "hidden"}`}
       >
-        <div className="fixed bottom-0 left-0 right-0 top-0 z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white lg:left-3/4 lg:top-0 lg:animate-slide-in-right">
+        <div className="lg: fixed bottom-0 left-0 right-0 top-0 z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white lg:left-1/2 lg:top-0 lg:animate-slide-in-right xl:left-2/3">
           {/* Top */}
           <div className="flex items-center p-4 lg:p-8">
             <b className="mx-auto uppercase">Your bag</b>
@@ -48,11 +47,12 @@ const Cart = () => {
               <CartItems cartItems={cartItems} />
             ) : (
               <div className="m-auto flex flex-col items-center justify-center gap-3 lg:gap-8">
-                <div className="relative h-[30vw] w-[30vw] lg:size-60">
+                <div className="relative h-[10vw] w-[10vw]">
                   <Image
                     src={"/noProduct.jpg"}
                     alt=""
                     fill
+                    sizes="(max-width: 1280px) 10vw, 20vw"
                     className="object-cover"
                   />
                 </div>
@@ -60,13 +60,10 @@ const Cart = () => {
                 <span className="text-gray-400">
                   There are no products in your bag
                 </span>
-                {PRODUCT_CATEGORIES.map((i) => (
-                  <Link
-                    key={i.name}
-                    href={`${COLLECTIONS_LINK}/${i.name.replace("'s", "")}`}
-                  >
+                {PRODUCT_CATEGORIES.map((item) => (
+                  <Link key={item.name} href={item.link}>
                     <Button className="w-[40vw] lg:w-60" isPrimary>
-                      Shop {i.name}
+                      Shop {item.name}
                     </Button>
                   </Link>
                 ))}

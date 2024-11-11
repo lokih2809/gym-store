@@ -1,55 +1,59 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 
-type Props = {
+interface Props {
   sizes: string[];
   className?: string;
-};
+}
 
-const SizeSelector = ({ sizes, className }: Props) => {
-  const { control } = useFormContext();
+const SizeSelector = forwardRef<HTMLDivElement, Props>(
+  ({ sizes, className = "" }: Props, ref) => {
+    const { control } = useFormContext();
 
-  return (
-    <>
-      <div className={`flex flex-col ${className}`}>
-        <p className="text-sm font-bold">Select Size:</p>
-        <div className="flex flex-wrap items-center gap-8 py-2">
-          {sizes.map((size) => (
-            <label
-              key={size}
-              className="flex items-center justify-center text-center"
-            >
-              <Controller
-                name="sizes"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="checkbox"
-                    value={size}
-                    checked={field.value?.includes(size)}
-                    onChange={(e) => {
-                      const selectedSizes = field.value || [];
-                      if (e.target.checked) {
-                        field.onChange([...selectedSizes, size]);
-                      } else {
-                        field.onChange(
-                          selectedSizes.filter((s: string) => s !== size),
-                        );
-                      }
-                    }}
-                    className="mr-2 size-4"
-                  />
-                )}
-              />
-              {size}
-            </label>
-          ))}
+    return (
+      <>
+        <div ref={ref} className={`flex items-center gap-4 ${className}`}>
+          <p className="text-sm font-bold">Select Size:</p>
+          <div className="flex flex-wrap items-center gap-4 p-2">
+            {sizes.map((size) => (
+              <label
+                key={size}
+                className="flex items-center justify-center text-center"
+              >
+                <Controller
+                  name="sizes"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="checkbox"
+                      value={size}
+                      checked={field.value?.includes(size) || false} // Đảm bảo checked không gây lỗi
+                      onChange={(e) => {
+                        const selectedSizes = field.value || []; // Nếu field.value là undefined, sử dụng mảng rỗng
+                        if (e.target.checked) {
+                          field.onChange([...selectedSizes, size]); // Thêm size vào danh sách đã chọn
+                        } else {
+                          field.onChange(
+                            selectedSizes.filter((s: string) => s !== size),
+                          ); // Loại bỏ size khỏi danh sách
+                        }
+                      }}
+                      className="mr-2 size-4"
+                    />
+                  )}
+                />
+                {size}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  },
+);
+
+SizeSelector.displayName = "SizeSelector";
 
 export default SizeSelector;
