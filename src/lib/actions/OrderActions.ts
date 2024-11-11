@@ -155,3 +155,43 @@ export const updateStatus = async (id: number, status: Status) => {
     };
   }
 };
+
+export const getUserCountsAndPercentageChange = async () => {
+  const now = new Date();
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay());
+
+  const startOfLastWeek = new Date(startOfWeek);
+  startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+
+  const endOfLastWeek = new Date(startOfLastWeek);
+  endOfLastWeek.setDate(endOfLastWeek.getDate() + 6);
+
+  const totalUsers = await db.user.count();
+
+  const usersThisWeek = await db.user.count({
+    where: {
+      createdAt: {
+        gte: startOfWeek,
+      },
+    },
+  });
+
+  const usersLastWeek = await db.user.count({
+    where: {
+      createdAt: {
+        gte: startOfLastWeek,
+        lt: startOfWeek,
+      },
+    },
+  });
+
+  let percentageChange = 0;
+  if (usersLastWeek > 0) {
+    percentageChange = ((usersThisWeek - usersLastWeek) / usersLastWeek) * 100;
+  } else if (usersThisWeek > 0) {
+    percentageChange = 100;
+  }
+
+  return { totalUsers, usersThisWeek, percentageChange };
+};

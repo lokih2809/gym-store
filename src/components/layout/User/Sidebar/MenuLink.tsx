@@ -19,7 +19,7 @@ const MenuLink = ({ item }: Props) => {
     <>
       <Link
         href={item.path}
-        className={`flex cursor-pointer items-center gap-4 px-4 py-4 text-sm font-bold hover:bg-gray-200 ${pathname === item.path ? "bg-gray-200" : ""}`}
+        className={`flex cursor-pointer items-center gap-6 px-4 py-4 font-bold ${pathname === item.path ? "text-highlight" : ""}`}
       >
         {item.icon}
         {item.title}

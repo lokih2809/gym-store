@@ -2,11 +2,11 @@
 
 import React from "react";
 import { redirect, usePathname } from "next/navigation";
-import AdminLayout from "@/components/layout/AdminLayout";
-import UserLayout from "@/components/layout/UserLayout";
-import CheckoutLayout from "@/components/layout/CheckoutLayout";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import AdminLayout from "@/components/layout/Admin/AdminLayout";
+import CheckoutLayout from "@/components/layout/CheckoutLayout";
+import UserLayout from "@/components/layout/User/UserLayout";
 
 interface Props {
   children: React.ReactNode;

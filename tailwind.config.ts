@@ -11,7 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        dashboard: "#192237",
+        primary: "#1A1C22",
+        second: "#282C35",
+        highlight: "#1FCB4F",
       },
       fontFamily: {
         Montserrat: ["Montserrat", "sans-serif"],

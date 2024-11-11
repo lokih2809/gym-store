@@ -13,9 +13,9 @@ const DashboardNavbar = ({ setIsSidebarOpen }: Props) => {
 
   return (
     <>
-      <div className="flex items-center justify-between border-b py-4 lg:p-6">
+      <div className="bg-primary flex items-center justify-between border-b py-6 text-white xl:p-8">
         <Menu onClick={() => setIsSidebarOpen(true)} className="lg:hidden" />
-        <span className="font-bold capitalize">
+        <span className="text-xl font-bold capitalize">
           {pathname.split("/").pop()}
         </span>
 

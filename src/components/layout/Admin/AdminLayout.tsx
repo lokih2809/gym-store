@@ -1,10 +1,8 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
-import DashboardSidebar from "./Sidebar/DashboardSidebar";
-DashboardSidebar;
-import DashboardNavbar from "./Navbar/DashboardNavbar";
-import RightBar from "../Dashboard/RightBar";
+import DashboardSidebar from "./DashboardSidebar";
+import DashboardNavbar from "./DashboardNavbar";
 
 interface Props {
   children: ReactNode;
@@ -15,17 +13,14 @@ const AdminLayout = ({ children }: Props) => {
 
   return (
     <>
-      <div className="flex gap-4 px-2">
+      <div className="bg-second flex h-full">
         <DashboardSidebar
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <div className="flex-1 space-y-4">
+        <div className="flex-1">
           <DashboardNavbar setIsSidebarOpen={setIsSidebarOpen} />
-          <div className="flex gap-4">
-            <div className="flex-1">{children}</div>
-            <RightBar />
-          </div>
+          <div className="bg-second h-auto">{children}</div>
         </div>
       </div>
     </>

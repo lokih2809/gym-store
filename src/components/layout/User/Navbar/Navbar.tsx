@@ -7,7 +7,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
 import UserOptions from "./UserOptions";
 import { LOGO_1 } from "@/constants/common";
-import Cart from "./Cart/Cart";
+import Cart from "../../Cart/Cart";
 import SearchDialog from "./SearchDialog";
 
 const Navbar = () => {
