@@ -26,11 +26,11 @@ const Orders = ({ listOrders }: Props) => {
   const previousPage = () => setCurrentPage(handlePrevious());
   return (
     <>
-      <div className="relative space-y-8 rounded-lg bg-dashboard p-8 text-white">
+      <div className="bg-dashboard relative space-y-8 rounded-lg p-8 text-white">
         {/* Top */}
         <div className="flex items-center justify-between">
           <SearchBoxDashboard
-            placeholder="Search for a user"
+            placeholder="Search for a order"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -64,9 +64,7 @@ const Orders = ({ listOrders }: Props) => {
                 <th scope="col" className="px-6 py-3">
                   Status
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Action
-                </th>
+                <th scope="col" className="px-6 py-3"></th>
               </tr>
             </thead>
             <tbody>

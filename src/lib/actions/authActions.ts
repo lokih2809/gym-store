@@ -50,7 +50,7 @@ export const createUser = async (formData: FormData) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await db.user.create({
+    await db.user.create({
       data: {
         username,
         email,

@@ -186,6 +186,7 @@ const AddNewProduct = () => {
                       type="file"
                       error={errors.images?.message}
                       onChange={field.onChange}
+                      isArray
                     />
                   )}
                 />

@@ -34,6 +34,7 @@ export type UserWithoutPassword = {
   email: string;
   username: string;
   name: string | null;
+  phoneNumber: string | null;
   createdAt: Date;
   updatedAt: Date;
   role: Role;

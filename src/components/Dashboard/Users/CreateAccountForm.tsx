@@ -19,6 +19,11 @@ const userSchema = z.object({
     .min(1, "Password is required")
     .min(8, "Password must have more than 8 characters"),
   name: z.string().min(1, "Name is required"),
+  phoneNumber: z
+    .string()
+    .regex(/^\d+$/, "Phone number must contain only digits")
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number cannot exceed 15 digits"),
   address: z.string().nullable(),
   role: z.enum(["CUSTOMER", "ADMIN"]),
 });
@@ -125,6 +130,13 @@ const CreateAccountForm = () => {
                 name="name"
                 register={register}
                 error={errors.name?.message}
+              />
+              <Input
+                label="Phone Number"
+                placeholder="Phone Number"
+                name="phoneNumber"
+                register={register}
+                error={errors.phoneNumber?.message}
               />
               <Input
                 label="Address"

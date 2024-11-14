@@ -39,7 +39,7 @@ const Products = ({ listProducts }: Props) => {
 
   return (
     <>
-      <div className="space-y-8 rounded-lg bg-dashboard p-8 text-white">
+      <div className="bg-dashboard space-y-8 rounded-lg p-8 text-white">
         {/* Top */}
         <div className="flex items-center justify-between">
           <SearchBoxDashboard
@@ -100,7 +100,7 @@ const Products = ({ listProducts }: Props) => {
                     </td>
                     <td className="flex gap-2 px-6 py-4">
                       <MoreOption product={product} />
-                      <span>/</span>
+                      <span>|</span>
                       <button
                         className="text-red-500 hover:underline"
                         onClick={() =>

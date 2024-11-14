@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../common/Button";
 import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import LogOutButton from "./LogOutButton";
 import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import ActionUser from "./ActionUser";
 
 interface Props {
   user: User | null;
@@ -29,6 +30,10 @@ const SidebarAccount = ({ user }: Props) => {
       .map((word) => word[0].toUpperCase())
       .join("");
   }
+
+  const [userAction, setUserAction] = useState<
+    "editInfo" | "changePassword" | null
+  >(null);
 
   return (
     <>
@@ -67,9 +72,20 @@ const SidebarAccount = ({ user }: Props) => {
 
         {/* Content */}
         <div className="space-y-8 py-8">
-          <div className="flex flex-col gap-2 bg-gray-100 p-4">
-            <span className="font-bold uppercase">Address Book</span>
-            <span className="font-bold underline">View address book(0)</span>
+          <div className="flex flex-col gap-4 bg-gray-100 p-4">
+            <span className="font-bold uppercase">Edit Your Account</span>
+            <span
+              className="cursor-pointer font-bold underline"
+              onClick={() => setUserAction("editInfo")}
+            >
+              Edit Info
+            </span>
+            <span
+              className="cursor-pointer font-bold underline"
+              onClick={() => setUserAction("changePassword")}
+            >
+              Change Password
+            </span>
           </div>
 
           <div className="flex flex-col gap-2 bg-gray-100 p-4">
@@ -78,17 +94,17 @@ const SidebarAccount = ({ user }: Props) => {
               Return an item
             </Button>
           </div>
-
-          <div className="flex flex-col gap-2 bg-gray-100 p-4">
-            <span className="font-bold uppercase">Refer a friend</span>
-            <Button className="" isPrimary>
-              Visit your dashboard
-            </Button>
-          </div>
         </div>
 
         {/* Bottom */}
         <div></div>
+        {userAction && (
+          <ActionUser
+            user={user}
+            userAction={userAction}
+            setUserAction={setUserAction}
+          />
+        )}
       </div>
     </>
   );

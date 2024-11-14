@@ -9,6 +9,7 @@ interface Props {
   type?: string;
   register?: UseFormRegister<any>;
   className?: string;
+  disabled?: boolean;
 }
 
 const Input = ({
@@ -19,6 +20,7 @@ const Input = ({
   type,
   register,
   className,
+  disabled,
 }: Props) => {
   return (
     <>
@@ -32,10 +34,11 @@ const Input = ({
           {...register?.(name)}
           id={name}
           placeholder={`Enter ${placeholder || label || name}`}
-          className={`rounded-md border px-4 py-2 ${
+          className={`rounded-md border px-4 py-2 ${disabled && "bg-gray-200 opacity-80"} ${
             error ? "border-red-500" : "border-gray-300"
           }`}
           list="products"
+          disabled={disabled}
         />
         {error && <small className="text-red-500">{error}</small>}
       </div>

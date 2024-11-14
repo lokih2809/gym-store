@@ -7,6 +7,7 @@ const UsersContainer = async () => {
       id: true,
       email: true,
       username: true,
+      phoneNumber: true,
       name: true,
       createdAt: true,
       updatedAt: true,

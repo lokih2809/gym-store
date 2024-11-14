@@ -1,6 +1,5 @@
-require("@prisma/client");
-import { Category, PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
+const { PrismaClient, Category } = require("@prisma/client");
+const bcrypt = require("bcrypt");
 
 const db = new PrismaClient();
 
@@ -303,7 +302,7 @@ async function main() {
         description: product.description,
         price: product.price,
         sku: product.sku,
-        category: product.category as Category,
+        category: product.category,
         fit: product.fit,
         colors: product.colors,
       },

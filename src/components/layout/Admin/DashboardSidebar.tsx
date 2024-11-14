@@ -1,6 +1,5 @@
 import {
-  BriefcaseBusiness,
-  ChartLine,
+  BookMarked,
   CircleDollarSign,
   CircleHelp,
   LayoutDashboard,
@@ -8,7 +7,6 @@ import {
   Package,
   Settings,
   User,
-  Users,
   X,
 } from "lucide-react";
 import React from "react";
@@ -39,19 +37,9 @@ const menuItems = [
     icon: <CircleDollarSign />,
   },
   {
-    title: "Revenue",
-    path: "/dashboard/revenue",
-    icon: <BriefcaseBusiness />,
-  },
-  {
-    title: "Reports",
-    path: "/dashboard/reports",
-    icon: <ChartLine />,
-  },
-  {
-    title: "Teams",
-    path: "/dashboard/teams",
-    icon: <Users />,
+    title: "Posts",
+    path: "/dashboard/posts",
+    icon: <BookMarked />,
   },
   {
     title: "Settings",
@@ -82,7 +70,7 @@ const DashboardSidebar = ({ isSidebarOpen, setIsSidebarOpen }: Props) => {
 
       {/* Sidebar */}
       <div
-        className={`bg-primary fixed left-0 top-0 z-20 flex w-1/2 flex-col gap-8 text-[#A9A9A9] transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} xl:relative xl:w-2/12 xl:translate-x-0`}
+        className={`fixed left-0 top-0 z-20 flex w-1/2 flex-col gap-8 bg-primary text-[#A9A9A9] transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} xl:relative xl:w-2/12 xl:translate-x-0`}
       >
         {/* Top Section */}
         <div className="mx-auto flex flex-col gap-4 py-6">

@@ -13,14 +13,14 @@ const AdminLayout = ({ children }: Props) => {
 
   return (
     <>
-      <div className="bg-second flex h-full">
+      <div className="flex h-[100vh] bg-second">
         <DashboardSidebar
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <div className="flex-1">
           <DashboardNavbar setIsSidebarOpen={setIsSidebarOpen} />
-          <div className="bg-second h-auto">{children}</div>
+          <div className="bg-second">{children}</div>
         </div>
       </div>
     </>

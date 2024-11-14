@@ -104,6 +104,5 @@ export const confirmWithNotification = (message?: string) => {
     confirmButtonText: "Yes",
     cancelButtonText: "No",
   });
-
   return confirmResult;
 };

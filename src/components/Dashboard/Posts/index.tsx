@@ -1,37 +1,70 @@
 "use client";
 
-import SearchBoxDashboard from "../SearchBoxDashboard";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
+  confirmWithNotification,
   formatDate,
   getFilteredAndPaginatedData,
-  handleDelete,
 } from "@/utils/utils";
-import { ADMIN_MAIL } from "@/constants/common";
-import CreateAccountForm from "./CreateAccountForm";
-import EditAccountForm from "./EditAccountForm";
+import { Post } from "@prisma/client";
+import React, { useState } from "react";
+import SearchBoxDashboard from "../SearchBoxDashboard";
 import Button from "@/components/common/Button";
-import { UserWithoutPassword } from "@/types/common";
+import WritePost from "./WritePost";
+import { deletePost } from "@/lib/actions/postsActions";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
-interface Props {
-  listUsers: UserWithoutPassword[];
-}
+type Props = {
+  listPosts: Post[];
+};
 
-const Users = ({ listUsers }: Props) => {
+const Posts = ({ listPosts }: Props) => {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [postAction, setPostAction] = useState<"create" | "edit" | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   const { paginatedData, totalPages, handleNext, handlePrevious } =
-    getFilteredAndPaginatedData(listUsers, searchTerm, currentPage, 10, [
-      "name",
-      "email",
-      "username",
+    getFilteredAndPaginatedData(listPosts, searchTerm, currentPage, 10, [
+      "title",
     ]);
 
   const nextPage = () => setCurrentPage(handleNext());
   const previousPage = () => setCurrentPage(handlePrevious());
+
+  const handleEditPost = (post: Post) => {
+    setPost(post);
+    setPostAction("edit");
+  };
+
+  const handleDeletePost = async (id: number) => {
+    const confirmResult = await confirmWithNotification();
+    if (confirmResult.isConfirmed) {
+      const response = await deletePost(id);
+      try {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Xóa bài viết thành công.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            router.refresh();
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Lỗi",
+            text: response.message || "Có lỗi xảy ra! Vui lòng thử lại sau.",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -39,11 +72,13 @@ const Users = ({ listUsers }: Props) => {
         {/* Top */}
         <div className="flex items-center justify-between gap-2">
           <SearchBoxDashboard
-            placeholder="Search for a user"
+            placeholder="Search for a post"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <CreateAccountForm />
+          <Button className="" onClick={() => setPostAction("create")}>
+            Create
+          </Button>
         </div>
 
         {/* Content */}
@@ -52,60 +87,55 @@ const Users = ({ listUsers }: Props) => {
             <thead className="text-xs uppercase text-white">
               <tr>
                 <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
-                  Email
+                  id
                 </th>
                 <th scope="col" className="p-2 lg:px-6 lg:py-3">
-                  Username
+                  title
                 </th>
                 <th
                   scope="col"
                   className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
                 >
-                  Name
+                  createdAt
                 </th>
                 <th
                   scope="col"
                   className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
                 >
-                  CreatedAt
+                  updatedAt
                 </th>
-                <th
-                  scope="col"
-                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
-                >
-                  Role
-                </th>
+
                 <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3"></th>
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((user) => (
-                <tr className="border-b text-white" key={user.id}>
+              {paginatedData.map((post: Post) => (
+                <tr className="border-b text-white" key={post.id}>
                   <th
                     scope="row"
-                    className={`max-w-44 truncate px-4 py-2 font-medium lg:whitespace-nowrap lg:px-6 lg:py-4 ${user.email === ADMIN_MAIL && "text-red-500"}`}
+                    className={`max-w-44 truncate px-4 py-2 font-medium lg:whitespace-nowrap lg:px-6 lg:py-4`}
                   >
-                    {user.email}
+                    {post.id}
                   </th>
-                  <td className="p-2 lg:px-6 lg:py-3">{user.username}</td>
+                  <td className="p-2 lg:px-6 lg:py-3">{post.title}</td>
                   <td className="hidden lg:table-cell lg:px-6 lg:py-3">
-                    {user.name}
+                    {formatDate(post.createdAt)}
                   </td>
                   <td className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3">
-                    {formatDate(user.createdAt)}
-                  </td>
-                  <td className="hidden lg:table-cell lg:px-6 lg:py-3">
-                    {user.role}
+                    {formatDate(post.updatedAt)}
                   </td>
 
-                  <td
-                    className={`flex gap-2 px-6 py-4 ${user.email === ADMIN_MAIL && "hidden"}`}
-                  >
-                    <EditAccountForm user={user} />
+                  <td className={`flex gap-2 px-6 py-4`}>
+                    <button
+                      className="font-medium text-blue-500 hover:underline"
+                      onClick={() => handleEditPost(post)}
+                    >
+                      Edit
+                    </button>
                     <span>|</span>
                     <button
                       className="font-medium text-red-500 hover:underline"
-                      onClick={() => handleDelete(user.id, "user", router)}
+                      onClick={() => handleDeletePost(post.id)}
                     >
                       Delete
                     </button>
@@ -135,8 +165,16 @@ const Users = ({ listUsers }: Props) => {
           </Button>
         </div>
       </div>
+
+      {postAction && (
+        <WritePost
+          postAction={postAction}
+          setPostAction={setPostAction}
+          currentPost={post}
+        />
+      )}
     </>
   );
 };
 
-export default Users;
+export default Posts;

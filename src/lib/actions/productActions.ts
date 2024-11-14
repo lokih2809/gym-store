@@ -325,6 +325,26 @@ export const deleteColor = async (colorId: number) => {
   }
 };
 
+export const updateColor = async (
+  colorId: number,
+  color: { colorName: string; images: string[] },
+) => {
+  const { colorName, images } = color;
+  try {
+    await db.productColor.update({
+      where: {
+        id: colorId,
+      },
+      data: {
+        images,
+      },
+    });
+    return { status: "success", message: "Update complete." };
+  } catch (error) {
+    return { status: "error", message: "Update fail." };
+  }
+};
+
 export const deleteOrderItemAndCheckProduct = async (
   orderItemId: number,
   productId: number,

@@ -5,6 +5,7 @@ import Select from "@/components/common/Select";
 import { STATUS } from "@/constants/data";
 import { updateStatus } from "@/lib/actions/OrderActions";
 import { OrderWithUser } from "@/types/common";
+import { confirmWithNotification } from "@/utils/utils";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -32,28 +33,33 @@ const UpdateStatus = ({ order }: Props) => {
   const { register, handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async (value) => {
-    const response = await updateStatus(order.id, value.status);
-    try {
-      if (response.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: response.message || "Cập nhật trạng thái thành công.",
-          confirmButtonText: "OK",
-        }).then(() => {
-          setShow(false);
-          router.refresh();
-        });
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: response.message || "Cập nhật trạng thái thất bại.",
-          confirmButtonText: "OK",
-        });
+    const confirmResult = await confirmWithNotification();
+    if (confirmResult.isConfirmed) {
+      const response = await updateStatus(order.id, value.status);
+      try {
+        if (response.status === "success") {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Cập nhật trạng thái thành công.",
+            confirmButtonText: "OK",
+          }).then(() => {
+            setShow(false);
+            router.refresh();
+          });
+        } else {
+          Swal.fire({
+            icon: "success",
+            title: "Thành công",
+            text: response.message || "Cập nhật trạng thái thất bại.",
+            confirmButtonText: "OK",
+          });
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    } else {
+      return;
     }
   };
 

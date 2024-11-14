@@ -3,30 +3,32 @@
 import React, { useState } from "react";
 import { HashLoader } from "react-spinners";
 import Image from "next/image";
+import { Image as ImageIcon } from "lucide-react";
 import { X } from "lucide-react";
 import { apiUpdateImages } from "@/lib/actions/productActions";
 
 interface InputImagesProps {
-  icon: React.ReactNode;
   label: string;
   name: string;
   type: string;
   error?: string;
-  onChange: (images: string[]) => void;
+  onChange: (images: string | string[]) => void;
   defaultImages?: string[];
+  isArray?: boolean;
 }
 
 const InputImages: React.FC<InputImagesProps> = ({
-  icon,
   label,
   name,
   type,
   error,
   onChange,
   defaultImages = [],
+  isArray = false,
 }) => {
   const [loading, setLoading] = useState(false);
   const [imagesPreview, setImagesPreview] = useState<string[]>(defaultImages);
+
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     const files = e.target.files;
@@ -58,10 +60,16 @@ const InputImages: React.FC<InputImagesProps> = ({
       });
 
       const uploadedImages = (await Promise.all(promises)).filter(Boolean);
-      setImagesPreview((prev) => [...prev, ...uploadedImages]);
-      setLoading(false);
 
-      onChange([...imagesPreview, ...uploadedImages]);
+      if (isArray) {
+        setImagesPreview((prev) => [...prev, ...uploadedImages]);
+        onChange([...imagesPreview, ...uploadedImages]);
+      } else {
+        setImagesPreview([uploadedImages[0]]);
+        onChange(uploadedImages[0]);
+      }
+
+      setLoading(false);
     }
   };
 
@@ -69,31 +77,42 @@ const InputImages: React.FC<InputImagesProps> = ({
     const updatedImages = imagesPreview.filter((item) => item !== image);
     setImagesPreview(updatedImages);
     onChange(updatedImages);
+    if (updatedImages.length === 0) {
+      const input = document.getElementById(name) as HTMLInputElement;
+      if (input) input.value = "";
+    }
   };
 
   return (
-    <>
-      <div className="mt-6 flex h-28 w-full flex-col gap-2 border-2 border-dashed border-blue-400">
+    <div className="flex items-end gap-4">
+      <div
+        className={`flex size-28 border-2 border-dashed border-blue-400 ${!isArray && imagesPreview.length > 0 ? "hidden" : ""}`}
+      >
         <label
           htmlFor={name}
-          className="mt-4 flex cursor-pointer items-center justify-center text-xl"
+          className="flex size-28 cursor-pointer flex-col items-center justify-center text-center"
         >
-          {loading ? (
-            <span className="mt-4">
-              <HashLoader color="blue" />
-            </span>
-          ) : (
-            <span className="flex flex-col items-center">
-              {icon}
-              {label}
-            </span>
-          )}
+          <div className="m-auto">
+            {loading ? (
+              <HashLoader color="blue" size={30} />
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-2">
+                <ImageIcon size={30} />
+                <span className="text-xs font-bold">{label}</span>
+              </div>
+            )}
+          </div>
         </label>
-        <input id={name} type={type} onChange={handleFiles} hidden multiple />
+        <input
+          id={name}
+          type={type}
+          onChange={handleFiles}
+          hidden
+          multiple={isArray}
+        />
       </div>
       {error && <small className="text-red-500">{error}</small>}
-      <div className="w-full">
-        <h3 className="py-4 font-bold">Preview</h3>
+      <div className="flex w-full flex-wrap">
         <div className="scrollbar-hide flex flex-wrap gap-4 overflow-x-scroll">
           {imagesPreview.map((item, index) => (
             <div className="relative" key={index}>
@@ -114,7 +133,7 @@ const InputImages: React.FC<InputImagesProps> = ({
           ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

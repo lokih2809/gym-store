@@ -18,6 +18,11 @@ const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
   username: z.string().min(1, "Username is required").max(100),
   name: z.string().min(1, "Name is required"),
+  phoneNumber: z
+    .string()
+    .regex(/^\d+$/, "Phone number must contain only digits")
+    .min(10, "Phone number must be at least 10 digits")
+    .max(15, "Phone number cannot exceed 15 digits"),
   address: z.string().optional().nullable(),
   role: z.enum(["CUSTOMER", "ADMIN"]),
 });
@@ -39,6 +44,7 @@ const EditAccountForm = ({ user }: Props) => {
       email: user.email || "",
       username: user.username || "",
       name: user.name || "",
+      phoneNumber: user.phoneNumber || "",
       address: user.address || "",
       role: user.role || "CUSTOMER",
     },
@@ -107,7 +113,7 @@ const EditAccountForm = ({ user }: Props) => {
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
           <div className="absolute z-30 flex w-11/12 animate-slide-in-bottom flex-col rounded-lg bg-white py-8 text-black lg:w-1/2 lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
-              <span className="m-auto text-xl font-bold">Create</span>
+              <span className="m-auto text-xl font-bold">Edit</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
             </div>
 
@@ -118,6 +124,7 @@ const EditAccountForm = ({ user }: Props) => {
                 name="email"
                 register={register}
                 error={errors.email?.message}
+                disabled
               />
               <Input
                 label="Username"
@@ -125,6 +132,7 @@ const EditAccountForm = ({ user }: Props) => {
                 name="username"
                 register={register}
                 error={errors.username?.message}
+                disabled
               />
               <Input
                 label="Name"
@@ -132,6 +140,13 @@ const EditAccountForm = ({ user }: Props) => {
                 name="name"
                 register={register}
                 error={errors.name?.message}
+              />
+              <Input
+                label="Phone Number"
+                placeholder="Phone Number"
+                name="phoneNumber"
+                register={register}
+                error={errors.phoneNumber?.message}
               />
               <Input
                 label="Address"

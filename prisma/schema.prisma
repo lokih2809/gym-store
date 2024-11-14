@@ -115,3 +115,13 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
 }
+
+// Post
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  thumbnail String
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

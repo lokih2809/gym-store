@@ -5,8 +5,10 @@ import Image from "next/image";
 import { deleteColor } from "@/lib/actions/productActions";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
-import AddColor from "./AddColor";
 import { confirmWithNotification } from "@/utils/utils";
+import { useState } from "react";
+import Button from "@/components/common/Button";
+import ColorAction from "./ColorAction";
 
 interface Props {
   colors: ProductColor[];
@@ -15,6 +17,15 @@ interface Props {
 
 const ListColors = ({ colors, productId }: Props) => {
   const router = useRouter();
+  const [colorAction, setColorAction] = useState<"create" | "edit" | null>(
+    null,
+  );
+  const [color, setColor] = useState<ProductColor | null>(null);
+
+  const handleEdit = (color: ProductColor) => {
+    setColor(color);
+    setColorAction("edit");
+  };
 
   const handleDeleteColor = async (id: number) => {
     const confirmResult = await confirmWithNotification(
@@ -86,7 +97,14 @@ const ListColors = ({ colors, productId }: Props) => {
                   <td className="p-2 font-bold lg:px-6 lg:py-3">
                     {color.colorName}
                   </td>
-                  <td className="px-6 py-3">
+                  <td className="space-x-4 px-6 py-3">
+                    <button
+                      className="text-blue-500 hover:underline"
+                      onClick={() => handleEdit(color)}
+                    >
+                      Edit
+                    </button>
+                    <span>|</span>
                     <button
                       className="text-red-500 hover:underline"
                       onClick={() => handleDeleteColor(color.id)}
@@ -99,8 +117,25 @@ const ListColors = ({ colors, productId }: Props) => {
             </tbody>
           </table>
         </div>
+        {!colorAction && (
+          <Button
+            isPrimary
+            className="w-1/2 px-4"
+            onClick={() => setColorAction("create")}
+          >
+            Add New Color
+          </Button>
+        )}
 
-        <AddColor productId={productId} />
+        {colorAction && (
+          <ColorAction
+            productId={productId}
+            colorAction={colorAction}
+            setColorAction={setColorAction}
+            color={color}
+            setColor={setColor}
+          />
+        )}
       </div>
     </>
   );
