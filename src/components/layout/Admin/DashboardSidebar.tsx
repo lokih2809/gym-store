@@ -1,4 +1,5 @@
 import {
+  ArrowLeft,
   BookMarked,
   CircleDollarSign,
   CircleHelp,
@@ -7,7 +8,6 @@ import {
   Package,
   Settings,
   User,
-  X,
 } from "lucide-react";
 import React from "react";
 import Image from "next/image";
@@ -70,12 +70,16 @@ const DashboardSidebar = ({ isSidebarOpen, setIsSidebarOpen }: Props) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-20 flex w-1/2 flex-col gap-8 bg-primary text-[#A9A9A9] transition-transform duration-300 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} xl:relative xl:w-2/12 xl:translate-x-0`}
+        className={`fixed left-0 top-0 z-20 flex h-[100vh] w-1/2 flex-col gap-8 bg-primary text-[#A9A9A9] transition-transform duration-300 md:w-1/3 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} xl:relative xl:w-2/12 xl:translate-x-0`}
       >
         {/* Top Section */}
-        <div className="mx-auto flex flex-col gap-4 py-6">
-          <div className="flex items-center justify-between">
-            <Link href={"/"} className="relative h-6 w-32 xl:h-10 xl:w-52">
+        <div className="mx-6 flex flex-col gap-4 py-6 xl:mx-auto">
+          <div className="flex items-center justify-between md:justify-start md:gap-8">
+            <ArrowLeft
+              onClick={() => setIsSidebarOpen(false)}
+              className="xl:hidden"
+            />
+            <Link href={"/"} className="relative h-6 w-28 xl:h-10 xl:w-52">
               <Image
                 fill
                 src={"/Gymshark_logo.svg"}
@@ -83,7 +87,6 @@ const DashboardSidebar = ({ isSidebarOpen, setIsSidebarOpen }: Props) => {
                 className="object-contain"
               />
             </Link>
-            <X onClick={() => setIsSidebarOpen(false)} className="xl:hidden" />
           </div>
         </div>
 

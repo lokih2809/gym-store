@@ -31,7 +31,7 @@ const Cart = () => {
       <div
         className={`fixed bottom-0 left-0 right-0 top-0 z-20 bg-black bg-opacity-25 ${!isCartOpen && "hidden"}`}
       >
-        <div className="lg: fixed bottom-0 left-0 right-0 top-0 z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white lg:left-1/2 lg:top-0 lg:animate-slide-in-right xl:left-2/3">
+        <div className="lg: fixed bottom-0 left-0 right-0 top-10 z-30 flex animate-slide-in-bottom flex-col rounded-t-lg bg-white xl:left-1/2 xl:top-0 xl:animate-slide-in-right">
           {/* Top */}
           <div className="flex items-center p-4 lg:p-8">
             <b className="mx-auto uppercase">Your bag</b>

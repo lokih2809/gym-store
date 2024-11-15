@@ -100,43 +100,43 @@ const MoreOption = ({ product }: Props) => {
       {/* Edit form */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="scrollbar-hide absolute z-30 flex h-[90%] w-[90%] animate-slide-in-bottom flex-col overflow-y-scroll rounded-lg bg-white px-4 text-black lg:animate-slide-in-right">
+          <div className="scrollbar-hide absolute z-30 flex h-full w-full animate-slide-in-bottom flex-col overflow-y-scroll rounded-lg bg-white px-4 text-black xl:h-[90%] xl:w-[90%] xl:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">More</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
             </div>
 
-            <div className="flex gap-8">
+            <div className="flex flex-col gap-8 xl:flex-row">
               <FormProvider {...methods}>
                 <form
-                  className="flex w-1/2 flex-col gap-4"
+                  className="flex w-full flex-col gap-4 xl:w-1/2"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className="flex gap-4">
+                  <div className="flex flex-col gap-4 md:flex-row">
                     <Input
                       label="Name"
                       placeholder="Name"
                       name="name"
                       register={register}
                       error={errors.name?.message}
-                      className="w-1/2"
+                      className="w-full xl:w-1/2"
                     />
                     <Select
                       dataArray={CATEGORIES}
                       name="category"
                       register={register}
                       label="Loại sản phẩm"
-                      className="w-1/2"
+                      className="w-full xl:w-1/2"
                     />
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex flex-col gap-4 md:flex-row">
                     <Input
                       label="Price"
                       placeholder="Price"
                       name="price"
                       register={register}
                       error={errors.price?.message}
-                      className="w-1/3"
+                      className="w-full md:w-1/3"
                     />
                     <Input
                       label="SKU"
@@ -144,14 +144,14 @@ const MoreOption = ({ product }: Props) => {
                       name="sku"
                       register={register}
                       error={errors.sku?.message}
-                      className="w-1/3"
+                      className="w-full md:w-1/3"
                     />
                     <Input
                       label="Fit"
                       name="fit"
                       register={register}
                       error={errors.fit?.message}
-                      className="w-1/3"
+                      className="w-full md:w-1/3"
                     />
                   </div>
                   <Controller
@@ -175,7 +175,7 @@ const MoreOption = ({ product }: Props) => {
                 </form>
               </FormProvider>
 
-              <div className="min-h-[80vh] w-1 bg-gray-200"></div>
+              <div className="min-h-0 w-1 bg-gray-200 xl:min-h-[80vh]"></div>
 
               <ListColors colors={product.colors} productId={product.id} />
             </div>

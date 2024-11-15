@@ -48,7 +48,7 @@ export const findOrders = async ({
 
 // Create order
 interface CreateOrderData {
-  userId?: string;
+  userId?: number;
   totalPrice: number;
   name: string;
   addressOrder: string;

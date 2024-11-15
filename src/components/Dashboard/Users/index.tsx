@@ -55,7 +55,7 @@ const Users = ({ listUsers }: Props) => {
 
   return (
     <>
-      <div className="bg-dashboard relative space-y-8 rounded-lg px-2 py-4 text-white lg:p-8">
+      <div className="bg-dashboard relative space-y-8 rounded-lg text-white">
         {/* Top */}
         <div className="flex items-center justify-between gap-2">
           <SearchBoxDashboard
@@ -79,19 +79,19 @@ const Users = ({ listUsers }: Props) => {
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                  className="hidden px-4 py-2 md:table-cell lg:px-6 lg:py-3"
                 >
                   Name
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                  className="hidden px-4 py-2 lg:px-6 lg:py-3 xl:table-cell"
                 >
                   CreatedAt
                 </th>
                 <th
                   scope="col"
-                  className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3"
+                  className="hidden px-4 py-2 md:table-cell lg:px-6 lg:py-3"
                 >
                   Role
                 </th>
@@ -108,13 +108,13 @@ const Users = ({ listUsers }: Props) => {
                     {user.email}
                   </th>
                   <td className="p-2 lg:px-6 lg:py-3">{user.username}</td>
-                  <td className="hidden lg:table-cell lg:px-6 lg:py-3">
+                  <td className="hidden md:table-cell lg:px-6 lg:py-3">
                     {user.name}
                   </td>
                   <td className="hidden px-4 py-2 lg:table-cell lg:px-6 lg:py-3">
                     {formatDate(user.createdAt)}
                   </td>
-                  <td className="hidden lg:table-cell lg:px-6 lg:py-3">
+                  <td className="hidden md:table-cell lg:px-6 lg:py-3">
                     {user.role}
                   </td>
 

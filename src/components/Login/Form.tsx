@@ -9,8 +9,8 @@ const Form = () => {
 
   return (
     <>
-      <div className="mt-8 flex w-full flex-col gap-8 lg:w-[50%]">
-        <div className="mx-auto flex w-[45%] justify-around rounded-full bg-gray-200 py-1">
+      <div className="mt-8 flex w-full flex-col gap-8 xl:w-[50%]">
+        <div className="mx-auto flex w-[45%] justify-around rounded-full bg-gray-200 py-1 md:w-[35%] lg:w-[30%]">
           <div
             className={`flex rounded-full px-[10%] py-2 ${
               authMode === "login" && "bg-white text-black"

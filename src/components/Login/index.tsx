@@ -8,13 +8,14 @@ const Login = () => {
     <>
       <div className="flex h-screen w-screen overflow-hidden">
         {/* Left */}
-        <div className="hidden h-full overflow-hidden lg:block">
+        <div className="hidden h-full overflow-hidden xl:block">
           <Image
             src={"/auth-img.jpg"}
             alt=""
-            width={900}
-            height={200}
-            className="w-[50vw] object-cover"
+            width={0}
+            height={0}
+            sizes="50vw"
+            className="h-auto w-[50vw] object-cover"
           />
         </div>
 

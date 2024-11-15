@@ -18,9 +18,9 @@ const AdminLayout = ({ children }: Props) => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <div className="flex-1">
+        <div className="flex flex-1 flex-col">
           <DashboardNavbar setIsSidebarOpen={setIsSidebarOpen} />
-          <div className="bg-second">{children}</div>
+          <div className="overflow-auto bg-second p-4 xl:p-8">{children}</div>
         </div>
       </div>
     </>

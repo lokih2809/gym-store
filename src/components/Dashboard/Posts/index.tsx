@@ -60,7 +60,7 @@ const Posts = ({ listPosts }: Props) => {
 
   return (
     <>
-      <div className="bg-dashboard relative space-y-8 rounded-lg px-2 py-4 text-white lg:p-8">
+      <div className="bg-dashboard relative space-y-8 rounded-lg text-white">
         {/* Top */}
         <div className="flex items-center justify-between gap-2">
           <SearchBoxDashboard
@@ -69,7 +69,7 @@ const Posts = ({ listPosts }: Props) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button
-            className="bg-white p-1 p-2 text-black"
+            className="bg-white p-2 text-black"
             onClick={() => setPostAction("create")}
           >
             Create

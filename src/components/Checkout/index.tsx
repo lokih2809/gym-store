@@ -19,15 +19,15 @@ const Checkout = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col lg:flex-row">
-        <div className="flex w-full border-r border-gray-200 px-8 py-6 lg:w-3/5">
-          <div className="w-0 lg:w-1/3 xl:w-1/2"></div>
+      <div className="flex w-full flex-col xl:flex-row">
+        <div className="flex w-full border-r border-gray-200 px-8 py-6 xl:w-3/5">
+          <div className="w-0 xl:w-1/2"></div>
           <div className="w-full xl:w-1/2">
             <PaymentForm user={user} cartItems={cartItems} total={total} />
           </div>
         </div>
 
-        <div className="w-full bg-gray-100 p-8 lg:w-2/5">
+        <div className="w-full bg-gray-100 p-8 xl:w-2/5">
           <CartSummary cartItems={cartItems} total={total} />
         </div>
       </div>

@@ -100,9 +100,9 @@ const PaymentResult = () => {
 
   return (
     <>
-      <div className="mt-24 flex w-full flex-col gap-4 px-4 lg:flex-row lg:px-0">
+      <div className="mt-24 flex w-full flex-col gap-4 px-4 xl:flex-row xl:px-0">
         {/* Left */}
-        <div className="flex w-full items-center justify-center lg:w-1/2">
+        <div className="flex w-full items-center justify-center xl:w-1/2">
           <div className="relative h-96 w-2/3">
             <Image
               src={LOGO_PAYMENT_RESULT}
@@ -117,12 +117,12 @@ const PaymentResult = () => {
         <div className="flex flex-col items-center gap-4">
           {form.paymentMethod !== "SHIPCOD" && (
             <>
-              <h1 className="text-lg font-bold lg:text-3xl">
+              <h1 className="text-lg font-bold xl:text-3xl">
                 Kết quả thanh toán
               </h1>
               <div className="flex items-center gap-4">
                 {icon}
-                <span className="lg:text-2xl">{paymentMessage}</span>
+                <span className="xl:text-2xl">{paymentMessage}</span>
               </div>{" "}
             </>
           )}
@@ -140,11 +140,13 @@ const PaymentResult = () => {
                   />
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-4 xl:flex-row">
-                  <p className="text-lg">{orderMessage}</p>
+                <div className="flex flex-col items-center gap-4">
+                  <p className="text-center text-lg xl:text-start">
+                    {orderMessage}
+                  </p>
                   <Link
                     href={`${DETAIL_ORDER_WITH_TRANSACTION_ID}${vnp_TxnRef}`}
-                    className="text-sm font-bold underline"
+                    className="font-bold underline"
                   >
                     Nhấn vào đây để xem chi tiết đơn hàng
                   </Link>

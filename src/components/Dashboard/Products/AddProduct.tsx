@@ -106,31 +106,31 @@ const AddNewProduct = () => {
                 className="flex flex-col gap-4"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-4 md:flex-row">
                   <Input
                     label="Name"
                     placeholder="Name"
                     name="name"
                     register={register}
                     error={errors.name?.message}
-                    className="w-1/2"
+                    className="w-full md:w-1/2"
                   />
                   <Select
                     dataArray={CATEGORIES}
                     name="category"
                     register={register}
                     label="Loại sản phẩm"
-                    className="w-1/2"
+                    className="w-full md:w-1/2"
                   />
                 </div>
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-4 md:flex-row">
                   <Input
                     label="Price"
                     placeholder="Price"
                     name="price"
                     register={register}
                     error={errors.price?.message}
-                    className="w-1/3"
+                    className="w-full md:w-1/3"
                   />
                   <Input
                     label="SKU"
@@ -138,14 +138,14 @@ const AddNewProduct = () => {
                     name="sku"
                     register={register}
                     error={errors.sku?.message}
-                    className="w-1/3"
+                    className="w-full md:w-1/3"
                   />
                   <Input
                     label="Fit"
                     name="fit"
                     register={register}
                     error={errors.fit?.message}
-                    className="w-1/3"
+                    className="w-full md:w-1/3"
                   />
                 </div>
                 <Controller

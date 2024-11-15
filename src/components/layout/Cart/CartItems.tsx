@@ -76,7 +76,7 @@ const CartItems = ({ cartItems }: Props) => {
             </div>
           </div>
 
-          <div className="mb-[45%] flex items-center justify-center px-8 lg:mb-4">
+          <div className="mb-[30%] flex items-center justify-center px-8 md:mb-[15%] lg:mb-4">
             <Button
               className="w-full gap-4"
               onClick={() => router.push("/checkout")}

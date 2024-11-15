@@ -52,7 +52,7 @@ const ListColors = ({ colors, productId }: Props) => {
 
   return (
     <>
-      <div className="flex flex-1 flex-col items-center gap-4">
+      <div className="flex flex-1 flex-col items-center gap-4 py-4">
         <span className="mr-auto py-2 text-lg font-bold">Colors</span>
         <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400">
@@ -72,16 +72,16 @@ const ListColors = ({ colors, productId }: Props) => {
                 <tr className="border-b text-black" key={color.id}>
                   <th
                     scope="row"
-                    className="flex gap-4 overflow-x-hidden px-4 py-2 font-medium lg:px-6 lg:py-4"
+                    className="flex max-w-[40vw] flex-wrap gap-4 overflow-x-hidden px-1 py-2 font-medium lg:px-6 lg:py-4"
                   >
                     {color.images.map((image) => (
-                      <div className="relative h-20 w-16" key={image}>
+                      <div className="relative h-20 w-14" key={image}>
                         <Image
                           fill
                           src={image}
                           alt=""
+                          sizes="15vw"
                           className="object-contain"
-                          sizes="w-64px w-80px"
                         />
                       </div>
                     ))}
@@ -89,7 +89,7 @@ const ListColors = ({ colors, productId }: Props) => {
                   <td className="p-2 font-bold lg:px-6 lg:py-3">
                     {color.colorName}
                   </td>
-                  <td className="space-x-4 px-6 py-3">
+                  <td className="min-w-40 space-x-4 px-6 py-3">
                     <button
                       className="text-blue-500 hover:underline"
                       onClick={() => handleEdit(color)}

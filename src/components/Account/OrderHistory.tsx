@@ -29,10 +29,10 @@ const OrderHistory = ({ listOrders }: Props) => {
                   <th scope="col" className="lg:px-12 lg:py-4">
                     Products
                   </th>
-                  <th scope="col" className="lg: hidden px-6 py-4">
+                  <th scope="col" className="px-6 py-4">
                     Payment Method
                   </th>
-                  <th scope="col" className="hidden px-6 py-4 lg:table-cell">
+                  <th scope="col" className="hidden px-6 py-4 md:table-cell">
                     Total Price
                   </th>
                   <th scope="col" className="hidden px-6 py-4 lg:table-cell">
@@ -55,7 +55,7 @@ const OrderHistory = ({ listOrders }: Props) => {
                   >
                     <th
                       scope="row"
-                      className="max-w-40 truncate whitespace-nowrap font-medium lg:px-12 lg:py-4"
+                      className="max-w-32 truncate whitespace-nowrap font-medium lg:px-12 lg:py-4"
                     >
                       {order.orderItems.map((item, index) => (
                         <span key={item.id}>
@@ -64,10 +64,10 @@ const OrderHistory = ({ listOrders }: Props) => {
                         </span>
                       ))}
                     </th>
-                    <td className="hidden px-6 py-4 lg:table-cell">
+                    <td className="hidden px-6 py-4 md:table-cell">
                       {order.paymentMethod}
                     </td>
-                    <td className="hidden px-6 py-4 lg:table-cell">
+                    <td className="px-6 py-4">
                       {order.totalPrice.toLocaleString("vi-VN")}đ
                     </td>
 

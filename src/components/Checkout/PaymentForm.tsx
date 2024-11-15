@@ -16,6 +16,7 @@ import { RootState } from "@/app/redux/store";
 import { FormState, setFormValues } from "@/app/redux/slices/formSlice";
 import SelectMethod from "./SelectMethod";
 import { confirmWithNotification } from "@/utils/utils";
+import LogOutButton from "../Account/LogOutButton";
 
 export const PAYMENT_METHOD = [
   {
@@ -69,6 +70,7 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
   } = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      name: user?.name || "",
       address: user?.address || "",
       phoneNumber: user?.phoneNumber || "",
       paymentMethod: PAYMENT_METHOD[0].name,
@@ -179,11 +181,13 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
                 <ChevronDown className="size-8 cursor-pointer rounded-lg bg-gray-200 px-2 py-1" />
               )}
             </div>
-            <span className="text-sm font-bold">{user.email}</span>
-            <span className="text-sm">{user.name}</span>
+            <div className="flex gap-2">
+              <span className="text-sm font-bold">{user.email}</span>
+              <span className="text-sm">({user.name})</span>
+            </div>
             {showLogout && (
               <span className="animate-slide-in-top cursor-pointer text-sm underline">
-                Logout
+                <LogOutButton />
               </span>
             )}
           </div>

@@ -20,7 +20,7 @@ const Account = ({ user, listOrders }: Props) => {
         </span>
 
         {/* Content */}
-        <div className="flex flex-col lg:flex-row lg:gap-4">
+        <div className="flex flex-col xl:flex-row xl:gap-4">
           {/* Sidebar */}
           <SidebarAccount user={user} />
           <OrderHistory listOrders={listOrders} />

@@ -27,7 +27,7 @@ const Orders = ({ listOrders }: Props) => {
 
   return (
     <>
-      <div className="bg-dashboard relative space-y-8 rounded-lg p-8 text-white">
+      <div className="bg-dashboard relative space-y-8 rounded-lg text-white">
         {/* Top */}
         <div className="flex items-center justify-between">
           <SearchBoxDashboard
@@ -46,19 +46,19 @@ const Orders = ({ listOrders }: Props) => {
                   User Mail
                 </th>
 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 md:table-cell">
                   Total Price
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 xl:table-cell">
                   Payment Method
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 xl:table-cell">
                   Payment Status
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 md:table-cell">
                   Transaction
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 xl:table-cell">
                   Created At
                 </th>
 
@@ -73,23 +73,29 @@ const Orders = ({ listOrders }: Props) => {
                 <tr className="border-b text-white" key={order.id}>
                   <th
                     scope="row"
-                    className={`whitespace-nowrap px-6 py-4 font-medium`}
+                    className={`max-w-40 whitespace-nowrap px-6 py-4 font-medium`}
                   >
                     {order.user.email}
                   </th>
-                  <td className="px-6 py-4">
+                  <td className="hidden px-6 py-3 md:table-cell">
                     {order.totalPrice.toLocaleString("vi-VN")}đ
                   </td>
-                  <td className="px-6 py-4">{order.paymentMethod}</td>
-                  <td className="px-6 py-4">
+                  <td className="hidden px-6 py-3 xl:table-cell">
+                    {order.paymentMethod}
+                  </td>
+                  <td className="hidden px-6 py-4 xl:table-cell">
                     <span
                       className={`rounded-lg p-2 ${order.paymentStatus === "PENDING" ? "bg-yellow-400" : order.paymentStatus === "PAID" ? "bg-green-400" : "bg-red-400"}`}
                     >
                       {order.paymentStatus}
                     </span>
                   </td>
-                  <td className={`$ px-6 py-4`}>{order.transactionId}</td>
-                  <td className="px-6 py-4">{formatDate(order.createdAt)}</td>
+                  <td className={`hidden px-6 py-3 md:table-cell`}>
+                    {order.transactionId}
+                  </td>
+                  <td className="hidden px-6 py-4 xl:table-cell">
+                    {formatDate(order.createdAt)}
+                  </td>
                   <td className="px-6 py-4">
                     <span
                       className={`rounded-lg p-2 ${order.status === "PENDING" ? "bg-yellow-400" : order.status === "PROCESSING" ? "bg-blue-400" : order.status === "COMPLETED" ? "bg-green-400" : "bg-red-400"}`}

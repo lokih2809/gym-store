@@ -61,7 +61,7 @@ const Products = ({ listProducts }: Props) => {
 
   return (
     <>
-      <div className="bg-dashboard space-y-8 rounded-lg p-8 text-white">
+      <div className="bg-dashboard space-y-8 rounded-lg text-white">
         {/* Top */}
         <div className="flex items-center justify-between">
           <SearchBoxDashboard
@@ -80,16 +80,16 @@ const Products = ({ listProducts }: Props) => {
                 <th scope="col" className="px-6 py-3">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 md:table-cell">
                   SKU
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 md:table-cell">
                   Category
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 md:table-cell">
                   Colors
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="hidden px-6 py-3 xl:table-cell">
                   CreatedAt
                 </th>
                 <th scope="col" className="px-6 py-3"></th>
@@ -105,9 +105,13 @@ const Products = ({ listProducts }: Props) => {
                     >
                       {product.name}
                     </th>
-                    <td className="px-6 py-4">{product.sku}</td>
-                    <td className="px-6 py-4">{product.category}</td>
-                    <td className="px-6 py-4">
+                    <td className="hidden px-6 py-3 md:table-cell">
+                      {product.sku}
+                    </td>
+                    <td className="hidden px-6 py-3 md:table-cell">
+                      {product.category}
+                    </td>
+                    <td className="hidden px-6 py-3 md:table-cell">
                       <div className="flex gap-1 truncate">
                         {product.colors.map((color, index) => (
                           <div key={color.id} className="flex">
@@ -117,7 +121,7 @@ const Products = ({ listProducts }: Props) => {
                         ))}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="hidden px-6 py-3 xl:table-cell">
                       {formatDate(product.createdAt)}
                     </td>
                     <td className="flex gap-2 px-6 py-4">
