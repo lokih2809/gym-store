@@ -4,15 +4,18 @@ import SearchBoxDashboard from "../SearchBoxDashboard";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
+  catchErrorSystem,
+  confirmWithNotification,
   formatDate,
   getFilteredAndPaginatedData,
-  handleDelete,
+  showNotification,
 } from "@/utils/utils";
 import { ADMIN_MAIL } from "@/constants/common";
 import CreateAccountForm from "./CreateAccountForm";
 import EditAccountForm from "./EditAccountForm";
 import Button from "@/components/common/Button";
 import { UserWithoutPassword } from "@/types/common";
+import { deleteUser } from "@/lib/actions/authActions";
 
 interface Props {
   listUsers: UserWithoutPassword[];
@@ -32,6 +35,23 @@ const Users = ({ listUsers }: Props) => {
 
   const nextPage = () => setCurrentPage(handleNext());
   const previousPage = () => setCurrentPage(handlePrevious());
+
+  const handleDelete = async (id: number) => {
+    const confirmResult = await confirmWithNotification();
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      const response = await deleteUser(id);
+      showNotification({
+        response,
+        thenSuccess() {
+          router.refresh();
+        },
+      });
+    } catch (error) {
+      catchErrorSystem();
+    }
+  };
 
   return (
     <>
@@ -105,7 +125,7 @@ const Users = ({ listUsers }: Props) => {
                     <span>|</span>
                     <button
                       className="font-medium text-red-500 hover:underline"
-                      onClick={() => handleDelete(user.id, "user", router)}
+                      onClick={() => handleDelete(user.id)}
                     >
                       Delete
                     </button>

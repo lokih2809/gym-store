@@ -46,7 +46,8 @@ export const findOrders = async ({
   }
 };
 
-interface CreateOrderFormData {
+// Create order
+interface CreateOrderData {
   userId?: string;
   totalPrice: number;
   name: string;
@@ -62,7 +63,7 @@ interface CreateOrderFormData {
   }[];
 }
 
-export const createOrder = async (formData: CreateOrderFormData) => {
+export const createOrder = async (formData: CreateOrderData) => {
   const userId =
     typeof formData.userId === "string"
       ? parseInt(formData.userId, 10)
@@ -114,7 +115,7 @@ export const createOrder = async (formData: CreateOrderFormData) => {
     return {
       status: "success",
       message:
-        "Tạo đơn hàng thành công, vui lòng ấn vào link bên dưới để xem chi tiết!",
+        "Tạo đơn hàng thành công, vui lòng ấn vào link bên dưới để xem chi tiết.",
       order,
     };
   } catch (error) {
@@ -125,7 +126,8 @@ export const createOrder = async (formData: CreateOrderFormData) => {
   }
 };
 
-export const updateStatus = async (id: number, status: Status) => {
+// update Status
+export const updateStatusOrder = async (id: number, status: Status) => {
   try {
     const existingOrder = await db.order.findUnique({
       where: { id },
@@ -145,53 +147,13 @@ export const updateStatus = async (id: number, status: Status) => {
     return {
       updateOrderStatus,
       status: "success",
-      message: "Status updated successfully.",
+      message: "Cập nhật trạng thái đơn hàng thành công.",
     };
   } catch (error) {
     console.error(error);
     return {
       status: "error",
-      message: "Failed to update status",
+      message: "Cập nhật trạng thái đơn hàng thất bại.",
     };
   }
-};
-
-export const getUserCountsAndPercentageChange = async () => {
-  const now = new Date();
-  const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - now.getDay());
-
-  const startOfLastWeek = new Date(startOfWeek);
-  startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
-
-  const endOfLastWeek = new Date(startOfLastWeek);
-  endOfLastWeek.setDate(endOfLastWeek.getDate() + 6);
-
-  const totalUsers = await db.user.count();
-
-  const usersThisWeek = await db.user.count({
-    where: {
-      createdAt: {
-        gte: startOfWeek,
-      },
-    },
-  });
-
-  const usersLastWeek = await db.user.count({
-    where: {
-      createdAt: {
-        gte: startOfLastWeek,
-        lt: startOfWeek,
-      },
-    },
-  });
-
-  let percentageChange = 0;
-  if (usersLastWeek > 0) {
-    percentageChange = ((usersThisWeek - usersLastWeek) / usersLastWeek) * 100;
-  } else if (usersThisWeek > 0) {
-    percentageChange = 100;
-  }
-
-  return { totalUsers, usersThisWeek, percentageChange };
 };

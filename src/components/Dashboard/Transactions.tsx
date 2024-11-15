@@ -1,7 +1,7 @@
 import { OrderWithUser } from "@/types/common";
 import { formatDate } from "@/utils/utils";
 import React from "react";
-import UpdateStatus from "./Orders/UpdateStatus";
+import updateStatusOrder from "./Orders/updateStatusOrder";
 
 interface Props {
   listOrders: OrderWithUser[];
@@ -10,12 +10,12 @@ interface Props {
 const Transactions = ({ listOrders }: Props) => {
   return (
     <>
-      <div className="rounded-lg bg-dashboard text-white">
+      <div className="bg-dashboard rounded-lg text-white">
         <h2 className="p-4 text-xl">Latest Transactions</h2>
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-left text-sm text-white rtl:text-right">
-            <thead className="border-b bg-dashboard text-xs uppercase text-white">
+            <thead className="bg-dashboard border-b text-xs uppercase text-white">
               <tr>
                 <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
                   Name
@@ -58,7 +58,7 @@ const Transactions = ({ listOrders }: Props) => {
                     {order.totalPrice.toLocaleString("vi-VN")}đ
                   </td>
                   <td className={`flex gap-2 px-6 py-4`}>
-                    <UpdateStatus order={order} />
+                    <updateStatusOrder order={order} />
                   </td>
                 </tr>
               ))}

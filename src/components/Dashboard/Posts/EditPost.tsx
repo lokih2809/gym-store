@@ -4,9 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Button from "@/components/common/Button";
 import { X } from "lucide-react";
-import InputImages from "../Products/InputImages";
+import InputImages from "../../common/InputImages";
 import { Input } from "@mui/material";
 import { Post } from "@prisma/client";
+import Swal from "sweetalert2";
 
 interface PostEditorProps {
   onSubmit: (post: {
@@ -59,7 +60,12 @@ const PostEditor = ({
 
       onSubmit({ title, content: postContent, thumbnail: postThumbnail });
     } else {
-      alert("Bạn cần điền đầy đủ tiêu đề và nội dung.");
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "Bạn phải nhập đủ thông tin bài viết.",
+        confirmButtonText: "OK",
+      });
     }
   };
 

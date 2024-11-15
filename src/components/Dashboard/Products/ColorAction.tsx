@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import InputImages from "./InputImages";
+import InputImages from "../../common/InputImages";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/components/common/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/components/common/Button";
-import { Camera } from "lucide-react";
 import { z } from "zod";
-import { addProductColor, updateColor } from "@/lib/actions/productActions";
-import Swal from "sweetalert2";
+import {
+  addProductColor,
+  updateProductColor,
+} from "@/lib/actions/productActions";
 import { useRouter } from "next/navigation";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 import { ProductColor } from "@prisma/client";
 
 const productColorSchema = z.object({
@@ -61,81 +66,34 @@ const ColorAction = ({
   } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
-    const confirmResult = await confirmWithNotification();
-
-    if (confirmResult.isConfirmed) {
+    const confirmResult = await confirmWithNotification(
       isCreate
-        ? createColorAction(values)
-        : color && editColorAction(color.id, values);
-    } else {
-      return;
-    }
-  };
+        ? "Bạn có chắc chắn muốn thêm màu này?"
+        : "Bạn có chắc chắn muốn cập nhật màu này?",
+    );
+    if (!confirmResult.isConfirmed) return;
 
-  const createColorAction = async (values: FormValues) => {
-    const response = await addProductColor(productId, values);
     try {
-      if (response.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: response.message || "Thêm màu thành công.",
-          confirmButtonText: "OK",
-        }).then(() => {
-          router.refresh();
+      setIsLoading(true);
+      const response = isCreate
+        ? await addProductColor(productId, values)
+        : color && (await updateProductColor(color?.id, values));
+      response &&
+        showNotification({
+          response,
+          thenSuccess,
         });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Thất bại",
-          text: response.message || "Something went wrong.",
-          confirmButtonText: "OK",
-        });
-      }
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: "Something went wrong!",
-        confirmButtonText: "OK",
-      });
+      catchErrorSystem();
     } finally {
       setIsLoading(false);
       reset();
     }
   };
 
-  const editColorAction = async (colorId: number, values: FormValues) => {
-    const response = await updateColor(colorId, values);
-    try {
-      if (response.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Thành công",
-          text: response.message || "Sửa màu thành công.",
-          confirmButtonText: "OK",
-        }).then(() => {
-          router.refresh();
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Thất bại",
-          text: response.message || "Something went wrong.",
-          confirmButtonText: "OK",
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: "Something went wrong!",
-        confirmButtonText: "OK",
-      });
-    } finally {
-      setIsLoading(false);
-      reset();
-    }
+  const thenSuccess = () => {
+    router.refresh();
+    setColorAction(null);
   };
 
   const handleClose = () => {
@@ -145,44 +103,45 @@ const ColorAction = ({
 
   return (
     <>
-      <div className="w-full">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Input
-            label="Color Name"
-            name="colorName"
-            register={register}
-            error={errors.colorName?.message}
-            className="w-1/2"
-            disabled={!!color}
-          />
-          <Controller
-            name="images"
-            control={control}
-            render={({ field }) => (
-              <InputImages
-                icon={<Camera size={40} />}
-                label="Chọn ảnh"
-                name="images"
-                type="file"
-                error={errors.images?.message}
-                defaultImages={color?.images || []}
-                onChange={(newImages: string[]) => {
-                  field.onChange(newImages);
-                }}
-              />
-            )}
-          />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col gap-4"
+      >
+        <Input
+          label="Color Name"
+          name="colorName"
+          register={register}
+          error={errors.colorName?.message}
+          className="w-1/2"
+          disabled={!!color}
+        />
+        <Controller
+          name="images"
+          control={control}
+          render={({ field }) => (
+            <InputImages
+              label="Chọn ảnh"
+              name="images"
+              type="file"
+              isArray={true}
+              error={errors.images?.message}
+              defaultImages={color?.images || []}
+              onChange={(newImages: string[]) => {
+                field.onChange(newImages);
+              }}
+            />
+          )}
+        />
 
-          <div className="flex gap-4 py-4">
-            <Button type="submit" isPrimary className="px-4">
-              {isLoading ? "Processing..." : buttonText}
-            </Button>
-            <Button className="border bg-gray-200 px-4" onClick={handleClose}>
-              Cancel
-            </Button>
-          </div>
-        </form>
-      </div>
+        <div className="flex gap-4 py-4">
+          <Button type="submit" isPrimary className="px-4">
+            {isLoading ? "Processing..." : buttonText}
+          </Button>
+          <Button className="border bg-gray-200 px-4" onClick={handleClose}>
+            Cancel
+          </Button>
+        </div>
+      </form>
     </>
   );
 };

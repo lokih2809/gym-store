@@ -7,7 +7,7 @@ interface Product {
 }
 
 export interface FormState {
-  userId?: string;
+  userId?: number;
   totalPrice: number;
   name: string;
   addressOrder: string;
@@ -17,7 +17,7 @@ export interface FormState {
 }
 
 const initialState: FormState = {
-  userId: "",
+  userId: undefined,
   totalPrice: 0,
   name: "",
   addressOrder: "",
@@ -33,7 +33,7 @@ const formSlice = createSlice({
     setFormValues(state, action: PayloadAction<FormState>) {
       return { ...state, ...action.payload };
     },
-    setUserInForm(state, action: PayloadAction<string>) {
+    setUserInForm(state, action: PayloadAction<number>) {
       state.userId = action.payload;
     },
     clearFormValues() {

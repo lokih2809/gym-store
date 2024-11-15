@@ -2,10 +2,13 @@
 
 import { ProductColor } from "@prisma/client";
 import Image from "next/image";
-import { deleteColor } from "@/lib/actions/productActions";
-import Swal from "sweetalert2";
+import { deleteProductColor } from "@/lib/actions/productActions";
 import { useRouter } from "next/navigation";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 import { useState } from "react";
 import Button from "@/components/common/Button";
 import ColorAction from "./ColorAction";
@@ -27,34 +30,23 @@ const ListColors = ({ colors, productId }: Props) => {
     setColorAction("edit");
   };
 
-  const handleDeleteColor = async (id: number) => {
+  const handleDeleteProductColor = async (id: number) => {
     const confirmResult = await confirmWithNotification(
-      "Are you sure you want to delete?",
+      "Bạn có chắc chắn xóa màu này?",
     );
 
-    if (confirmResult.isConfirmed) {
-      const response = await deleteColor(id);
-      try {
-        if (response.status === "success") {
-          await Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: "Item was deleted successfully",
-            confirmButtonText: "Ok",
-          }).then(() => {
-            router.refresh();
-          });
-        } else {
-          throw new Error("Deletion failed");
-        }
-      } catch (error) {
-        await Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was a problem deleting the item",
-          confirmButtonText: "Ok",
-        });
-      }
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      const response = await deleteProductColor(id);
+      showNotification({
+        response,
+        thenSuccess() {
+          router.refresh();
+        },
+      });
+    } catch (error) {
+      catchErrorSystem();
     }
   };
 
@@ -107,7 +99,7 @@ const ListColors = ({ colors, productId }: Props) => {
                     <span>|</span>
                     <button
                       className="text-red-500 hover:underline"
-                      onClick={() => handleDeleteColor(color.id)}
+                      onClick={() => handleDeleteProductColor(color.id)}
                     >
                       Delete
                     </button>

@@ -4,18 +4,20 @@ import { X } from "lucide-react";
 import React, { useState } from "react";
 import Input from "../common/Input";
 import { User } from "next-auth";
-import { useRouter } from "next/navigation";
 import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/components/common/Button";
 import {
-  changePasswordAction,
+  changePassword,
   fetchUserDataFromApi,
-  updateUserInfoAction,
+  updateUserInfo,
 } from "@/lib/actions/userAction";
-import Swal from "sweetalert2";
 import { useInitSession } from "@/hooks/useInitSession";
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
@@ -48,8 +50,8 @@ type EditFormValues = z.infer<typeof EditFormSchema>;
 type PasswordFormValues = z.infer<typeof PasswordFormSchema>;
 
 interface Props {
-  userAction: "editInfo" | "changePassword" | null;
-  setUserAction: (action: "editInfo" | "changePassword" | null) => void;
+  userAction: "updateInfo" | "changePassword" | null;
+  setUserAction: (action: "updateInfo" | "changePassword" | null) => void;
   user: User | null;
 }
 
@@ -58,8 +60,8 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const isEditInfo = userAction === "editInfo";
-  const formSchema = isEditInfo ? EditFormSchema : PasswordFormSchema;
+  const isUpdateInfo = userAction === "updateInfo";
+  const formSchema = isUpdateInfo ? EditFormSchema : PasswordFormSchema;
 
   const {
     register,
@@ -67,7 +69,7 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
     reset,
     formState: { errors },
   } = useForm<EditFormValues | PasswordFormValues>({
-    defaultValues: isEditInfo
+    defaultValues: isUpdateInfo
       ? {
           email: user?.email || "",
           username: user?.username || "",
@@ -84,49 +86,56 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
     reset();
   };
 
-  const showAlert = (status: string, message: string) => {
-    Swal.fire({
-      icon: status === "success" ? "success" : "error",
-      title: status === "success" ? "Success" : "Error",
-      text:
-        message ||
-        (status === "success" ? "Update Success." : "Updated Failed."),
-      confirmButtonText: "OK",
-    }).then(async () => {
-      if (isEditInfo && user) {
-        const updatedUser = await fetchUserDataFromApi(+user.id);
-        dispatch(setUser(updatedUser));
-        fetchSession();
-      } else {
-        signOut({
-          redirect: true,
-          callbackUrl: "/",
-        }).finally(() => {
-          dispatch(clearUser());
-        });
-      }
+  const updateUserSession = async (user: User) => {
+    const updatedUser = await fetchUserDataFromApi(+user.id);
+    if (updatedUser) {
+      const userWithUndefinedName = {
+        ...updatedUser,
+        name: updatedUser.name ?? undefined,
+        phoneNumber: updatedUser.phoneNumber ?? undefined,
+        address: updatedUser.address ?? undefined,
+      };
+      dispatch(setUser(userWithUndefinedName));
+      fetchSession();
+    }
+  };
+
+  const handleLogout = () => {
+    signOut({
+      redirect: true,
+      callbackUrl: "/",
+    }).finally(() => {
+      dispatch(clearUser());
     });
+  };
+
+  const thenSuccess = async () => {
+    if (isUpdateInfo && user) {
+      await updateUserSession(user);
+      setUserAction(null);
+    } else {
+      handleLogout();
+    }
   };
 
   const onSubmit: SubmitHandler<EditFormValues | PasswordFormValues> = async (
     values,
   ) => {
-    setIsLoading(true);
     const confirmResult = await confirmWithNotification();
-    if (!confirmResult.isConfirmed || !user) {
-      setIsLoading(false);
-      return;
-    }
+    if (!confirmResult.isConfirmed || !user) return;
 
     try {
-      const response = isEditInfo
-        ? await updateUserInfoAction(+user.id, values as EditFormValues)
-        : await changePasswordAction(+user.id, values as PasswordFormValues);
+      setIsLoading(true);
+      const response = isUpdateInfo
+        ? await updateUserInfo(+user.id, values as EditFormValues)
+        : await changePassword(+user.id, values as PasswordFormValues);
 
-      showAlert(response.status, response.message);
+      showNotification({
+        response,
+        thenSuccess,
+      });
     } catch (error) {
-      console.log(error);
-      showAlert("error", "An unexpected error occurred.");
+      catchErrorSystem();
     } finally {
       setIsLoading(false);
     }
@@ -137,13 +146,13 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
       <div className="animate-slide-in relative z-30 w-11/12 rounded-lg bg-white py-8 lg:w-1/2">
         <div className="flex justify-between p-4">
           <span className="text-xl font-bold">
-            {isEditInfo ? "Edit Info" : "Change Password"}
+            {isUpdateInfo ? "Edit Info" : "Change Password"}
           </span>
           <X onClick={handleFormClose} className="cursor-pointer" />
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 px-8">
-          {isEditInfo ? (
+          {isUpdateInfo ? (
             <>
               <Input
                 label="Email"

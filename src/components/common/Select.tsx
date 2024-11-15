@@ -7,7 +7,6 @@ interface Props {
   register?: UseFormRegister<any>;
   required?: boolean;
   className?: string;
-  error?: string;
   label: string;
 }
 

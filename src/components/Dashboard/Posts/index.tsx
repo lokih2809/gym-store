@@ -1,9 +1,11 @@
 "use client";
 
 import {
+  catchErrorSystem,
   confirmWithNotification,
   formatDate,
   getFilteredAndPaginatedData,
+  showNotification,
 } from "@/utils/utils";
 import { Post } from "@prisma/client";
 import React, { useState } from "react";
@@ -11,7 +13,6 @@ import SearchBoxDashboard from "../SearchBoxDashboard";
 import Button from "@/components/common/Button";
 import WritePost from "./WritePost";
 import { deletePost } from "@/lib/actions/postsActions";
-import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -23,7 +24,7 @@ const Posts = ({ listPosts }: Props) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postAction, setPostAction] = useState<"create" | "edit" | null>(null);
-  const [post, setPost] = useState<Post | null>(null);
+  const [currentPost, setCurrentPost] = useState<Post | null>(null);
 
   const { paginatedData, totalPages, handleNext, handlePrevious } =
     getFilteredAndPaginatedData(listPosts, searchTerm, currentPage, 10, [
@@ -34,35 +35,26 @@ const Posts = ({ listPosts }: Props) => {
   const previousPage = () => setCurrentPage(handlePrevious());
 
   const handleEditPost = (post: Post) => {
-    setPost(post);
+    setCurrentPost(post);
     setPostAction("edit");
   };
 
   const handleDeletePost = async (id: number) => {
-    const confirmResult = await confirmWithNotification();
-    if (confirmResult.isConfirmed) {
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn muốn xóa bài viết này?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
+    try {
       const response = await deletePost(id);
-      try {
-        if (response.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message || "Xóa bài viết thành công.",
-            confirmButtonText: "OK",
-          }).then(() => {
-            router.refresh();
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi",
-            text: response.message || "Có lỗi xảy ra! Vui lòng thử lại sau.",
-            confirmButtonText: "OK",
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      showNotification({
+        response,
+        thenSuccess() {
+          router.refresh();
+        },
+      });
+    } catch (error) {
+      catchErrorSystem();
     }
   };
 
@@ -76,7 +68,10 @@ const Posts = ({ listPosts }: Props) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Button className="" onClick={() => setPostAction("create")}>
+          <Button
+            className="bg-white p-1 p-2 text-black"
+            onClick={() => setPostAction("create")}
+          >
             Create
           </Button>
         </div>
@@ -170,7 +165,8 @@ const Posts = ({ listPosts }: Props) => {
         <WritePost
           postAction={postAction}
           setPostAction={setPostAction}
-          currentPost={post}
+          currentPost={currentPost}
+          setCurrentPost={setCurrentPost}
         />
       )}
     </>

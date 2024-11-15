@@ -36,7 +36,7 @@ const Input = ({
           placeholder={`Enter ${placeholder || label || name}`}
           className={`rounded-md border px-4 py-2 ${disabled && "bg-gray-200 opacity-80"} ${
             error ? "border-red-500" : "border-gray-300"
-          }`}
+          } ${disabled && "font-bold"}`}
           list="products"
           disabled={disabled}
         />

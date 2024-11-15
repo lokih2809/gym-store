@@ -4,14 +4,17 @@ import Button from "@/components/common/Button";
 import SearchBoxDashboard from "../SearchBoxDashboard";
 import React, { useEffect, useState } from "react";
 import {
+  catchErrorSystem,
+  confirmWithNotification,
   formatDate,
   getFilteredAndPaginatedData,
-  handleDelete,
+  showNotification,
 } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { ProductInfo } from "@/types/common";
 import AddNewProduct from "./AddProduct";
 import MoreOption from "./MoreOption";
+import { deleteProduct } from "@/lib/actions/productActions";
 
 interface Props {
   listProducts: ProductInfo[];
@@ -36,6 +39,25 @@ const Products = ({ listProducts }: Props) => {
 
   const nextPage = () => setCurrentPage(handleNext());
   const previousPage = () => setCurrentPage(handlePrevious());
+
+  const handleDelete = async (id: number) => {
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn xóa sản phẩm này?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      const response = await deleteProduct(id);
+      showNotification({
+        response,
+        thenSuccess() {
+          router.refresh();
+        },
+      });
+    } catch (error) {
+      catchErrorSystem();
+    }
+  };
 
   return (
     <>
@@ -103,9 +125,7 @@ const Products = ({ listProducts }: Props) => {
                       <span>|</span>
                       <button
                         className="text-red-500 hover:underline"
-                        onClick={() =>
-                          handleDelete(product.id, "product", router)
-                        }
+                        onClick={() => handleDelete(product.id)}
                       >
                         Delete
                       </button>

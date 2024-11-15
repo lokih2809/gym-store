@@ -13,7 +13,6 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import Swal from "sweetalert2";
 import { z } from "zod";
 import SizeSelector from "./SelectSize";
 import { ProductInfo } from "@/types/common";
@@ -21,7 +20,11 @@ import { useState } from "react";
 import ListColors from "./ListColors";
 import { updateProduct } from "@/lib/actions/productActions";
 import { useRouter } from "next/navigation";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -64,39 +67,24 @@ const MoreOption = ({ product }: Props) => {
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = async (values) => {
-    const confirmResult = await confirmWithNotification();
+  const thenSuccess = () => {
+    router.refresh();
+  };
 
-    if (confirmResult.isConfirmed) {
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn muốn cập nhật sản phẩm này?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
+    try {
       setIsLoading(true);
       const response = await updateProduct(product.id, values);
-      try {
-        if (response.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message || "Sửa sản phẩm thành công",
-            confirmButtonText: "OK",
-          }).then(() => {
-            setShow(false);
-            router.refresh();
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Thất bại",
-            text: response.message || "Cập nhật thất bại",
-            confirmButtonText: "OK",
-          }).then(() => {
-            setShow(false);
-            router.refresh();
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+      showNotification({ response, thenSuccess });
+    } catch (error) {
+      catchErrorSystem();
+    } finally {
+      setIsLoading(false);
     }
   };
 

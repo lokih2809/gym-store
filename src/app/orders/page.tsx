@@ -1,4 +1,3 @@
-// /orders/page.tsx
 import OrderDetailContainer from "@/container/Orders";
 import React from "react";
 

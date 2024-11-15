@@ -1,9 +1,10 @@
 "use server";
 
-import { Category } from "@prisma/client";
+import { Category, Prisma } from "@prisma/client";
 import db from "../client";
 import { ProductInfo } from "@/types/common";
 
+// Update images to cloud
 export const apiUpdateImages = async (images: FormData) => {
   try {
     const response = await fetch(
@@ -30,7 +31,8 @@ export const apiUpdateImages = async (images: FormData) => {
   }
 };
 
-interface FormDataProduct {
+// Create new product
+interface ProductFormData {
   name: string;
   price: string;
   sku: string;
@@ -42,7 +44,7 @@ interface FormDataProduct {
   images: string[];
 }
 
-export const createProduct = async (formData: FormDataProduct) => {
+export const createProduct = async (formData: ProductFormData) => {
   const { name, price, sku, category, fit, description, color, sizes, images } =
     formData;
 
@@ -50,7 +52,7 @@ export const createProduct = async (formData: FormDataProduct) => {
   if (existingSku) {
     return {
       status: "error",
-      message: "SKU đã tồn tại. Vui lòng sử dụng SKU khác!",
+      message: "SKU đã tồn tại, Vui lòng sử dụng SKU khác.",
     };
   }
 
@@ -58,7 +60,7 @@ export const createProduct = async (formData: FormDataProduct) => {
   if (isNaN(priceAsNumber)) {
     return {
       status: "error",
-      message: "Giá không hợp lệ!",
+      message: "Giá không hợp lệ, vui lòng nhập lại.",
     };
   }
 
@@ -90,18 +92,79 @@ export const createProduct = async (formData: FormDataProduct) => {
     return {
       response,
       status: "success",
-      message: "Thêm sản phẩm mới thành công!",
+      message: "Thêm sản phẩm mới thành công.",
     };
   } catch (error) {
     console.error("Error creating product:", error);
     return {
       status: "error",
-      message: "Có lỗi xảy ra trong quá trình thêm sản phẩm!",
+      message: "Có lỗi xảy ra trong quá trình thêm sản phẩm.",
     };
   }
 };
 
-export const deleteColorProduct = async (id: number) => {
+// Delete product
+export const deleteProduct = async (id: number) => {
+  try {
+    const existingProduct = await db.product.findUnique({
+      where: { id },
+    });
+
+    if (!existingProduct) {
+      throw new Error(`Product with ID ${id} not found.`);
+    }
+
+    // Kiểm tra sản phẩm có trong orderItem không
+    const productInOrderItems = await db.orderItem.findMany({
+      where: { productId: id },
+    });
+
+    if (productInOrderItems.length > 0) {
+      await db.product.update({
+        where: { id },
+        data: { deleted: true },
+      });
+      return {
+        status: "success",
+        message: "Xóa sản phẩm tạm thời thành công.",
+      };
+    }
+
+    // Xóa sản phẩm và dữ liệu liên quan trong một transaction
+    await db.$transaction(async (tx) => {
+      await tx.productColor.deleteMany({
+        where: { productId: id },
+      });
+
+      await tx.productSize.deleteMany({
+        where: { productId: id },
+      });
+
+      await tx.product.delete({
+        where: { id },
+      });
+    });
+
+    return { status: "success", message: "Xóa sản phẩm thành công." };
+  } catch (error) {
+    console.error("Error deleting product:", error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      return {
+        status: "error",
+        message: `Có lỗi xảy ra khi xóa sản phẩm: ${error.message}`,
+      };
+    }
+
+    return {
+      status: "error",
+      message: "Xóa sản phẩm thất bại, có lỗi xảy ra.",
+    };
+  }
+};
+
+// Delete color
+export const deleteProductColor = async (id: number) => {
   try {
     const existingColor = await db.productColor.findUnique({
       where: { id },
@@ -115,53 +178,14 @@ export const deleteColorProduct = async (id: number) => {
       where: { id },
     });
 
-    return { message: "Xóa màu sản phẩm thành công." };
+    return { status: "success", message: "Xóa màu thành công." };
   } catch (error) {
     console.error("Error deleting Color:", error);
-    throw new Error("Failed to delete Color");
+    return { status: "success", message: "Xóa màu thất bại, có lỗi xảy ra." };
   }
 };
 
-export const deleteProduct = async (id: number) => {
-  try {
-    const existingProduct = await db.product.findUnique({
-      where: { id },
-    });
-
-    if (!existingProduct) {
-      throw new Error(`Product with ID ${id} not found.`);
-    }
-
-    const productInOrderItems = await db.orderItem.findMany({
-      where: { productId: id },
-    });
-
-    if (productInOrderItems.length > 0) {
-      await db.product.update({
-        where: { id },
-        data: { deleted: true },
-      });
-      return { message: "Product soft-deleted successfully." };
-    } else {
-      await db.product.delete({
-        where: { id },
-      });
-
-      await db.productColor.deleteMany({
-        where: { productId: id },
-      });
-      await db.productSize.deleteMany({
-        where: { productId: id },
-      });
-
-      return { message: "Product and related data deleted successfully." };
-    }
-  } catch (error) {
-    console.error("Error deleting Product:", error);
-    throw new Error("Failed to delete Product");
-  }
-};
-
+// Search product
 export const searchProducts = async (query: string): Promise<ProductInfo[]> => {
   if (!query || typeof query !== "string") {
     throw new Error("Invalid query");
@@ -180,7 +204,6 @@ export const searchProducts = async (query: string): Promise<ProductInfo[]> => {
         productSizes: true,
       },
     });
-
     return result;
   } catch (error) {
     console.error(error);
@@ -188,6 +211,7 @@ export const searchProducts = async (query: string): Promise<ProductInfo[]> => {
   }
 };
 
+// update Product
 export const updateProduct = async (
   productId: number,
   productData: {
@@ -206,7 +230,10 @@ export const updateProduct = async (
     });
 
     if (!existingProduct) {
-      return { message: "Product not found.", status: "error" };
+      return {
+        status: "error",
+        message: "Không tìm thấy sản phẩm, hãy thử lại sau.",
+      };
     }
 
     await db.product.update({
@@ -254,16 +281,17 @@ export const updateProduct = async (
 
     return {
       status: "success",
-      message: "Product updated successfully.",
+      message: "Cập nhật sản phẩm thành công.",
     };
   } catch (error) {
     return {
       status: "error",
-      message: "Failed to update product",
+      message: "Cập nhật sản phẩm thất bại, có lỗi xảy ra",
     };
   }
 };
 
+// Add product color
 export const addProductColor = async (
   productId: number,
   color: { colorName: string; images: string[] },
@@ -271,24 +299,27 @@ export const addProductColor = async (
   const { colorName, images } = color;
 
   try {
-    // Check if the product exists
     const existingProduct = await db.product.findUnique({
       where: { id: productId },
       include: { colors: true },
     });
     if (!existingProduct) {
-      return { status: "error", message: "Product not found." };
+      return {
+        status: "error",
+        message: "Không tìm thấy sản phẩm, vui lòng thử lại sau.",
+      };
     }
 
-    // Check if the color already exists
     const existingColor = existingProduct.colors.find(
       (color) => color.colorName === colorName,
     );
     if (existingColor) {
-      return { status: "error", message: "Color already exists." };
+      return {
+        status: "error",
+        message: "Màu đã tồn tại, vui lòng thêm màu khác.",
+      };
     }
 
-    // Create the new color
     const newColor = await db.productColor.create({
       data: {
         colorName,
@@ -299,33 +330,20 @@ export const addProductColor = async (
 
     return {
       status: "success",
-      message: "Color added successfully!",
+      message: "Thêm màu thành công.",
       newColor,
     };
   } catch (error) {
     console.error("Error adding color:", error);
     return {
       status: "error",
-      message: "An error occurred while adding color.",
-      error,
+      message: "Thêm màu thất bại.",
     };
   }
 };
 
-export const deleteColor = async (colorId: number) => {
-  try {
-    const response = await db.productColor.delete({
-      where: {
-        id: colorId,
-      },
-    });
-    return { status: "success", message: "Color deleted.", response };
-  } catch (error) {
-    return { status: "error", message: "Something went wrong!" };
-  }
-};
-
-export const updateColor = async (
+// Update product color
+export const updateProductColor = async (
   colorId: number,
   color: { colorName: string; images: string[] },
 ) => {
@@ -339,12 +357,17 @@ export const updateColor = async (
         images,
       },
     });
-    return { status: "success", message: "Update complete." };
+    return {
+      status: "success",
+      message: "Cập nhật màu thành công.",
+      colorName,
+    };
   } catch (error) {
-    return { status: "error", message: "Update fail." };
+    return { status: "error", message: "Cập nhật thất bại, hãy thử lại sau." };
   }
 };
 
+// Delete order Item and check Product
 export const deleteOrderItemAndCheckProduct = async (
   orderItemId: number,
   productId: number,
@@ -371,8 +394,8 @@ export const deleteOrderItemAndCheckProduct = async (
     }
 
     return {
-      message:
-        "Order item deleted, and product deleted if it had no remaining order items and was marked as deleted.",
+      status: "success",
+      message: "Xóa sản phẩm thành công.",
     };
   } catch (error) {
     console.error("Error deleting OrderItem and checking Product:", error);

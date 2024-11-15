@@ -15,7 +15,6 @@ import { CartItemProps } from "@/app/redux/slices/cartSlice";
 import { RootState } from "@/app/redux/store";
 import { FormState, setFormValues } from "@/app/redux/slices/formSlice";
 import SelectMethod from "./SelectMethod";
-import Swal from "sweetalert2"; // Import SweetAlert2
 import { confirmWithNotification } from "@/utils/utils";
 
 export const PAYMENT_METHOD = [
@@ -85,8 +84,13 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn muốn đặt hàng không?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
     const newForm: FormState = {
-      userId: user?.id,
+      userId: user?.id && Number(user.id),
       name: values.name,
       addressOrder: values.address,
       phoneNumber: values.phoneNumber,
@@ -100,56 +104,48 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
       })),
     };
 
-    const confirmResult = await confirmWithNotification(
-      "Do you want to confirm your order?",
-    );
+    await dispatch(setFormValues({ ...forms, ...newForm }));
 
-    if (confirmResult.isConfirmed) {
-      await dispatch(setFormValues({ ...forms, ...newForm }));
-
-      if (newForm.paymentMethod === "SHIPCOD") {
-        const transactionId = randomRef();
-        const orderData = {
-          transactionId,
-          userId: newForm.userId,
-          name: newForm.name,
-          totalPrice: amountInVND,
-          addressOrder: newForm.addressOrder,
-          phoneNumber: newForm.phoneNumber,
-          paymentMethod: newForm.paymentMethod,
-          products: newForm.products,
-        };
-        await dispatch(setFormValues(orderData));
-        await router.push(
-          `/payment-result?vnp_TxnRef=${transactionId}&ship_cod=00`,
-        );
-      } else {
-        try {
-          const response = await fetch("/api/create_payment_url", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              amount: amountInVND,
-              orderDescription: `Payment for order from ${values.phoneNumber}`,
-              orderType: "billpayment",
-              language: "vn",
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to create payment URL");
-          }
-
-          const data = await response.json();
-          if (data?.paymentUrl) {
-            window.location.href = data.paymentUrl;
-          }
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
+    if (newForm.paymentMethod === "SHIPCOD") {
+      const transactionId = randomRef();
+      const orderData = {
+        transactionId,
+        userId: newForm.userId,
+        name: newForm.name,
+        totalPrice: amountInVND,
+        addressOrder: newForm.addressOrder,
+        phoneNumber: newForm.phoneNumber,
+        paymentMethod: newForm.paymentMethod,
+        products: newForm.products,
+      };
+      await dispatch(setFormValues(orderData));
+      await router.push(
+        `/payment-result?vnp_TxnRef=${transactionId}&ship_cod=00`,
+      );
     } else {
-      Swal.fire("Order cancelled", "", "info");
+      try {
+        const response = await fetch("/api/create_payment_url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: amountInVND,
+            orderDescription: `Payment for order from ${values.phoneNumber}`,
+            orderType: "billpayment",
+            language: "vn",
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create payment URL");
+        }
+
+        const data = await response.json();
+        if (data?.paymentUrl) {
+          window.location.href = data.paymentUrl;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 

@@ -12,14 +12,15 @@ const LogOutButton = () => {
 
   const handleLogout = () => {
     setLoading(true);
+    dispatch(clearUser());
     signOut({
       redirect: true,
       callbackUrl: "/",
     }).finally(() => {
-      dispatch(clearUser());
       setLoading(false);
     });
   };
+
   return (
     <>
       {loading && <FullscreenLoading />}

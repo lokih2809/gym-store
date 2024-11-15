@@ -1,7 +1,7 @@
 import DashboardContainer from "@/container/Dashboard";
 
-const page = () => {
+const Page = () => {
   return <DashboardContainer />;
 };
 
-export default page;
+export default Page;

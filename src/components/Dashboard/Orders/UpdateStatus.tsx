@@ -3,14 +3,17 @@
 import Button from "@/components/common/Button";
 import Select from "@/components/common/Select";
 import { STATUS } from "@/constants/data";
-import { updateStatus } from "@/lib/actions/OrderActions";
 import { OrderWithUser } from "@/types/common";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Swal from "sweetalert2";
+import { updateStatusOrder } from "@/lib/actions/OrderActions";
 
 interface Props {
   order: OrderWithUser;
@@ -21,8 +24,8 @@ type FormValues = {
 };
 
 const UpdateStatus = ({ order }: Props) => {
-  const [show, setShow] = useState<boolean>(false);
   const router = useRouter();
+  const [show, setShow] = useState<boolean>(false);
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -32,39 +35,26 @@ const UpdateStatus = ({ order }: Props) => {
 
   const { register, handleSubmit } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = async (value) => {
-    const confirmResult = await confirmWithNotification();
-    if (confirmResult.isConfirmed) {
-      const response = await updateStatus(order.id, value.status);
-      try {
-        if (response.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message || "Cập nhật trạng thái thành công.",
-            confirmButtonText: "OK",
-          }).then(() => {
-            setShow(false);
-            router.refresh();
-          });
-        } else {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message || "Cập nhật trạng thái thất bại.",
-            confirmButtonText: "OK",
-          });
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      return;
-    }
+  const thenSuccess = () => {
+    setShow(false);
+    router.refresh();
   };
 
-  const handleClose = () => {
-    setShow(false);
+  const onSubmit: SubmitHandler<FormValues> = async (value) => {
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      const response = await updateStatusOrder(order.id, value.status);
+      showNotification({
+        response,
+        thenSuccess,
+      });
+    } catch (error) {
+      catchErrorSystem();
+    }
   };
 
   return (
@@ -74,7 +64,7 @@ const UpdateStatus = ({ order }: Props) => {
           <div className="absolute z-30 flex w-11/12 animate-slide-in-bottom flex-col rounded-lg bg-white py-8 text-black lg:w-1/3 lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Information</span>
-              <X onClick={handleClose} className="cursor-pointer" />
+              <X onClick={() => setShow(false)} className="cursor-pointer" />
             </div>
 
             <form

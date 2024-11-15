@@ -1,8 +1,8 @@
 import PostsContainer from "@/container/Dashboard/Posts";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   return <PostsContainer />;
 };
 
-export default page;
+export default Page;

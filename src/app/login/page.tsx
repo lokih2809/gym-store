@@ -1,7 +1,7 @@
 import LoginContainer from "@/container/Login";
 
-const page = () => {
+const Page = () => {
   return <LoginContainer />;
 };
 
-export default page;
+export default Page;

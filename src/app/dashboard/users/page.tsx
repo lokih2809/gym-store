@@ -1,7 +1,7 @@
 import UsersContainer from "@/container/Dashboard/Users";
 
-const page = () => {
+const Page = () => {
   return <UsersContainer />;
 };
 
-export default page;
+export default Page;

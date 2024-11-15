@@ -2,42 +2,67 @@ import { JSONContent } from "@tiptap/react";
 import PostEditor from "./EditPost";
 import { createPost, editPost } from "@/lib/actions/postsActions";
 import { Post } from "@prisma/client";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
+import { useRouter } from "next/navigation";
 
 interface Props {
   postAction: "create" | "edit" | null;
   setPostAction: (action: "create" | "edit" | null) => void;
   currentPost: Post | null;
+  setCurrentPost: (post: Post | null) => void;
 }
 
-const WritePost = ({ postAction, setPostAction, currentPost }: Props) => {
+const WritePost = ({
+  postAction,
+  setPostAction,
+  currentPost,
+  setCurrentPost,
+}: Props) => {
+  const router = useRouter();
+  const isCreate = postAction === "create";
+
+  const thenSuccess = () => {
+    setPostAction(null);
+    setCurrentPost(null);
+    router.refresh();
+  };
+
   const handleSubmit = async (post: {
     title: string;
     thumbnail: string;
     content: JSONContent;
   }) => {
+    const confirmResult = await confirmWithNotification(
+      isCreate
+        ? "Bạn có muốn thêm bài viết mới?"
+        : "Bạn có chắc chắn cập nhật bài viết này?",
+    );
+    if (!confirmResult.isConfirmed) return;
+
     try {
       const plainContent = JSON.parse(JSON.stringify(post.content));
-      let newPost;
 
-      if (postAction === "create") {
-        newPost = await createPost(post.title, post.thumbnail, plainContent);
-      } else if (postAction === "edit" && currentPost?.id) {
-        newPost = await editPost(
-          currentPost.id,
-          post.title,
-          post.thumbnail,
-          plainContent,
-        );
-      } else {
-        return;
-      }
+      const response = isCreate
+        ? await createPost(post.title, post.thumbnail, plainContent)
+        : currentPost?.id &&
+          (await editPost(
+            currentPost.id,
+            post.title,
+            post.thumbnail,
+            plainContent,
+          ));
 
-      if (newPost) {
-        alert("Bài viết đã được lưu thành công!");
-      }
+      response &&
+        showNotification({
+          response,
+          thenSuccess,
+        });
     } catch (error) {
-      console.error("Error creating post:", error);
-      alert("Đã xảy ra lỗi khi lưu bài viết");
+      catchErrorSystem();
     }
   };
 

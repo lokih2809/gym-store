@@ -4,8 +4,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../common/Input";
 import Button from "../common/Button";
-import Swal from "sweetalert2";
 import { createUser } from "@/lib/actions/authActions";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 
 const FormSchema = z
   .object({
@@ -38,28 +42,22 @@ const SignUpForm = ({ setAuthMode }: Props) => {
   });
 
   const onSubmit: SubmitHandler<FormValues> = async (values: any) => {
-    setIsLoading(true);
+    const confirmResult = await confirmWithNotification();
+    if (!confirmResult.isConfirmed) return;
 
-    const response = await createUser(values);
-
-    if (response.status === "success") {
-      setIsLoading(false);
-      Swal.fire({
-        icon: "success",
-        title: "Thành công",
-        text: response.message,
-        confirmButtonText: "OK",
-      }).then(() => {
-        setAuthMode("login");
+    try {
+      setIsLoading(true);
+      const response = await createUser(values);
+      showNotification({
+        response,
+        thenSuccess() {
+          setAuthMode("login");
+        },
       });
-    } else {
+    } catch (error) {
+      catchErrorSystem();
+    } finally {
       setIsLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "Lỗi",
-        text: response.message || "Có lỗi xảy ra trong quá trình tạo tài khoản",
-        confirmButtonText: "OK",
-      });
     }
   };
 

@@ -11,6 +11,7 @@ interface Props {
 
 const OrderHistory = ({ listOrders }: Props) => {
   const route = useRouter();
+
   return (
     <>
       <div className="flex flex-1 flex-col lg:px-4">

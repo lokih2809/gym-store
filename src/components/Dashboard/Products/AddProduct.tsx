@@ -6,7 +6,7 @@ import Select from "@/components/common/Select";
 import { CATEGORIES, PRODUCT_SIZES } from "@/constants/data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
-import { Camera, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import {
@@ -15,12 +15,15 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import Swal from "sweetalert2";
 import { z } from "zod";
 import SizeSelector from "./SelectSize";
 import { createProduct } from "@/lib/actions/productActions";
-import InputImages from "./InputImages";
-import { confirmWithNotification } from "@/utils/utils";
+import InputImages from "../../common/InputImages";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 
 const productSchema = z.object({
   name: z.string().min(1, "Product name is required"),
@@ -54,40 +57,29 @@ const AddNewProduct = () => {
     formState: { errors },
   } = methods;
 
+  const thenSuccess = () => {
+    setShow(false);
+    router.refresh();
+  };
+
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
-    setIsLoading(true);
-    const confirmResult = await confirmWithNotification();
+    const confirmResult = await confirmWithNotification(
+      "Bạn có chắc chắn thêm sản phẩm này?",
+    );
 
-    if (confirmResult.isConfirmed) {
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      setIsLoading(true);
       const response = await createProduct(values);
-
-      try {
-        if (response.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message,
-            confirmButtonText: "OK",
-          }).then(() => {
-            setShow(false);
-            router.refresh();
-          });
-        } else {
-          throw new Error(response.message);
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Lỗi",
-          text: "Something went wrong!",
-          confirmButtonText: "OK",
-        });
-      } finally {
-        setIsLoading(false);
-        router.refresh();
-      }
-    } else {
-      return;
+      showNotification({
+        response,
+        thenSuccess,
+      });
+    } catch (error) {
+      catchErrorSystem();
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,7 +95,7 @@ const AddNewProduct = () => {
       {/* Edit form */}
       {show && (
         <div className="fixed bottom-0 left-0 right-0 top-0 z-20 flex items-center justify-center bg-black bg-opacity-25">
-          <div className="absolute z-30 flex max-h-[100vh] min-w-[50%] animate-slide-in-bottom flex-col overflow-y-scroll rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
+          <div className="scrollbar-hide absolute z-30 flex max-h-[100vh] min-w-[50%] animate-slide-in-bottom flex-col overflow-y-scroll rounded-lg bg-white p-8 text-black lg:animate-slide-in-right">
             <div className="flex justify-center p-4">
               <span className="m-auto text-xl font-bold">Add New Product</span>
               <X onClick={() => setShow(false)} className="cursor-pointer" />
@@ -180,7 +172,6 @@ const AddNewProduct = () => {
                   control={control}
                   render={({ field }) => (
                     <InputImages
-                      icon={<Camera size={40} />}
                       label="Chọn ảnh"
                       name="images"
                       type="file"

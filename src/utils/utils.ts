@@ -1,8 +1,7 @@
 import { CartItemProps } from "@/app/redux/slices/cartSlice";
-import { deleteUser } from "@/lib/actions/authActions";
-import { deleteProduct } from "@/lib/actions/productActions";
 import Swal from "sweetalert2";
 
+// Format date
 export const formatDate = (date: Date) => {
   const d = new Date(date);
   const day = String(d.getDate()).padStart(2, "0");
@@ -11,6 +10,7 @@ export const formatDate = (date: Date) => {
   return `${day}.${month}.${year}`;
 };
 
+// Get Filter and Paginate data
 export const getFilteredAndPaginatedData = (
   data: any[],
   searchTerm: string,
@@ -47,54 +47,14 @@ export const getFilteredAndPaginatedData = (
   return { paginatedData, totalPages, handleNext, handlePrevious };
 };
 
-type EntityType = "user" | "product";
-
-export const handleDelete = async (
-  entityId: number,
-  entityType: EntityType,
-  router?: any,
-) => {
-  const confirmed = await confirmWithNotification();
-
-  try {
-    if (entityType === "user") {
-      if (confirmed.isConfirmed) {
-        const response = await deleteUser(entityId);
-        Swal.fire({
-          icon: response.status === "success" ? "success" : "error",
-          title: response.status === "success" ? "Success" : "error",
-          text: response.message,
-          confirmButtonText: "OK",
-        }).then(() => router?.refresh());
-      }
-    } else if (entityType === "product") {
-      if (confirmed.isConfirmed) {
-        const response = await deleteProduct(entityId);
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: response.message,
-          confirmButtonText: "OK",
-        }).then(() => router?.refresh());
-      }
-    }
-  } catch (error) {
-    console.error(error);
-    Swal.fire({
-      icon: "error",
-      title: "Failed",
-      text: "Xóa thất bại, vui lòng thử lại sau",
-      confirmButtonText: "OK",
-    });
-  }
-};
-
+// Calculate Total
 export const calculateTotal = (items: CartItemProps[]): number => {
   return items.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
 };
 
+// Notification confirm form
 export const confirmWithNotification = (message?: string) => {
   const confirmResult = Swal.fire({
     title: "Confirm",
@@ -105,4 +65,48 @@ export const confirmWithNotification = (message?: string) => {
     cancelButtonText: "No",
   });
   return confirmResult;
+};
+
+type ShowNotificationProps = {
+  response: { status: string; message: string };
+  thenSuccess?: () => void;
+};
+
+const showSwalNotification = (
+  icon: "success" | "error",
+  title: string,
+  message: string,
+) => {
+  return Swal.fire({
+    icon,
+    title,
+    text: message,
+    confirmButtonText: "OK",
+  });
+};
+
+export const showNotification = async ({
+  response,
+  thenSuccess,
+}: ShowNotificationProps) => {
+  const icon = response.status === "success" ? "success" : "error";
+  const title = response.status === "success" ? "Thành công" : "Thất bại";
+  const defaultMessage =
+    response.status === "success"
+      ? "Cập nhật thành công."
+      : "Có lỗi xảy ra, vui lòng thử lại sau.";
+
+  await showSwalNotification(icon, title, response.message || defaultMessage);
+
+  if (response.status === "success" && thenSuccess) {
+    thenSuccess();
+  }
+};
+
+export const catchErrorSystem = () => {
+  showSwalNotification(
+    "error",
+    "Thất bại",
+    "Có lỗi xảy ra, vui lòng thử lại sau.",
+  );
 };

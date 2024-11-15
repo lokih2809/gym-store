@@ -3,7 +3,8 @@
 import db from "../client";
 import bcrypt from "bcrypt";
 
-type EditFormValues = {
+// Update user
+type UpdateUserInfoData = {
   email: string;
   username: string;
   name: string;
@@ -11,9 +12,9 @@ type EditFormValues = {
   address?: string | null | undefined;
 };
 
-export const updateUserInfoAction = async (
+export const updateUserInfo = async (
   id: number,
-  formData: EditFormValues,
+  formData: UpdateUserInfoData,
 ) => {
   try {
     await db.user.update({
@@ -24,13 +25,14 @@ export const updateUserInfoAction = async (
         ...formData,
       },
     });
-    return { status: "success", message: "Update completed." };
+    return { status: "success", message: "Cập nhật thông tin thành công." };
   } catch (error) {
-    return { status: "error", message: "Update Failed." };
+    return { status: "error", message: "Cập nhật thất bại." };
   }
 };
 
-export const changePasswordAction = async (
+// Change password
+export const changePassword = async (
   id: number,
   formData: { oldPassword: string; newPassword: string },
 ) => {
@@ -42,7 +44,10 @@ export const changePasswordAction = async (
   });
 
   if (!userInfo || !(await bcrypt.compare(oldPassword, userInfo.password))) {
-    return { status: "error", message: "Old Password does not match." };
+    return {
+      status: "error",
+      message: "Mật khẩu cũ không khớp, vui lòng thử lại.",
+    };
   }
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -52,12 +57,16 @@ export const changePasswordAction = async (
       data: { password: hashedPassword },
     });
 
-    return { status: "success", message: "Password updated successfully." };
+    return { status: "success", message: "Đổi mật khẩu thành công." };
   } catch (error) {
-    return { status: "error", message: "Password update failed." };
+    return {
+      status: "error",
+      message: "Đổi mật khẩu thất bại, có lỗi xảy ra.",
+    };
   }
 };
 
+// Get user data without password
 export const fetchUserDataFromApi = async (id: number) => {
   try {
     const response = await db.user.findUnique({
@@ -69,15 +78,12 @@ export const fetchUserDataFromApi = async (id: number) => {
         email: true,
         username: true,
         name: true,
-        createdAt: true,
-
-        updatedAt: true,
-        role: true,
-        address: true,
         phoneNumber: true,
+        address: true,
+        role: true,
       },
     });
-    return { response };
+    return response;
   } catch (error) {
     console.log(error);
   }

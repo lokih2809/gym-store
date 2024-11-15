@@ -3,15 +3,18 @@
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Select from "@/components/common/Select";
-import { editUser } from "@/lib/actions/authActions";
+import { adminUpdateUser } from "@/lib/actions/authActions";
 import { UserWithoutPassword } from "@/types/common";
-import { confirmWithNotification } from "@/utils/utils";
+import {
+  catchErrorSystem,
+  confirmWithNotification,
+  showNotification,
+} from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Swal from "sweetalert2";
 import { z } from "zod";
 
 const FormSchema = z.object({
@@ -57,44 +60,28 @@ const EditAccountForm = ({ user }: Props) => {
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = async (values) => {
-    setIsLoading(true);
+  const thenSuccess = () => {
+    setShow(false);
+    router.refresh();
+  };
 
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(values)) {
       formData.append(key, value || "");
     }
 
     const confirmResult = await confirmWithNotification();
-    if (confirmResult.isConfirmed) {
-      try {
-        const response = await editUser(user.id, formData);
+    if (!confirmResult.isConfirmed) return;
 
-        if (response.status === "success") {
-          Swal.fire({
-            icon: "success",
-            title: "Thành công",
-            text: response.message || "Tạo tài khoản người dùng thành công.",
-            confirmButtonText: "OK",
-          }).then(() => {
-            setShow(false);
-            router.refresh();
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Lỗi",
-            text: response.message || "Có lỗi xảy ra ! vui lòng thử lại sau",
-            confirmButtonText: "OK",
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      return;
+    try {
+      setIsLoading(true);
+      const response = await adminUpdateUser(user.id, formData);
+      showNotification({ response, thenSuccess });
+    } catch (error) {
+      catchErrorSystem();
+    } finally {
+      setIsLoading(false);
     }
   };
 

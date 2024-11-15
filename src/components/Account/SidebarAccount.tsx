@@ -32,7 +32,7 @@ const SidebarAccount = ({ user }: Props) => {
   }
 
   const [userAction, setUserAction] = useState<
-    "editInfo" | "changePassword" | null
+    "updateInfo" | "changePassword" | null
   >(null);
 
   return (
@@ -76,7 +76,7 @@ const SidebarAccount = ({ user }: Props) => {
             <span className="font-bold uppercase">Edit Your Account</span>
             <span
               className="cursor-pointer font-bold underline"
-              onClick={() => setUserAction("editInfo")}
+              onClick={() => setUserAction("updateInfo")}
             >
               Edit Info
             </span>

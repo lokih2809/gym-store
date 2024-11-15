@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         if (!passwordMatch) return null;
 
         return {
-          id: `${existingUser.id}`,
+          id: existingUser.id,
           email: existingUser.email,
           username: existingUser.username,
           name: existingUser.name ?? undefined,

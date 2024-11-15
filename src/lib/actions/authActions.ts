@@ -8,7 +8,8 @@ import bcrypt from "bcrypt";
 import { getSession, signIn } from "next-auth/react";
 import { ADMIN_MAIL } from "@/constants/common";
 
-const userSchema = z.object({
+// Create user
+const createUserSchema = z.object({
   username: z.string().min(1, "Username is required").max(100),
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
@@ -23,7 +24,7 @@ const userSchema = z.object({
 
 export const createUser = async (formData: FormData) => {
   const { email, username, password, name, phoneNumber, address, role } =
-    userSchema.parse(formData);
+    createUserSchema.parse(formData);
 
   try {
     const existingEmail = await db.user.findUnique({
@@ -33,7 +34,7 @@ export const createUser = async (formData: FormData) => {
     if (existingEmail) {
       return {
         status: "error",
-        message: "Email đã tồn tại, vui lòng nhập email khác",
+        message: "Email đã tồn tại, vui lòng nhập email khác.",
       };
     }
 
@@ -44,7 +45,7 @@ export const createUser = async (formData: FormData) => {
     if (existingUsername) {
       return {
         status: "error",
-        message: "Tài khoản đã tồn tại, vui lòng nhập tài khoản khác",
+        message: "Tài khoản đã tồn tại, vui lòng nhập tài khoản khác.",
       };
     }
 
@@ -79,11 +80,13 @@ export const createUser = async (formData: FormData) => {
   }
 };
 
+// Refresh session
 const refreshSession = async () => {
   const session = await getServerSession(authOptions);
   return session;
 };
 
+// Delete user
 export const deleteUser = async (id: number) => {
   try {
     const existingUser = await db.user.findUnique({
@@ -106,18 +109,19 @@ export const deleteUser = async (id: number) => {
     }
   } catch (error) {
     console.error("Error deleting user:", error);
-    throw new Error("Failed to delete user");
+    return { status: "error", message: "Xóa tài khoản thất bại." };
   }
 };
 
-export const editUser = async (id: number, formData: FormData) => {
+// Admin update user
+export const adminUpdateUser = async (id: number, formData: FormData) => {
   try {
     const existingUser = await db.user.findUnique({
       where: { id },
     });
 
     if (!existingUser) {
-      return { status: "error", message: "User not found." };
+      return { status: "error", message: "Không tìm thấy người dùng." };
     }
 
     const email = formData.get("email");
@@ -130,7 +134,7 @@ export const editUser = async (id: number, formData: FormData) => {
       if (existingEmail) {
         return {
           status: "error",
-          message: "Email already exists, please choose another.",
+          message: "Email đã tồn tại, vui lòng nhập email khác.",
         };
       }
     }
@@ -142,7 +146,7 @@ export const editUser = async (id: number, formData: FormData) => {
       if (existingUsername) {
         return {
           status: "error",
-          message: "Username already exists, please choose another.",
+          message: "Tài khoản đã tồn tại, vui lòng nhập tài khoản khác.",
         };
       }
     }
@@ -170,27 +174,14 @@ export const editUser = async (id: number, formData: FormData) => {
 
     return {
       status: "success",
-      message: "User updated successfully.",
+      message: "Cập nhật người dùng thành công.",
       user: updatedUser,
     };
   } catch (error) {
     console.error(error);
     return {
-      message: "Failed to update user",
+      message: "Cập nhật người dùng thất bại",
       status: "error",
     };
-  }
-};
-
-export const findUserWithEmail = async (email: string) => {
-  try {
-    const user = await db.user.findFirst({
-      where: {
-        email,
-      },
-    });
-    return { user };
-  } catch (error) {
-    console.log(error);
   }
 };

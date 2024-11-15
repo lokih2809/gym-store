@@ -7,9 +7,9 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 const createNoopStorage = () => ({
-  getItem: (_key: string) => Promise.resolve(null),
-  setItem: (_key: string, _value: any) => Promise.resolve(),
-  removeItem: (_key: string) => Promise.resolve(),
+  getItem: () => Promise.resolve(null),
+  setItem: () => Promise.resolve(),
+  removeItem: () => Promise.resolve(),
 });
 
 const isClient = typeof window !== "undefined";

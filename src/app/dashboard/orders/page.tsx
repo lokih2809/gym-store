@@ -1,8 +1,8 @@
 import OrdersContainer from "@/container/Dashboard/Orders";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   return <OrdersContainer />;
 };
 
-export default page;
+export default Page;

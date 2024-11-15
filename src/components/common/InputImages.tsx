@@ -12,7 +12,7 @@ interface InputImagesProps {
   name: string;
   type: string;
   error?: string;
-  onChange: (images: string | string[]) => void;
+  onChange: (images: string[]) => void;
   defaultImages?: string[];
   isArray?: boolean;
 }
@@ -84,9 +84,9 @@ const InputImages: React.FC<InputImagesProps> = ({
   };
 
   return (
-    <div className="flex items-end gap-4">
+    <div className="flex gap-4">
       <div
-        className={`flex size-28 border-2 border-dashed border-blue-400 ${!isArray && imagesPreview.length > 0 ? "hidden" : ""}`}
+        className={`flex size-32 border-2 border-dashed border-blue-400 ${!isArray && imagesPreview.length > 0 ? "hidden" : ""}`}
       >
         <label
           htmlFor={name}

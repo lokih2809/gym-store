@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import SearchBoxDashboard from "../SearchBoxDashboard";
 import { formatDate, getFilteredAndPaginatedData } from "@/utils/utils";
 import Button from "@/components/common/Button";
-import UpdateStatus from "./UpdateStatus";
 import { OrderWithUser } from "@/types/common";
+import UpdateStatus from "./UpdateStatus";
 
 interface Props {
   listOrders: OrderWithUser[];
@@ -24,6 +24,7 @@ const Orders = ({ listOrders }: Props) => {
 
   const nextPage = () => setCurrentPage(handleNext());
   const previousPage = () => setCurrentPage(handlePrevious());
+
   return (
     <>
       <div className="bg-dashboard relative space-y-8 rounded-lg p-8 text-white">

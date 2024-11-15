@@ -8,6 +8,7 @@ import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/redux/slices/sessionSlice";
+import { catchErrorSystem } from "@/utils/utils";
 
 const FormSchema = z.object({
   identifier: z.string().min(1, "Email or Username is required"),
@@ -38,26 +39,30 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
-    setErrorMessage(null);
+    try {
+      setErrorMessage(null);
+      setIsLoading(true);
 
-    const signInData = await signIn("credentials", {
-      redirect: false,
-      identifier: values.identifier,
-      password: values.password,
-    });
+      const signInData = await signIn("credentials", {
+        redirect: false,
+        identifier: values.identifier,
+        password: values.password,
+      });
 
-    setIsLoading(false);
-
-    if (signInData?.ok) {
-      const session = await getSession();
-      if (session?.user) {
-        dispatch(setUser(session.user));
+      if (signInData?.ok) {
+        const session = await getSession();
+        if (session?.user) {
+          dispatch(setUser(session.user));
+        }
+        router.push("/");
+      } else {
+        console.error("Failed to sign in:");
+        setErrorMessage("Invalid account or password. Please check again.");
       }
-      router.push("/");
-    } else {
-      console.error("Failed to sign in:");
-      setErrorMessage("Invalid account or password. Please check again.");
+    } catch (error) {
+      catchErrorSystem();
+    } finally {
+      setIsLoading(false);
     }
   };
 
