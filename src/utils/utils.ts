@@ -1,3 +1,5 @@
+"use client";
+
 import { CartItemProps } from "@/app/redux/slices/cartSlice";
 import Swal from "sweetalert2";
 
@@ -109,4 +111,10 @@ export const catchErrorSystem = () => {
     "Thất bại",
     "Có lỗi xảy ra, vui lòng thử lại sau.",
   );
+};
+
+export const extractFirstText = (content: any, maxLength: number) => {
+  const text = content.content[0].content[0].text;
+  if (typeof text !== "string") return "";
+  return text.length > maxLength ? text.slice(0, maxLength) : text;
 };

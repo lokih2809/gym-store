@@ -54,12 +54,12 @@ const Sidebar = ({ setIsSidebarOpen }: Props) => {
         </div>
 
         {/* Content */}
-        <div className="mt-10 space-y-4 p-4">
+        <div className="flex flex-col gap-4">
           {/* Category */}
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-6">
             {PRODUCT_CATEGORIES.map((item) => (
               <span
-                className={`cursor-pointer py-4 font-bold uppercase ${activeCategory === item.name ? "border-b-2 border-black text-black" : "text-gray-400"}`}
+                className={`scrollbar-hide cursor-pointer gap-2 overflow-y-scroll py-4 text-sm font-bold uppercase ${activeCategory === item.name ? "border-b-2 border-black text-black" : "text-gray-400"}`}
                 key={item.name}
                 onClick={() => handleCategoryClick(item.name)}
               >
@@ -69,43 +69,38 @@ const Sidebar = ({ setIsSidebarOpen }: Props) => {
           </div>
 
           {/* Image */}
-          <div className="scrollbar-hide flex overflow-x-scroll">
+          <div className="scrollbar-hide flex overflow-x-scroll px-4">
             {PRODUCT_CATEGORIES.filter(
               (item) => item.name === activeCategory,
             ).map((item) => (
-              <div
-                key={item.name}
-                className={`flex gap-2 ${item.images.length <= 1 ? "m-auto" : ""}`}
-              >
-                {item.images.map((image) => (
-                  <div key={image} className={`relative h-56 w-[85vw]`}>
-                    <Image
-                      src={image}
-                      alt=""
-                      fill
-                      className="rounded-lg object-cover"
-                      onClick={() => handlePageChange(item.link)}
-                    />
-                    <span className="absolute bottom-2 left-4 text-sm font-bold text-white">
-                      NEW RELEASES
-                    </span>
-                  </div>
-                ))}
+              <div key={item.name} className={`m-auto flex gap-2`}>
+                <div key={item.image} className={`relative h-56 w-[85vw]`}>
+                  <Image
+                    src={item.image}
+                    alt=""
+                    fill
+                    className="rounded-lg object-cover"
+                    onClick={() => handlePageChange(item.link)}
+                  />
+                  <span className="absolute bottom-2 left-4 text-sm font-bold text-white">
+                    NEW RELEASES
+                  </span>
+                </div>
               </div>
             ))}
           </div>
+        </div>
 
-          {/* Recommendations */}
-          <div className="flex cursor-pointer flex-col uppercase">
-            {RECOMMENDED_CATEGORIES.map((item, index) => (
-              <div key={item} className="">
-                <span className="cursor-pointer font-bold">{item}</span>
-                {RECOMMENDED_CATEGORIES.length - 1 > index && (
-                  <hr className="my-6" />
-                )}
-              </div>
-            ))}
-          </div>
+        {/* Recommendations */}
+        <div className="flex cursor-pointer flex-col px-4 uppercase">
+          {RECOMMENDED_CATEGORIES.map((item, index) => (
+            <div key={item} className="">
+              <span className="cursor-pointer font-bold">{item}</span>
+              {RECOMMENDED_CATEGORIES.length - 1 > index && (
+                <hr className="my-6" />
+              )}
+            </div>
+          ))}
         </div>
 
         {/* More */}

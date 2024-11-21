@@ -8,14 +8,14 @@ const Login = () => {
     <>
       <div className="flex h-screen w-screen overflow-hidden">
         {/* Left */}
-        <div className="hidden h-full overflow-hidden xl:block">
+        <div className="hidden overflow-hidden xl:block">
           <Image
-            src={"/auth-img.jpg"}
+            src={"/auth-poster.jpg"}
             alt=""
             width={0}
             height={0}
             sizes="50vw"
-            className="h-auto w-[50vw] object-cover"
+            className="h-auto w-[50vw] object-contain"
           />
         </div>
 
@@ -29,7 +29,7 @@ const Login = () => {
               height={40}
               className="object-cover"
             />
-            <b className="text-xl uppercase">My Gym</b>
+            <b className="text-xl uppercase">My Gym Account</b>
           </Link>
           <Form />
         </div>

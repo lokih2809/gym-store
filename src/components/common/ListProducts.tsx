@@ -64,7 +64,7 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
           <div key={product.name} className="">
             {/* Image product */}
             <div
-              className={`${forHomepage ? "relative h-[50vh] w-[80vw] cursor-pointer md:h-[30vh] md:w-[23vw] lg:h-[60vh]" : "relative h-[25vh] w-full md:h-[30vh] lg:h-[50vh]"}`}
+              className={`${forHomepage ? "relative h-[50vh] w-[80vw] cursor-pointer md:h-[30vh] md:w-[40vw] lg:h-[40vh] xl:h-[50vh] xl:w-[23vw]" : "relative h-[25vh] w-full md:h-[30vh] lg:h-[50vh]"}`}
               onMouseEnter={() => setHoverIndex(index)}
               onMouseLeave={() => setHoverIndex(null)}
             >
@@ -79,7 +79,8 @@ const ListProducts = ({ forHomepage, listProducts }: Props) => {
                   }
                   alt={product?.name}
                   fill
-                  sizes="1000"
+                  priority
+                  sizes="10000"
                   className="object-cover"
                 />
               )}

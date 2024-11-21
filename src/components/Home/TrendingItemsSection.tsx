@@ -6,7 +6,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ListProducts from "../common/ListProducts";
-import { Post, ProductInfo } from "@/types/common";
+import { ProductInfo } from "@/types/common";
+import { Post } from "@prisma/client";
+import { extractFirstText } from "@/utils/utils";
 
 interface Props {
   type: "posts" | "products";
@@ -29,8 +31,6 @@ const TrendingItemsSection = ({
     categories?.length > 0 ? categories[0] : "",
   );
 
-  const filteredData = posts?.filter((item) => item?.tag === activeCategory);
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -47,39 +47,19 @@ const TrendingItemsSection = ({
 
   return (
     <>
-      <div className="relative mr-4 w-screen space-y-4 py-8 pl-4 md:pl-8 lg:px-10">
+      <div className="relative w-full space-y-4 px-2 py-8 md:px-4 md:pl-8 lg:px-6 xl:px-8">
         {/* Top */}
         <span className="text-2xl font-bold uppercase text-gray-500">
           {listFor}
         </span>
-        {posts && (
+
+        {/* Content */}
+        <div className="flex items-center justify-between">
           <h1 className="text-lg font-bold lg:text-xl xl:text-2xl">
             {title.toUpperCase()}
           </h1>
-        )}
-
-        {/* Content */}
-        <div className="flex items-center justify-between overflow-hidden">
-          {posts ? (
-            <div className="scrollbar-hide flex gap-2 overflow-x-scroll">
-              {/* Categories filter */}
-              {categories?.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`mb-2 rounded-full px-4 py-2 font-semibold shadow-md lg:px-6 ${activeCategory === category ? "bg-black text-slate-100" : "bg-slate-100 text-black"}`}
-                >
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </button>
-              ))}
-            </div>
-          ) : (
-            <h1 className="text-lg font-bold lg:text-xl xl:text-2xl">
-              {title.toUpperCase()}
-            </h1>
-          )}
           {/* Button */}
-          <div className="mr-8 hidden gap-4 lg:flex">
+          <div className="mr-8 hidden gap-4 md:flex">
             <button
               onClick={scrollLeft}
               className="rounded-full border bg-gray-100 p-1 shadow-lg"
@@ -102,12 +82,12 @@ const TrendingItemsSection = ({
         >
           {/* Post */}
           {type === "posts" &&
-            filteredData?.map((item) => (
-              <div key={item.name}>
+            posts?.map((post) => (
+              <div key={post.id}>
                 <div className="relative h-[50vh] w-[80vw] md:h-[30vh] md:w-[23vw] lg:h-[60vh]">
                   <Image
-                    src={item.image}
-                    alt={item.name}
+                    src={post.thumbnail}
+                    alt=""
                     fill
                     sizes="1000"
                     className="object-cover"
@@ -115,11 +95,16 @@ const TrendingItemsSection = ({
                 </div>
                 <div className="w-[80vw] md:w-[23vw]">
                   <h3 className="mt-4 text-base font-bold uppercase lg:text-xl">
-                    {item.name}
+                    {post.title}
                   </h3>
-                  <p className="my-4 w-[80%]">{item.desc}</p>
-                  <Link href={"/"} className="font-bold underline">
-                    {item.more || "Xem thêm"}
+                  <p className="my-4 w-[80%]">
+                    {extractFirstText(post.content, 100)}
+                  </p>
+                  <Link
+                    href={`/posts/${post.id}`}
+                    className="font-bold underline"
+                  >
+                    {"Xem thêm"}
                   </Link>
                 </div>
               </div>

@@ -18,7 +18,7 @@ const AllProductsContainer = async ({ category }: { category?: string }) => {
     },
   });
 
-  return <AllProducts listProducts={listProducts} />;
+  return <AllProducts listProducts={listProducts} category={category} />;
 };
 
 export default AllProductsContainer;

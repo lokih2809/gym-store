@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { PRODUCT_CATEGORIES } from "@/constants/data";
 import UserOptions from "./UserOptions";
-import { LOGO_1 } from "@/constants/common";
+import { LOGO_1, LOGO_2 } from "@/constants/common";
 import Cart from "../../Cart/Cart";
 import SearchDialog from "./SearchDialog";
 
@@ -20,13 +20,14 @@ const Navbar = () => {
         {/* Left */}
         <div className="flex flex-grow basis-0 items-center">
           {/* Logo */}
-          <Link href={"/"}>
+          <Link href={"/"} className="">
             <Image
-              src="/logo.png"
+              src={LOGO_2}
               alt="logo"
-              width={44}
-              height={36}
-              className="hidden h-9 w-11 object-cover lg:block"
+              width={0}
+              height={0}
+              sizes="6vw"
+              className="hidden h-auto w-[6vw] object-contain lg:block"
             />
           </Link>
           <div className="flex gap-4 lg:hidden">
@@ -50,12 +51,17 @@ const Navbar = () => {
               alt="logo"
               width={44}
               height={36}
+              priority
               className="h-9 w-11 object-cover lg:hidden"
             />
           </Link>
           <div className="hidden items-center gap-6 text-sm font-bold lg:flex">
             {PRODUCT_CATEGORIES.map((item) => (
-              <Link key={item.name} href={item.link}>
+              <Link
+                key={item.name}
+                href={item.link}
+                className="whitespace-nowrap"
+              >
                 {item.name.toUpperCase()}
               </Link>
             ))}

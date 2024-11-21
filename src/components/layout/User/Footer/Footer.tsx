@@ -50,6 +50,13 @@ const policyLinks = [
 ];
 
 const Footer = () => {
+  const handleBackToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <div className="mt-16 flex flex-col gap-4 px-4 lg:px-8 xl:px-12">
@@ -59,13 +66,13 @@ const Footer = () => {
         {/* Footer option contact */}
         <div className="flex flex-col lg:mt-12 lg:gap-8 lg:border-t">
           {/* Button back to top */}
-          <Link
-            href={"/"}
+          <span
+            onClick={handleBackToTop}
             className="m-auto flex items-center gap-1 py-4 font-bold lg:hidden"
           >
             Back to top
             <ChevronUp size={15} />
-          </Link>
+          </span>
 
           <div className="block lg:hidden">
             <FooterLink isMobile />

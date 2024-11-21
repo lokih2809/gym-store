@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { User } from "next-auth";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../common/Button";
-import { LOGO_VNPAY } from "@/constants/common";
 import Image from "next/image";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Input from "../common/Input";
@@ -25,7 +24,7 @@ export const PAYMENT_METHOD = [
   },
   {
     name: PaymentMethodEnum.VNPAY,
-    logo: "/Logo-VnPay.webp",
+    logo: "/logo-VnPay.webp",
   },
 ];
 
@@ -160,7 +159,7 @@ const PaymentForm = ({ user, cartItems, total }: Props) => {
         <div className="flex justify-center">
           <Button className="min-w-40 cursor-default bg-yellow-200 px-4 py-2">
             <Image
-              src={LOGO_VNPAY}
+              src={"/logo-VnPay.webp"}
               alt="VNPay"
               width={1000}
               height={1000}

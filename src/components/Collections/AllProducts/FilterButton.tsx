@@ -2,11 +2,14 @@
 
 import React, { useState } from "react";
 import { LayoutGrid, SlidersHorizontal, Tablet } from "lucide-react";
-import FilterSidebar from "./FilterSidebar";
 
-const FilterButton = () => {
+interface Props {
+  filterBox: boolean;
+  setFilterBox: (value: boolean) => void;
+}
+
+const FilterButton = ({ filterBox, setFilterBox }: Props) => {
   const [layout, setLayout] = useState("grid");
-  const [showFilter, setShowFilter] = useState<boolean>(false);
 
   return (
     <>
@@ -28,13 +31,11 @@ const FilterButton = () => {
 
         <div
           className="flex w-[48%] items-center justify-center gap-2 rounded-full bg-gray-200 px-2 py-3"
-          onClick={() => setShowFilter(true)}
+          onClick={() => setFilterBox(true)}
         >
           <SlidersHorizontal size={20} />
           <span className="text-xs font-bold">FILTER & SORT</span>
         </div>
-
-        {showFilter && <FilterSidebar setShowFilter={setShowFilter} />}
       </div>
     </>
   );

@@ -21,7 +21,7 @@ const RecentPosts = () => {
     <>
       <div className="mt-20 space-y-4">
         <span className="font-bold">You may like</span>
-        <div className="flex flex-col gap-16">
+        <div className="flex flex-col gap-16 md:flex-row md:gap-4 xl:flex-col xl:gap-16">
           {posts?.map((post: Post) => (
             <Link
               href={`/posts/${post.id}`}

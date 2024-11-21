@@ -13,7 +13,14 @@ const HomepageContainer = async () => {
     },
   });
 
-  return <Homepage listProducts={listProducts} />;
+  const listPosts = await db.post.findMany({
+    take: 10,
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
+  return <Homepage listProducts={listProducts} listPosts={listPosts} />;
 };
 
 export default HomepageContainer;

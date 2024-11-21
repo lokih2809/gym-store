@@ -23,12 +23,15 @@ const PostsDetail = ({ post }: PostPageProps) => {
   });
 
   return (
-    <div className="p-24">
-      <h1 className="w-[80%] text-6xl font-medium leading-normal tracking-wider">
+    <div className="space-y-4 p-4 xl:space-y-0 xl:p-24">
+      <span className="text-sm font-semibold uppercase tracking-widest text-gray-400">
+        Product & style
+      </span>
+      <h1 className="w-full text-2xl font-medium leading-normal tracking-wider xl:w-[80%] xl:text-6xl">
         {post.title}
       </h1>
-      <div className="flex gap-12">
-        <div className="flex w-[80%] flex-col gap-16">
+      <div className="flex flex-col gap-4 xl:flex-row xl:gap-12">
+        <div className="flex flex-col gap-16 xl:w-[80%]">
           <span className="text-sm text-gray-500">
             {formatDate(post.createdAt)} / Last Edited{" "}
             {formatDate(post.updatedAt)}
@@ -40,10 +43,11 @@ const PostsDetail = ({ post }: PostPageProps) => {
               width={0}
               height={0}
               sizes="100vw"
+              priority
               className="h-auto w-full object-contain"
             />
           </div>
-          <div className="px-[20%]">
+          <div className="xl:px-[20%]">
             <EditorContent
               editor={editor}
               className="space-y-2 text-lg leading-loose text-gray-500"
@@ -51,7 +55,7 @@ const PostsDetail = ({ post }: PostPageProps) => {
           </div>
         </div>
 
-        <div className="w-[20%]">
+        <div className="xl:w-[20%]">
           <RecentPosts />
         </div>
       </div>

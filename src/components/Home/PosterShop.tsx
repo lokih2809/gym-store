@@ -16,20 +16,22 @@ interface Props {
 const PosterShop = ({ data }: Props) => {
   return (
     <>
-      <div className="flex w-full flex-col items-center justify-between gap-4 px-4 py-8 lg:flex-row lg:px-8 xl:px-12">
+      <div className="flex w-full flex-col items-center justify-between gap-4 px-2 py-8 md:px-4 lg:px-6 xl:flex-row xl:px-8">
         {data.map((item) => (
-          <div key={item.name} className="relative h-[80vh] w-full md:w-[33vw]">
+          <div key={item.name} className="relative">
             <Image
               src={item.poster}
               alt=""
-              fill
-              sizes="1000"
-              className="rounded-md object-cover"
+              width={0}
+              height={0}
+              sizes="33vw"
+              className="h-auto w-[100vw] rounded-md object-cover xl:w-[33vw]"
             />
-            <Link href={item.link}>
-              <button className="absolute bottom-4 left-2 rounded-full bg-white px-6 py-3 text-sm font-bold uppercase lg:left-4">
-                Shop {item.name}
-              </button>
+            <Link
+              href={item.link}
+              className="absolute bottom-4 right-2 rounded-full bg-white px-4 py-2 font-bold uppercase opacity-80"
+            >
+              {item.name}
             </Link>
           </div>
         ))}
