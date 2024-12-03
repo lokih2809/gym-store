@@ -13,7 +13,6 @@ import {
 
 const FormSchema = z
   .object({
-    username: z.string().min(1, "Username is required").max(100),
     email: z.string().min(1, "Email is required").email("Invalid email"),
     password: z.string().min(8, "Password must have more than 8 characters"),
     confirmPassword: z.string().min(1, "Password confirmation is required"),
@@ -69,12 +68,6 @@ const SignUpForm = ({ setAuthMode }: Props) => {
           name="name"
           register={register}
           error={errors.name?.message}
-        />
-        <Input
-          label="Username"
-          name="username"
-          register={register}
-          error={errors.username?.message}
         />
         <Input
           label="Email address"

@@ -23,7 +23,7 @@ const PostsDetail = ({ post }: PostPageProps) => {
   });
 
   return (
-    <div className="space-y-4 p-4 xl:space-y-0 xl:p-24">
+    <div className="flex flex-col gap-4 p-4 xl:space-y-0 xl:p-24">
       <span className="text-sm font-semibold uppercase tracking-widest text-gray-400">
         Product & style
       </span>
@@ -56,7 +56,7 @@ const PostsDetail = ({ post }: PostPageProps) => {
         </div>
 
         <div className="xl:w-[20%]">
-          <RecentPosts />
+          <RecentPosts showTitle />
         </div>
       </div>
     </div>

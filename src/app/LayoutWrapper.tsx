@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { redirect, usePathname } from "next/navigation";
+import React, { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AdminLayout from "@/components/layout/Admin/AdminLayout";
@@ -15,9 +15,15 @@ interface Props {
 const LayoutWrapper = ({ children }: Props) => {
   const pathName = usePathname();
   const user = useSelector((state: RootState) => state.session.user);
+  const router = useRouter();
 
-  if (pathName.startsWith("/dashboard")) {
-    if (user?.role !== "ADMIN") redirect("/");
+  useEffect(() => {
+    if (pathName.startsWith("/dashboard") && user?.role !== "ADMIN") {
+      router.push("/");
+    }
+  }, [pathName, user, router]);
+
+  if (pathName.startsWith("/dashboard") && user?.role === "ADMIN") {
     return <AdminLayout>{children}</AdminLayout>;
   }
 

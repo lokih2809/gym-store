@@ -18,7 +18,7 @@ const Homepage = ({ listProducts, listPosts }: Props) => {
   );
 
   const posterCategory = PRODUCT_CATEGORIES.filter(
-    (category) => category.name !== "all products",
+    (category) => category.name !== "Tất cả",
   );
 
   return (

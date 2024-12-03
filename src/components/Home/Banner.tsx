@@ -1,3 +1,5 @@
+"use client";
+
 import { COLLECTIONS_LINK } from "@/constants/common";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,14 +28,14 @@ const Banner = () => {
               Những lớp áo bền bỉ, giá cả phải chăng, và thoải mái đến mức bạn
               không muốn cởi ra, đủ để đồng hành suốt cả mùa và hơn thế nữa.
             </span>
-            <div className="flex flex-col items-center gap-2 text-sm md:flex-row">
+            <div className="flex items-center gap-2 text-sm">
               {categoryOfBanner.map((category) => (
                 <Link
                   key={category}
                   href={`${COLLECTIONS_LINK}/${category}`}
                   className="w-full whitespace-nowrap rounded-full bg-white p-2 text-xs font-bold uppercase md:px-4 md:py-3 md:text-base"
                 >
-                  Shop {category}'s
+                  {category}'s
                 </Link>
               ))}
             </div>

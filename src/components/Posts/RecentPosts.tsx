@@ -1,5 +1,6 @@
 "use client";
 
+import { POSTS_LINK } from "@/constants/common";
 import { getRecentPosts } from "@/lib/actions/postsActions";
 import { formatDate } from "@/utils/utils";
 import { Post } from "@prisma/client";
@@ -7,7 +8,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const RecentPosts = () => {
+interface Props {
+  showTitle?: boolean;
+}
+
+const RecentPosts = ({ showTitle = false }: Props) => {
   const [posts, setPosts] = useState<Post[] | null>(null);
   useEffect(() => {
     const fetchApiGetPosts = async () => {
@@ -19,12 +24,14 @@ const RecentPosts = () => {
 
   return (
     <>
-      <div className="mt-20 space-y-4">
-        <span className="font-bold">You may like</span>
+      <div className="space-y-4">
+        <span className={`font-bold ${showTitle ? "block" : "hidden"}`}>
+          You may like
+        </span>
         <div className="flex flex-col gap-16 md:flex-row md:gap-4 xl:flex-col xl:gap-16">
           {posts?.map((post: Post) => (
             <Link
-              href={`/posts/${post.id}`}
+              href={`${POSTS_LINK}/${post.id}`}
               key={post.id}
               className="flex flex-col gap-2"
             >

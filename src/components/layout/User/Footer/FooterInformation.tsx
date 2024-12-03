@@ -3,24 +3,24 @@ import React from "react";
 
 const FOOTER_INFORMATION = [
   {
-    title: "Workout Clothes & Gym Clothes",
+    title: "Quần áo tập luyện & Quần áo phòng gym.",
     content:
-      "Workout Clothes designed to help you become your personal best. Because when it comes to performing at your max, there should be no obstacles – least of all your workout clothes. \nFunctional and comfortable, we create workout clothing you'll sweat in. Since 2012, we've designed and created the workout clothes we want to wear, because training and its people are what we know best.",
+      "Quần áo tập luyện được thiết kế để giúp bạn đạt phiên bản tốt nhất của chính mình. Bởi vì khi nói đến việc đạt hiệu suất tối đa, không gì nên cản trở bạn – đặc biệt là quần áo tập luyện.\n Chúng tôi tạo ra những bộ đồ tập vừa tiện dụng vừa thoải mái, phù hợp để bạn đổ mồ hôi. Từ năm 2012, chúng tôi đã thiết kế và tạo nên những bộ quần áo tập luyện mà chính chúng tôi mong muốn mặc, vì việc tập luyện và những con người trong cộng đồng này là điều chúng tôi hiểu rõ nhất.",
   },
   {
-    title: "Gym Clothes built in the weight room",
+    title: "Quần áo phòng gym được tạo nên từ phòng tập tạ.",
     content:
-      "Our legacy was built in the weight room. Gymshark was founded with a love for training and that passion continues into all our gym clothes today. You'll find the latest innovation in gym clothing and accessories to help you perform at your best and recover in style. \nOur Men's Workout Clothes feature sweat wicking workout shirts and tank tops, gym shorts, sweatpants and more. Whilst our Women's Workout Clothes are designed for a range of movements and feature sophisticated seamless technology, clever contouring and durable, quick-dry sweat wicking fabrics on leggings, sports bras and more. \nAn obsession with lifting is what started this brand, and we haven't forgotten our roots. Our Women's and Men's Bodybuilding clothes feature classic styles, with modern cuts and innovative fabrics to help you raise the bar.",
+      "Di sản của chúng tôi được xây dựng trong phòng tập tạ. Gymshark được thành lập từ tình yêu dành cho việc tập luyện, và niềm đam mê đó vẫn hiện hữu trong mọi sản phẩm quần áo phòng gym ngày nay. Bạn sẽ tìm thấy những cải tiến mới nhất trong quần áo và phụ kiện gym để giúp bạn đạt hiệu suất tốt nhất và phục hồi phong cách.\n Quần áo tập luyện nam của chúng tôi bao gồm áo tập thấm hút mồ hôi, áo ba lỗ, quần short gym, quần jogger và nhiều hơn nữa. Trong khi đó, quần áo tập luyện nữ được thiết kế phù hợp với đa dạng chuyển động, với công nghệ seamless tinh tế, các đường nét thông minh, và chất liệu bền, thấm hút mồ hôi nhanh khô trên quần legging, áo ngực thể thao và nhiều sản phẩm khác. \n Niềm đam mê với việc nâng tạ là nguồn cảm hứng ban đầu tạo nên thương hiệu này, và chúng tôi không bao giờ quên gốc rễ của mình. Quần áo thể hình dành cho nam và nữ của chúng tôi kết hợp các phong cách cổ điển với kiểu dáng hiện đại và chất liệu sáng tạo để giúp bạn nâng tầm luyện tập.",
   },
   {
-    title: "Activewear & Athleisure",
+    title: "Trang phục thể thao & Thời trang thể thao năng động.",
     content:
-      "We create the tools that help everyone become their personal best – no matter the sport. Our range of Activewear is designed to give you the support you need to perform at your best, whether that's on the track, on the gym floor or in the studio. \nWhilst our men's and women's athleisure elevates your workouts with the most comfortable gym hoodies, the most supportive gym leggings and the most innovatively designed workout shirts that are made to move when it matters most.",
+      "Chúng tôi tạo ra những công cụ giúp mọi người đạt được phiên bản tốt nhất của chính mình – bất kể môn thể thao nào. Bộ sưu tập Trang phục thể thao của chúng tôi được thiết kế để mang lại sự hỗ trợ cần thiết, giúp bạn đạt hiệu suất tối ưu, dù là trên đường chạy, sàn tập gym hay trong phòng tập studio.\n Trong khi đó, dòng Thời trang thể thao năng động dành cho nam và nữ nâng tầm buổi tập của bạn với những chiếc áo hoodie gym thoải mái nhất, quần legging hỗ trợ tối ưu và áo tập được thiết kế sáng tạo để chuyển động linh hoạt khi cần thiết nhất.",
   },
   {
-    title: "More than your best workout clothing",
+    title: "Hơn cả trang phục tập luyện tốt nhất của bạn.",
     content:
-      "The Gymshark community is devoted to unlocking potential through conditioning and the things we do today to prepare for tomorrow. It's every setback, step-up and milestone along the way. Game-changing workout clothing, running clothes and loungewear essentials. It's not just in the designs, it's in the people who wear them.",
+      "Cộng đồng Gymshark cam kết khai phá tiềm năng thông qua rèn luyện và những gì chúng ta làm hôm nay để sẵn sàng cho ngày mai. Đó là mọi thất bại, bước tiến và cột mốc trên hành trình. Từ trang phục tập luyện đột phá, đồ chạy bộ đến các sản phẩm thiết yếu mặc nhà, tất cả đều không chỉ nằm ở thiết kế mà còn ở những con người khoác lên chúng.",
   },
 ];
 

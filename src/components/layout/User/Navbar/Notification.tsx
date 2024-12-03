@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 
 export const NOTIFICATION_MESSAGES = [
-  "10% student discount",
-  "free 30-day return policy. *exclusive apply ",
-  "shipping: please refer to our delivery information",
+  "Giảm giá 10% cho sinh viên.",
+  "Chính sách hoàn trả miễn phí trong 30 ngày. (áp dụng điều kiện độc quyền)",
+  "Giao hàng: Vui lòng tham khảo thông tin giao hàng của chúng tôi.",
 ];
 
 interface Props {
@@ -25,7 +25,7 @@ const Notification = ({ isMobile }: Props) => {
   return (
     <>
       <div
-        className={`relative w-full justify-center overflow-hidden bg-slate-100 ${isMobile ? "flex h-10 py-3 lg:hidden" : "hidden h-12 py-4 lg:flex"}`}
+        className={`relative w-full justify-center overflow-hidden bg-slate-100 text-center ${isMobile ? "flex h-12 py-3 lg:hidden" : "hidden h-12 py-4 lg:flex"}`}
       >
         <div
           key={NOTIFICATION_MESSAGES[currentIndex]}

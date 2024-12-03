@@ -23,10 +23,13 @@ const UserOptions = () => {
   return (
     <>
       {user ? (
-        <div>
+        <div className="flex items-center gap-4">
+          <span className="hidden text-sm font-semibold text-blue-600 md:block">
+            Hi, {user.name || "User"} !
+          </span>
           <Tooltip title="User Options" arrow>
             <IconButton onClick={handleClick}>
-              <User color="black" />
+              <User color="blue" />
             </IconButton>
           </Tooltip>
           <Menu

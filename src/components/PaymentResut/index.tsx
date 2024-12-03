@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  DETAIL_ORDER_WITH_TRANSACTION_ID,
-  LOGO_PAYMENT_RESULT,
-} from "@/constants/common";
+import { DETAIL_ORDER_LINK, LOGO_PAYMENT_RESULT } from "@/constants/common";
 import { Check, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -145,7 +142,7 @@ const PaymentResult = () => {
                     {orderMessage}
                   </p>
                   <Link
-                    href={`${DETAIL_ORDER_WITH_TRANSACTION_ID}${vnp_TxnRef}`}
+                    href={`${DETAIL_ORDER_LINK}${vnp_TxnRef}`}
                     className="font-bold underline"
                   >
                     Nhấn vào đây để xem chi tiết đơn hàng

@@ -15,7 +15,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const userSchema = z.object({
-  username: z.string().min(1, "Username is required").max(100),
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
     .string()
@@ -98,13 +97,6 @@ const CreateAccountForm = () => {
                 name="email"
                 register={register}
                 error={errors.email?.message}
-              />
-              <Input
-                label="Username"
-                placeholder="Username"
-                name="username"
-                register={register}
-                error={errors.username?.message}
               />
               <Input
                 label="Password"

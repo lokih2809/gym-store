@@ -58,7 +58,6 @@ enum Role {
 model User {
   id          Int      @id @default(autoincrement())
   email       String   @unique
-  username    String   @unique
   password    String
   name        String?
   phoneNumber String?
@@ -67,6 +66,7 @@ model User {
   updatedAt   DateTime @updatedAt
   role        Role     @default(CUSTOMER)
   orders      Order[]
+  posts Post[]
 }
 
 // Order
@@ -124,4 +124,6 @@ model Post {
   content   Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user User @relation(fields: [id], references: [id])
 }
+

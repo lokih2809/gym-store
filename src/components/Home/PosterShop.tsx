@@ -1,10 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 type LinkProduct = {
   name: string;
-  images: string[];
+  image: string;
   poster: string;
   link: string;
 };

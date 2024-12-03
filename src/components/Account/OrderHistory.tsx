@@ -1,4 +1,4 @@
-import { DETAIL_ORDER_WITH_TRANSACTION_ID } from "@/constants/common";
+import { DETAIL_ORDER_LINK } from "@/constants/common";
 import { OrderWithProduct } from "@/types/common";
 import { formatDate } from "@/utils/utils";
 import Image from "next/image";
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const OrderHistory = ({ listOrders }: Props) => {
-  const route = useRouter();
+  const router = useRouter();
 
   return (
     <>
@@ -89,8 +89,8 @@ const OrderHistory = ({ listOrders }: Props) => {
                       <button
                         className="font-medium text-blue-500 hover:underline"
                         onClick={() =>
-                          route.push(
-                            `${DETAIL_ORDER_WITH_TRANSACTION_ID}${order.transactionId}`,
+                          router.push(
+                            `${DETAIL_ORDER_LINK}${order.transactionId}`,
                           )
                         }
                       >

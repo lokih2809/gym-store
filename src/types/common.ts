@@ -32,7 +32,6 @@ export interface Post {
 export type UserWithoutPassword = {
   id: number;
   email: string;
-  username: string;
   name: string | null;
   phoneNumber: string | null;
   createdAt: Date;

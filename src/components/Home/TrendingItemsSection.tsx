@@ -9,6 +9,7 @@ import ListProducts from "../common/ListProducts";
 import { ProductInfo } from "@/types/common";
 import { Post } from "@prisma/client";
 import { extractFirstText } from "@/utils/utils";
+import { POSTS_LINK } from "@/constants/common";
 
 interface Props {
   type: "posts" | "products";
@@ -90,6 +91,7 @@ const TrendingItemsSection = ({
                     alt=""
                     fill
                     sizes="1000"
+                    priority
                     className="object-cover"
                   />
                 </div>
@@ -101,7 +103,7 @@ const TrendingItemsSection = ({
                     {extractFirstText(post.content, 100)}
                   </p>
                   <Link
-                    href={`/posts/${post.id}`}
+                    href={`${POSTS_LINK}/${post.id}`}
                     className="font-bold underline"
                   >
                     {"Xem thêm"}

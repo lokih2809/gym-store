@@ -11,7 +11,13 @@ import { setUser } from "@/app/redux/slices/sessionSlice";
 import { catchErrorSystem } from "@/utils/utils";
 
 const FormSchema = z.object({
-  identifier: z.string().min(1, "Email or Username is required"),
+  identifier: z
+    .string()
+    .min(1, "Email is required")
+    .regex(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Invalid email format",
+    ),
   password: z
     .string()
     .min(1, "Password is required")
@@ -56,7 +62,6 @@ const SignInForm = () => {
         }
         router.push("/");
       } else {
-        console.error("Failed to sign in:");
         setErrorMessage("Invalid account or password. Please check again.");
       }
     } catch (error) {
@@ -70,7 +75,7 @@ const SignInForm = () => {
     <>
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="Email address or Username"
+          label="Email address"
           name="identifier"
           register={register}
           error={errors.identifier?.message}

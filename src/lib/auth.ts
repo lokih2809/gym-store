@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         identifier: {
-          label: "Email or Username",
+          label: "Email",
           type: "text",
           placeholder: "jsmith@gmail.com or jsmith",
         },
@@ -30,10 +30,7 @@ export const authOptions: NextAuthOptions = {
 
         const existingUser = await db.user.findFirst({
           where: {
-            OR: [
-              { email: credentials.identifier },
-              { username: credentials.identifier },
-            ],
+            OR: [{ email: credentials.identifier }],
           },
         });
 
@@ -48,7 +45,6 @@ export const authOptions: NextAuthOptions = {
         return {
           id: existingUser.id,
           email: existingUser.email,
-          username: existingUser.username,
           name: existingUser.name ?? undefined,
           phoneNumber: existingUser.phoneNumber ?? undefined,
           address: existingUser.address ?? undefined,
@@ -64,7 +60,6 @@ export const authOptions: NextAuthOptions = {
           ...token,
           id: user.id,
           email: user.email,
-          username: user.username,
           name: user.name,
           phoneNumber: user.phoneNumber,
           address: user.address,
@@ -81,7 +76,6 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           id: token.id,
           email: token.email,
-          username: token.username,
           name: token.name,
           phoneNumber: token.phoneNumber,
           address: token.address,

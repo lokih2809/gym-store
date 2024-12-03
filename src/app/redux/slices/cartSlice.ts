@@ -48,12 +48,32 @@ const cartSlice = createSlice({
         item.quantity = quantity;
       }
     },
+    incrementQuantity: (state, action: PayloadAction<number>) => {
+      const item = state.items.find((i) => i.id === action.payload);
+      if (item && item.quantity < 20) {
+        item.quantity += 1;
+      }
+    },
+    decrementQuantity: (state, action: PayloadAction<number>) => {
+      const item = state.items.find((i) => i.id === action.payload);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+      } else if (item) {
+        state.items = state.items.filter((i) => i.id !== action.payload);
+      }
+    },
     clearCart: (state) => {
       state.items = [];
     },
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  incrementQuantity,
+  decrementQuantity,
+  clearCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

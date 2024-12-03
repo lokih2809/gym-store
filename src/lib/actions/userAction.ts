@@ -6,7 +6,6 @@ import bcrypt from "bcrypt";
 // Update user
 type UpdateUserInfoData = {
   email: string;
-  username: string;
   name: string;
   phoneNumber: string;
   address?: string | null | undefined;
@@ -63,28 +62,5 @@ export const changePassword = async (
       status: "error",
       message: "Đổi mật khẩu thất bại, có lỗi xảy ra.",
     };
-  }
-};
-
-// Get user data without password
-export const fetchUserDataFromApi = async (id: number) => {
-  try {
-    const response = await db.user.findUnique({
-      where: {
-        id,
-      },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        name: true,
-        phoneNumber: true,
-        address: true,
-        role: true,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.log(error);
   }
 };

@@ -6,28 +6,28 @@ import React, { useState } from "react";
 
 const FOOTER_LINKS = [
   {
-    title: "help",
+    title: "Giúp đỡ",
     links: [
-      "FAQ",
-      "Delivery Information",
-      "Returns Policy",
-      "Make A Return",
-      "Orders",
-      "Submit a Fake",
+      "Câu hỏi thường gặp",
+      "Thông tin giao hàng",
+      "Chính sách hoàn trả",
+      "Thực hiện hoàn trả",
+      "Đơn hàng",
+      "Gửi báo cáo giả mạo",
     ],
   },
   {
-    title: "My Account",
-    links: ["Login", "Register"],
+    title: "Tài khoản của tôi",
+    links: ["Đăng nhập", "Đăng ký"],
   },
   {
-    title: "Pages",
+    title: "Trang",
     links: [
       "Gymshark Central",
-      "Careers",
-      "About Us",
-      "Student Discount",
-      "Factory List",
+      "Nghề nghiệp",
+      "Về chúng tôi",
+      "Giảm giá cho học sinh",
+      "Danh sách nhà máy",
     ],
   },
 ];

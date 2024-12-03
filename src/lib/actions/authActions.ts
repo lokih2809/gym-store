@@ -10,7 +10,6 @@ import { ADMIN_MAIL } from "@/constants/common";
 
 // Create user
 const createUserSchema = z.object({
-  username: z.string().min(1, "Username is required").max(100),
   email: z.string().min(1, "Email is required").email("Invalid email"),
   password: z
     .string()
@@ -23,7 +22,7 @@ const createUserSchema = z.object({
 });
 
 export const createUser = async (formData: FormData) => {
-  const { email, username, password, name, phoneNumber, address, role } =
+  const { email, password, name, phoneNumber, address, role } =
     createUserSchema.parse(formData);
 
   try {
@@ -38,22 +37,10 @@ export const createUser = async (formData: FormData) => {
       };
     }
 
-    const existingUsername = await db.user.findUnique({
-      where: { username },
-    });
-
-    if (existingUsername) {
-      return {
-        status: "error",
-        message: "Tài khoản đã tồn tại, vui lòng nhập tài khoản khác.",
-      };
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await db.user.create({
       data: {
-        username,
         email,
         password: hashedPassword,
         name,
@@ -68,11 +55,6 @@ export const createUser = async (formData: FormData) => {
       message: "Tạo tài khoản thành công.",
     };
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      console.log("Validation errors:", error.errors);
-    } else {
-      console.log("Other errors:", error);
-    }
     return {
       status: "error",
       message: "Có lỗi xảy ra! vui lòng thử lại sau.",
@@ -101,7 +83,6 @@ export const deleteUser = async (id: number) => {
       await db.user.delete({
         where: { id },
       });
-
       await refreshSession();
       return { status: "success", message: "Xóa người dùng thành công." };
     } else {
@@ -125,7 +106,6 @@ export const adminUpdateUser = async (id: number, formData: FormData) => {
     }
 
     const email = formData.get("email");
-    const username = formData.get("username");
 
     if (typeof email === "string" && email !== existingUser.email) {
       const existingEmail = await db.user.findUnique({
@@ -135,18 +115,6 @@ export const adminUpdateUser = async (id: number, formData: FormData) => {
         return {
           status: "error",
           message: "Email đã tồn tại, vui lòng nhập email khác.",
-        };
-      }
-    }
-
-    if (typeof username === "string" && username !== existingUser.username) {
-      const existingUsername = await db.user.findUnique({
-        where: { username },
-      });
-      if (existingUsername) {
-        return {
-          status: "error",
-          message: "Tài khoản đã tồn tại, vui lòng nhập tài khoản khác.",
         };
       }
     }

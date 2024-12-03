@@ -19,7 +19,6 @@ import { z } from "zod";
 
 const FormSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email"),
-  username: z.string().min(1, "Username is required").max(100),
   name: z.string().min(1, "Name is required"),
   phoneNumber: z
     .string()
@@ -45,7 +44,6 @@ const EditAccountForm = ({ user }: Props) => {
   const methods = useForm<FormValues>({
     defaultValues: {
       email: user.email || "",
-      username: user.username || "",
       name: user.name || "",
       phoneNumber: user.phoneNumber || "",
       address: user.address || "",
@@ -111,14 +109,6 @@ const EditAccountForm = ({ user }: Props) => {
                 name="email"
                 register={register}
                 error={errors.email?.message}
-                disabled
-              />
-              <Input
-                label="Username"
-                placeholder="Username"
-                name="username"
-                register={register}
-                error={errors.username?.message}
                 disabled
               />
               <Input

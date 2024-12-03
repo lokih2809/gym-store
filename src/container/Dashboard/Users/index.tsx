@@ -6,7 +6,6 @@ const UsersContainer = async () => {
     select: {
       id: true,
       email: true,
-      username: true,
       phoneNumber: true,
       name: true,
       createdAt: true,

@@ -30,7 +30,6 @@ const Users = ({ listUsers }: Props) => {
     getFilteredAndPaginatedData(listUsers, searchTerm, currentPage, 10, [
       "name",
       "email",
-      "username",
     ]);
 
   const nextPage = () => setCurrentPage(handleNext());
@@ -74,9 +73,7 @@ const Users = ({ listUsers }: Props) => {
                 <th scope="col" className="px-4 py-2 lg:px-6 lg:py-3">
                   Email
                 </th>
-                <th scope="col" className="p-2 lg:px-6 lg:py-3">
-                  Username
-                </th>
+
                 <th
                   scope="col"
                   className="hidden px-4 py-2 md:table-cell lg:px-6 lg:py-3"
@@ -107,7 +104,6 @@ const Users = ({ listUsers }: Props) => {
                   >
                     {user.email}
                   </th>
-                  <td className="p-2 lg:px-6 lg:py-3">{user.username}</td>
                   <td className="hidden md:table-cell lg:px-6 lg:py-3">
                     {user.name}
                   </td>

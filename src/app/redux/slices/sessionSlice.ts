@@ -1,9 +1,14 @@
-// redux/slices/sessionSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "next-auth";
 
 interface SessionState {
   user: User | null;
+}
+
+interface ExtendedUser extends User {
+  name?: string;
+  phone?: string;
+  address?: string;
 }
 
 const initialState: SessionState = {
@@ -20,8 +25,16 @@ const sessionSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
+    updateUser: (state, action: PayloadAction<Partial<ExtendedUser>>) => {
+      if (state.user) {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+        };
+      }
+    },
   },
 });
 
-export const { setUser, clearUser } = sessionSlice.actions;
+export const { setUser, clearUser, updateUser } = sessionSlice.actions;
 export default sessionSlice.reducer;

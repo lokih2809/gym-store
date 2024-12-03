@@ -6,19 +6,23 @@ import FooterLink from "./FooterLink";
 import { ChevronUp, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import FooterInformation from "./FooterInformation";
+import { LOGIN_LINK, POSTS_LINK } from "@/constants/common";
 
 const aboutMore = [
   {
-    title: "blog",
+    title: "Bài viết",
     img: "/footerBlog.avif",
+    link: `${POSTS_LINK}`,
   },
   {
-    title: "email sign up",
+    title: "Email đăng ký",
     img: "/footerEmail.avif",
+    link: `${LOGIN_LINK}`,
   },
   {
-    title: "gymShark training",
+    title: "Tập luyện",
     img: "/footerTraining.avif",
+    link: `${POSTS_LINK}`,
   },
 ];
 
@@ -42,11 +46,10 @@ const socialLinks = [
 ];
 
 const policyLinks = [
-  "Terms and Conditions",
-  "Terms of Use",
-  "Privacy Notice",
-  "Cookie Policy",
-  "Modern Slavery",
+  "Điều khoản và Điều kiện",
+  "Điều khoản sử dụng",
+  "Thông báo bảo mật",
+  "Chính sách cookie",
 ];
 
 const Footer = () => {
@@ -88,7 +91,7 @@ const Footer = () => {
               <span className="font-bold uppercase">More about GymShark</span>
               <div className="scrollbar-hide mt-4 flex w-full gap-2 overflow-x-scroll">
                 {aboutMore.map((item) => (
-                  <div key={item.title}>
+                  <Link href={item.link} key={item.title}>
                     <div className="relative flex h-24 w-[45vw] flex-shrink-0 flex-col lg:w-44">
                       <Image
                         src={item.img}
@@ -104,7 +107,7 @@ const Footer = () => {
                         {item.title}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

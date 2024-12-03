@@ -41,16 +41,6 @@ const menuItems = [
     path: "/dashboard/posts",
     icon: <BookMarked />,
   },
-  {
-    title: "Settings",
-    path: "/dashboard/settings",
-    icon: <Settings />,
-  },
-  {
-    title: "Help",
-    path: "/dashboard/help",
-    icon: <CircleHelp />,
-  },
 ];
 
 interface Props {

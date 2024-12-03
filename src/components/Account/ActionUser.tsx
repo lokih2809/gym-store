@@ -13,19 +13,13 @@ import {
 } from "@/utils/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/components/common/Button";
-import {
-  changePassword,
-  fetchUserDataFromApi,
-  updateUserInfo,
-} from "@/lib/actions/userAction";
-import { useInitSession } from "@/hooks/useInitSession";
+import { changePassword, updateUserInfo } from "@/lib/actions/userAction";
 import { signOut } from "next-auth/react";
 import { useDispatch } from "react-redux";
-import { clearUser, setUser } from "@/app/redux/slices/sessionSlice";
+import { clearUser, updateUser } from "@/app/redux/slices/sessionSlice";
 
 const EditFormSchema = z.object({
   email: z.string().email("Invalid email").nonempty("Email is required"),
-  username: z.string().nonempty("Username is required").max(100),
   name: z.string().nonempty("Name is required"),
   phoneNumber: z
     .string()
@@ -56,7 +50,6 @@ interface Props {
 }
 
 const ActionUser = ({ userAction, setUserAction, user }: Props) => {
-  const { fetchSession } = useInitSession();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -72,7 +65,6 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
     defaultValues: isUpdateInfo
       ? {
           email: user?.email || "",
-          username: user?.username || "",
           name: user?.name || "",
           phoneNumber: user?.phoneNumber || "",
           address: user?.address || "",
@@ -86,20 +78,6 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
     reset();
   };
 
-  const updateUserSession = async (user: User) => {
-    const updatedUser = await fetchUserDataFromApi(+user.id);
-    if (updatedUser) {
-      const userWithUndefinedName = {
-        ...updatedUser,
-        name: updatedUser.name ?? undefined,
-        phoneNumber: updatedUser.phoneNumber ?? undefined,
-        address: updatedUser.address ?? undefined,
-      };
-      dispatch(setUser(userWithUndefinedName));
-      fetchSession();
-    }
-  };
-
   const handleLogout = () => {
     signOut({
       redirect: true,
@@ -109,11 +87,11 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
     });
   };
 
-  const thenSuccess = async () => {
+  const thenSuccess = (values: any) => {
     if (isUpdateInfo && user) {
-      await updateUserSession(user);
+      dispatch(updateUser(values));
       setUserAction(null);
-    } else {
+    } else if (!isUpdateInfo) {
       handleLogout();
     }
   };
@@ -132,7 +110,7 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
 
       showNotification({
         response,
-        thenSuccess,
+        thenSuccess: () => thenSuccess(values),
       });
     } catch (error) {
       catchErrorSystem();
@@ -158,13 +136,6 @@ const ActionUser = ({ userAction, setUserAction, user }: Props) => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                register={register}
-                disabled
-              />
-              <Input
-                label="Username"
-                placeholder="Username"
-                name="username"
                 register={register}
                 disabled
               />

@@ -70,18 +70,13 @@ const Navbar = () => {
 
         {/* Right */}
         <div className="flex flex-grow basis-0 items-center justify-end gap-2">
-          <div className="hidden items-center gap-2 lg:flex">
-            <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
-              <SearchIcon
-                className="hidden cursor-pointer lg:block"
-                onClick={() => setIsDialogOpen(true)}
-              />
-            </div>
-            <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
-              <Heart />
-            </div>
-          </div>
           <UserOptions />
+          <div className="cursor-pointer p-2 hover:rounded-full hover:bg-gray-100">
+            <SearchIcon
+              className="hidden cursor-pointer lg:block"
+              onClick={() => setIsDialogOpen(true)}
+            />
+          </div>
           <Cart />
         </div>
         {isDialogOpen && <SearchDialog setIsDialogOpen={setIsDialogOpen} />}

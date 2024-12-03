@@ -1,7 +1,7 @@
 import ProductDetailContainer from "@/container/Products/[id]";
 
 const Page = async ({ params }: { params: { id: number } }) => {
-  const { id } = params;
+  const { id } = await params;
 
   return <ProductDetailContainer id={+id} />;
 };

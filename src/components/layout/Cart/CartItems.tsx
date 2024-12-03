@@ -1,7 +1,18 @@
-import { CartItemProps, removeFromCart } from "@/app/redux/slices/cartSlice";
+import {
+  CartItemProps,
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart,
+} from "@/app/redux/slices/cartSlice";
 import Button from "@/components/common/Button";
 import { calculateTotal } from "@/utils/utils";
-import { Heart, ShoppingBag, Trash2 } from "lucide-react";
+import {
+  CircleMinus,
+  CirclePlus,
+  Heart,
+  ShoppingBag,
+  Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -17,6 +28,13 @@ const CartItems = ({ cartItems }: Props) => {
 
   const handleRemove = (payload: number) => {
     dispatch(removeFromCart(payload));
+  };
+
+  const handleIncrementQuantity = (payload: number) => {
+    dispatch(incrementQuantity(payload));
+  };
+  const handleDecrementQuantity = (payload: number) => {
+    dispatch(decrementQuantity(payload));
   };
 
   return (
@@ -50,9 +68,19 @@ const CartItems = ({ cartItems }: Props) => {
                       onClick={() => handleRemove(item.id)}
                     />
                   </div>
-                  <span className="text-lg font-bold">
-                    Qty: {item.quantity}
-                  </span>
+                  <div className="flex items-center gap-4">
+                    <span className="text-lg font-bold">
+                      Qty: {item.quantity}
+                    </span>
+                    <CircleMinus
+                      className={` ${item.quantity < 2 ? "cursor-default opacity-40" : "cursor-pointer"}`}
+                      onClick={() => handleDecrementQuantity(item.id)}
+                    />
+                    <CirclePlus
+                      className={` ${item.quantity >= 20 ? "cursor-default opacity-40" : "cursor-pointer"}`}
+                      onClick={() => handleIncrementQuantity(item.id)}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
